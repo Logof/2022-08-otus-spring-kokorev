@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TestServiceImpl implements TestService{
+public class TestingSystemServiceImpl implements TestingSystemService {
 
     private List<Question> questionList;
 
@@ -16,7 +16,7 @@ public class TestServiceImpl implements TestService{
         return questionList;
     }
 
-    public TestServiceImpl(String testFileName) {
+    public TestingSystemServiceImpl(String testFileName) {
         try {
             questionList = CsvUtils.readTestData(testFileName);
         } catch (QuestionNotFoundException  e) {
