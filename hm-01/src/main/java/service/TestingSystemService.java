@@ -2,7 +2,7 @@ package service;
 
 import exception.QuestionNotFoundException;
 
-public interface TestService {
+public interface TestingSystemService {
     void runTest() throws QuestionNotFoundException;
 
 
