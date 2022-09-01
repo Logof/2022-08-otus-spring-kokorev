@@ -1,4 +1,4 @@
-package exception;
+package ru.otus.logof.exception;
 
 public class QuestionNotFoundException extends RuntimeException {
 

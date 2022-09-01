@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="TestServiceImpl" class="service.TestingSystemServiceImpl">
+    <bean name="TestServiceImpl" class="ru.otus.logof.service.TestingSystemServiceImpl">
 
         <constructor-arg name="testFileName" value="/test01.csv" />
     </bean>
