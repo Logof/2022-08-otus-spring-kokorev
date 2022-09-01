@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>hm-01</module>
+        <module>hw-01</module>
+        <module>hw-01</module>
     </modules>
 </project>
