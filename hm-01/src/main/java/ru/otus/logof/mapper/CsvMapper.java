@@ -1,4 +1,4 @@
-package mapper;
+package ru.otus.logof.mapper;
 
 public interface CsvMapper {
 

@@ -1,24 +1,19 @@
-package utils;
+package ru.otus.logof.utils;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
-import exception.QuestionNotFoundException;
-import entity.Answer;
-import entity.Question;
-import mapper.CsvMapper;
-import mapper.QuestionCsvMapper;
-import org.springframework.core.io.Resource;
+import ru.otus.logof.entity.Question;
+import ru.otus.logof.exception.QuestionNotFoundException;
+import ru.otus.logof.mapper.CsvMapper;
+import ru.otus.logof.mapper.QuestionCsvMapper;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;

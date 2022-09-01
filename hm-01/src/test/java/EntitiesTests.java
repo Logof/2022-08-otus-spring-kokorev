@@ -1,12 +1,10 @@
-import entity.Answer;
-import entity.Question;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.otus.logof.entity.Answer;
+import ru.otus.logof.entity.Question;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EntitiesTests {
     @DisplayName("корректно создаётся конструктором Answer")

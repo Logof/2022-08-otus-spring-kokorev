@@ -1,8 +1,8 @@
-import entity.Answer;
-import entity.Question;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import service.TestingSystemServiceImpl;
+import ru.otus.logof.entity.Answer;
+import ru.otus.logof.entity.Question;
+import ru.otus.logof.service.TestingSystemServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
-package mapper;
+package ru.otus.logof.mapper;
 
-import entity.Answer;
-import entity.Question;
+import ru.otus.logof.entity.Answer;
+import ru.otus.logof.entity.Question;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,12 +1,11 @@
-package service;
+package ru.otus.logof.service;
 
-import exception.QuestionNotFoundException;
-import entity.Question;
-import utils.CsvUtils;
+import ru.otus.logof.entity.Question;
+import ru.otus.logof.exception.QuestionNotFoundException;
+import ru.otus.logof.utils.CsvUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class TestingSystemServiceImpl implements TestingSystemService {
 

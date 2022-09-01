@@ -1,6 +1,6 @@
-package mapper;
+package ru.otus.logof.mapper;
 
-import entity.Answer;
+import ru.otus.logof.entity.Answer;
 
 public class AnswerCsvMapper implements CsvMapper {
 
