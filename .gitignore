@@ -1,4 +1,3 @@
-.idea/
-*.iml
-target/
-hw-01/target
+/.idea/
+/hw-01/target
+/hm-01
