@@ -17,14 +17,6 @@ public class Question {
         return answers;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
-    }
-
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

@@ -1,35 +1,22 @@
-package ru.otus.homework;
+package ru.otus.homework.mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.homework.entity.Answer;
 import ru.otus.homework.entity.Question;
-import ru.otus.homework.mapper.AnswerCsvMapper;
-import ru.otus.homework.mapper.CsvMapper;
-import ru.otus.homework.mapper.QuestionCsvMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MappersTests {
-    @DisplayName("корректно создаётся объект Answer с помощью AnswerCsvMapper")
-    @Test
-    public void shouldHaveCorrectAnswerCsvMapperConverter() {
-        String[] rawData = {"Answer", "true"};
-        CsvMapper answerCsvMapper = new AnswerCsvMapper();
-        Answer answerExpected = answerCsvMapper.toEntity(rawData);
+public class QuestionCsvMapperTests {
 
-        Answer answerActual = new Answer("Answer", true);
-        assertEquals(answerExpected, answerActual);
-
-    }
 
     @DisplayName("корректно создаётся объект Question с помощью QuestionCsvMapper")
     @Test
     public void shouldHaveCorrectQuestionCsvMapperConverter() {
-        CsvMapper questionCsvMapper = new QuestionCsvMapper();
+        CsvMapper questionCsvMapper = new QuestionCsvMapper(new AnswerCsvMapper());
 
         String[] rawData = {"Вопрос", "Ответ", "true"};
         Question questionExpected = questionCsvMapper.toEntity(rawData);

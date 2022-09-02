@@ -4,8 +4,8 @@ import ru.otus.homework.entity.Answer;
 
 public class AnswerCsvMapper implements CsvMapper {
 
-    private final int ANSWER_VALUE_INDEX = 0;
-    private final int ANSWER_CORRECT_ATTR_INDEX = 1;
+    private final static int ANSWER_VALUE_INDEX = 0;
+    private final static int ANSWER_CORRECT_ATTR_INDEX = 1;
 
     private final String TRUE_CONSTANT = "TRUE";
 
