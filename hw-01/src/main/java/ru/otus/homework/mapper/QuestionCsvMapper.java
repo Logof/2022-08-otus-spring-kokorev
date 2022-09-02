@@ -9,13 +9,19 @@ import java.util.List;
 
 public class QuestionCsvMapper implements CsvMapper {
 
-    private final int QUESTION_VALUE_INDEX = 0;
-    private final int ANSWERS_START_INDEX = 1;
-    private final int ANSWERS_COUNT_FIELDS = 2;
+    private final static int QUESTION_VALUE_INDEX = 0;
+    private final static int ANSWERS_START_INDEX = 1;
+    private final static int ANSWERS_COUNT_FIELDS = 2;
+
+    private CsvMapper answerMapper;
+
+    public QuestionCsvMapper(CsvMapper answerMapper) {
+        this.answerMapper = answerMapper;
+    }
 
     @Override
     public Question toEntity(String[] rawData) {
-        CsvMapper answerMapper = new AnswerCsvMapper();
+
 
         List<Answer> answerList = new ArrayList<>();
 

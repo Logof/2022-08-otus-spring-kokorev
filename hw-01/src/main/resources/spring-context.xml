@@ -4,9 +4,23 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="TestingSystemServiceImpl" class="ru.otus.homework.service.TestingSystemServiceImpl">
+    <bean name="OutputService" class="ru.otus.homework.service.OutputServiceImpl" />
 
-        <constructor-arg name="testFileName" value="/csv/test01.csv" />
+    <bean name="QuestionCsvMapper" class="ru.otus.homework.mapper.QuestionCsvMapper">
+        <constructor-arg name="answerMapper" ref="AnswerCsvMapper" />
     </bean>
 
+    <bean name="AnswerCsvMapper" class="ru.otus.homework.mapper.AnswerCsvMapper" />
+
+    <bean name="QuestionFileReader" class="ru.otus.homework.service.QuestionFileReaderImpl" />
+
+    <bean name="TestingSystemService" class="ru.otus.homework.service.TestingSystemServiceImpl">
+        <constructor-arg name="test" ref="Test" />
+        <constructor-arg name="outputService" ref="OutputService" />
+    </bean>
+
+    <bean name="Test" class="ru.otus.homework.dao.Test">
+        <constructor-arg name="questionFileReader" ref="QuestionFileReader" />
+        <constructor-arg name="questionCsvMapper" ref="QuestionCsvMapper" />
+    </bean>
 </beans>
