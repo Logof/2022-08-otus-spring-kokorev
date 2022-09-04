@@ -27,8 +27,7 @@ public class Test {
 
     public void readTestData(String filePath) throws IOException {
         if (filePath == null || filePath.isEmpty()) {
-            //TODO Заменить на другую ошибку
-            throw new QuestionNotFoundException(filePath + " not found");
+            throw new IOException(filePath + " not found");
         }
 
         List<String []> rawDataList = questionFileReader.readRawData(filePath);
