@@ -16,16 +16,16 @@ public class OutputServiceImplTests {
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         System.setOut(new PrintStream(outputStreamCaptor));
     }
 
     @Test
-    public void shouldHaveCorrectTestServiceConstructor() {
+    @DisplayName("Тестирование сервиса вывода сообщений")
+    public void testingOutputService() {
         OutputService outputService = new OutputServiceImpl();
         outputService.messageOutput("Hello world");
-        assertEquals("Hello Baeldung Readers!!", outputStreamCaptor.toString()
-                .trim());
+        assertEquals(outputStreamCaptor.toString(), "Hello world\n");
     }
 
     @AfterEach

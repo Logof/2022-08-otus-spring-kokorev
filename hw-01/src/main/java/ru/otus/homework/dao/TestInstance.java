@@ -9,23 +9,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test {
-    private List<Question> questionList;
+public class TestInstance {
+    private final List<Question> questionList;
 
     public List<Question> getQuestionList() {
         return questionList;
     }
 
-    private QuestionFileReader questionFileReader;
-    private QuestionCsvMapper questionCsvMapper;
+    private final QuestionFileReader questionFileReader;
+    private final QuestionCsvMapper questionCsvMapper;
 
-    public Test(QuestionFileReader questionFileReader, QuestionCsvMapper questionCsvMapper) {
+    private final String filePath;
+
+    public TestInstance(QuestionFileReader questionFileReader, QuestionCsvMapper questionCsvMapper, String filePath) {
         this.questionCsvMapper = questionCsvMapper;
         this.questionFileReader = questionFileReader;
         this.questionList = new ArrayList<>();
+        this.filePath = filePath;
     }
 
-    public void readTestData(String filePath) throws IOException {
+    public void readTestData() throws IOException {
         if (filePath == null || filePath.isEmpty()) {
             throw new IOException(filePath + " not found");
         }
