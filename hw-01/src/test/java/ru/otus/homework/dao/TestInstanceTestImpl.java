@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestInstanceTest {
+public class TestInstanceTestImpl {
 
     private QuestionFileReader questionFileReader;
     private QuestionCsvMapper questionCsvMapper;
@@ -30,8 +30,7 @@ public class TestInstanceTest {
     @Test
     @DisplayName("Экземпляр теста правильно собирается")
     public void readTestDataTest() throws IOException {
-        TestInstance testInstance = new TestInstance(questionFileReader, questionCsvMapper, "/test.csv");
-        testInstance.readTestData();
+        TestInstance testInstance = new TestInstanceImpl(questionFileReader, questionCsvMapper, "/test.csv");
 
         List<Question> questionListExpected = testInstance.getQuestionList();
 

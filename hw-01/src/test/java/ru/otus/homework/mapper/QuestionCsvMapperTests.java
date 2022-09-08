@@ -16,7 +16,7 @@ public class QuestionCsvMapperTests {
     @DisplayName("корректно создаётся объект Question с помощью QuestionCsvMapper")
     @Test
     public void shouldHaveCorrectQuestionCsvMapperConverter() {
-        CsvMapper questionCsvMapper = new QuestionCsvMapper(new AnswerCsvMapper());
+        CsvMapper<Question> questionCsvMapper = new QuestionCsvMapper(new AnswerCsvMapper());
 
         String[] rawData = {"Вопрос", "Ответ", "true"};
         Question questionExpected = questionCsvMapper.toEntity(rawData);

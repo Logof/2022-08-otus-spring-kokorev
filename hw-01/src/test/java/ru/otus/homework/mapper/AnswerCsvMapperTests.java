@@ -11,7 +11,7 @@ public class AnswerCsvMapperTests {
     @Test
     public void shouldHaveCorrectAnswerCsvMapperConverter() {
         String[] rawData = {"Answer", "true"};
-        CsvMapper answerCsvMapper = new AnswerCsvMapper();
+        CsvMapper<Answer> answerCsvMapper = new AnswerCsvMapper();
         Answer answerExpected = answerCsvMapper.toEntity(rawData);
 
         Answer answerActual = new Answer("Answer", true);

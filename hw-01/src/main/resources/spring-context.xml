@@ -19,7 +19,7 @@
         <constructor-arg name="outputService" ref="OutputService" />
     </bean>
 
-    <bean name="TestInstance" class="ru.otus.homework.dao.TestInstance" autowire="byName" >
+    <bean name="TestInstance" class="ru.otus.homework.dao.TestInstanceImpl" autowire="byName" >
         <constructor-arg name="questionFileReader" ref="QuestionFileReader" />
         <constructor-arg name="questionCsvMapper" ref="QuestionCsvMapper" />
         <constructor-arg name="filePath" value="/csv/test01.csv" />

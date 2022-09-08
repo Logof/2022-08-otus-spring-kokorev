@@ -1,6 +1,7 @@
 package ru.otus.homework.service;
 
 import ru.otus.homework.dao.TestInstance;
+import ru.otus.homework.dao.TestInstanceImpl;
 import ru.otus.homework.entity.Question;
 import ru.otus.homework.exception.QuestionNotFoundException;
 
@@ -20,8 +21,6 @@ public class TestingSystemServiceImpl  implements TestingSystemService {
     @Override
     public void startTesting() throws QuestionNotFoundException {
         try {
-            testInstance.readTestData();
-
             for (Question question : testInstance.getQuestionList()) {
                 outputService.messageOutput(question.toString());
             }

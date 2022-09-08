@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class QuestionCsvMapper implements CsvMapper {
+public class QuestionCsvMapper implements CsvMapper<Question> {
 
     private final static int QUESTION_VALUE_INDEX = 0;
     private final static int ANSWERS_START_INDEX = 1;
     private final static int ANSWERS_COUNT_FIELDS = 2;
 
-    private CsvMapper answerMapper;
+    private final CsvMapper<Answer> answerMapper;
 
-    public QuestionCsvMapper(CsvMapper answerMapper) {
+    public QuestionCsvMapper(CsvMapper<Answer> answerMapper) {
         this.answerMapper = answerMapper;
     }
 
