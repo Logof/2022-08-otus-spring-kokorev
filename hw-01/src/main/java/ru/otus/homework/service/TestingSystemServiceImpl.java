@@ -1,31 +1,24 @@
 package ru.otus.homework.service;
 
-import ru.otus.homework.dao.TestInstance;
-import ru.otus.homework.dao.TestInstanceImpl;
+import ru.otus.homework.dao.QuestionsDao;
 import ru.otus.homework.entity.Question;
 import ru.otus.homework.exception.QuestionNotFoundException;
-
-import java.io.IOException;
 
 public class TestingSystemServiceImpl  implements TestingSystemService {
 
     private final OutputService outputService;
 
-    private final TestInstance testInstance;
+    private final QuestionsDao questionsDao;
 
-    public TestingSystemServiceImpl(TestInstance testInstance, OutputService outputService) {
-        this.testInstance = testInstance;
+    public TestingSystemServiceImpl(QuestionsDao questionsDao, OutputService outputService) {
+        this.questionsDao = questionsDao;
         this.outputService = outputService;
     }
 
     @Override
     public void startTesting() throws QuestionNotFoundException {
-        try {
-            for (Question question : testInstance.getQuestionList()) {
+        for (Question question : questionsDao.getQuestionList()) {
                 outputService.messageOutput(question.toString());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }

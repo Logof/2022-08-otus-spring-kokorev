@@ -10,7 +10,6 @@ import ru.otus.homework.mapper.QuestionCsvMapper;
 import ru.otus.homework.service.QuestionFileReader;
 import ru.otus.homework.service.QuestionFileReaderImpl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +28,8 @@ public class TestInstanceTestImpl {
 
     @Test
     @DisplayName("Экземпляр теста правильно собирается")
-    public void readTestDataTest() throws IOException {
-        TestInstance testInstance = new TestInstanceImpl(questionFileReader, questionCsvMapper, "/test.csv");
+    public void readTestDataTest() {
+        QuestionsDao testInstance = new QuestionsDaoCsv(questionFileReader, questionCsvMapper, "/test.csv");
 
         List<Question> questionListExpected = testInstance.getQuestionList();
 

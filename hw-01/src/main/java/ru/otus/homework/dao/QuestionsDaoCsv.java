@@ -9,14 +9,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestInstanceImpl implements TestInstance {
+public class QuestionsDaoCsv implements QuestionsDao {
 
     private final QuestionFileReader questionFileReader;
     private final QuestionCsvMapper questionCsvMapper;
 
     private final String filePath;
 
-    public TestInstanceImpl(QuestionFileReader questionFileReader, QuestionCsvMapper questionCsvMapper, String filePath) {
+    public QuestionsDaoCsv(QuestionFileReader questionFileReader, QuestionCsvMapper questionCsvMapper, String filePath) {
         this.questionCsvMapper = questionCsvMapper;
         this.questionFileReader = questionFileReader;
         this.filePath = filePath;

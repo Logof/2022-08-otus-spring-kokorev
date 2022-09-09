@@ -15,11 +15,11 @@
     <bean name="QuestionFileReader" class="ru.otus.homework.service.QuestionFileReaderImpl" />
 
     <bean name="TestingSystemService" class="ru.otus.homework.service.TestingSystemServiceImpl">
-        <constructor-arg name="testInstance" ref="TestInstance" />
+        <constructor-arg name="questionsDao" ref="QuestionsDao" />
         <constructor-arg name="outputService" ref="OutputService" />
     </bean>
 
-    <bean name="TestInstance" class="ru.otus.homework.dao.TestInstanceImpl" autowire="byName" >
+    <bean name="QuestionsDao" class="ru.otus.homework.dao.QuestionsDaoCsv" autowire="byName" >
         <constructor-arg name="questionFileReader" ref="QuestionFileReader" />
         <constructor-arg name="questionCsvMapper" ref="QuestionCsvMapper" />
         <constructor-arg name="filePath" value="/csv/test01.csv" />
