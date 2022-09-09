@@ -8,5 +8,9 @@
     <artifactId>homeWork</artifactId>
     <version>1.0</version>
 
+    <packaging>pom</packaging>
 
+    <modules>
+        <module>hw-01</module>
+    </modules>
 </project>
