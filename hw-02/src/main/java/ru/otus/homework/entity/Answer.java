@@ -2,17 +2,13 @@ package ru.otus.homework.entity;
 
 import java.util.Objects;
 
-public class Answer implements TestEntity {
-    private final String value;
+public class Answer extends BasicEntity {
+
     private final boolean correctAnswer;
 
     public Answer(String value, boolean correctAnswer) {
-        this.value = value;
+        super(value);
         this.correctAnswer = correctAnswer;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public boolean isCorrectAnswer() {
@@ -21,7 +17,7 @@ public class Answer implements TestEntity {
 
     @Override
     public String toString() {
-        return value.trim();
+        return getValue().trim();
     }
 
     @Override
@@ -34,6 +30,6 @@ public class Answer implements TestEntity {
             return false;
         }
 
-        return Objects.equals(((Answer)object).getValue(), this.value);
+        return Objects.equals(((Answer)object).getValue(), getValue());
     }
 }

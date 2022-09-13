@@ -12,9 +12,9 @@ public class IOServiceImpl implements IOService {
 
     private final Scanner input;
 
-    public IOServiceImpl(PrintStream output, Scanner input) {
-        this.output = output;
-        this.input = input;
+    public IOServiceImpl() {
+        this.output = new PrintStream(System.out);
+        this.input = new Scanner(System.in);
     }
 
     @Override

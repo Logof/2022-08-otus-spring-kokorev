@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Маппинг ответов ")
 public class AnswerCsvMapperTest {
 
-    String[] csvDataForTrueAnswer = {"Answer 1","True"};
-    String[] csvDataForFalseAnswer ={"Answer 2", "" };
-    String[] csvDataForEmptyAnswer = {"Answer 3"};
+    private final String[] csvDataForTrueAnswer = {"Answer 1","True"};
+    private final String[] csvDataForFalseAnswer ={"Answer 2", "" };
+    private final String[] csvDataForEmptyAnswer = {"Answer 3"};
 
     @DisplayName("корректно создаётся объект Answer с помощью AnswerCsvMapper")
     @Test

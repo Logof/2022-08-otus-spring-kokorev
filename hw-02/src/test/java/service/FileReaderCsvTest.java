@@ -11,13 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 @DisplayName("Чтение CSV файлов ")
 public class FileReaderCsvTest {
-
-    FileReaderCsv fileReaderCsv;
-
     @DisplayName("корректно читаеься CSV файл")
     @Test
     public void shouldHaveCorrectReadingCsvFile() {
-        fileReaderCsv = new FileReaderCsv();
+        FileReaderCsv fileReaderCsv = new FileReaderCsv();
 
         List<String[]> fileDataExpected = fileReaderCsv.readRawData("/csv/test.csv");
 

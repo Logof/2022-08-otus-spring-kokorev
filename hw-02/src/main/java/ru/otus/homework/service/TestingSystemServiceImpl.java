@@ -5,7 +5,7 @@ import ru.otus.homework.entity.Answer;
 import ru.otus.homework.entity.Question;
 import ru.otus.homework.enums.QuestionTypeEnum;
 import ru.otus.homework.exeption.IncorrectNumberAnswerException;
-import ru.otus.homework.repository.QuestionsRepositoryCsv;
+import ru.otus.homework.repository.QuestionsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,11 @@ public class TestingSystemServiceImpl implements TestingSystemService {
 
     private final IOService IOService;
 
-    private final QuestionsRepositoryCsv questionsRepositoryCsv;
+    private final QuestionsRepository questionsRepository;
 
 
-    public TestingSystemServiceImpl(QuestionsRepositoryCsv questionsRepositoryCsv, IOService IOService) {
-        this.questionsRepositoryCsv = questionsRepositoryCsv;
+    public TestingSystemServiceImpl(QuestionsRepository questionsRepository, IOService IOService) {
+        this.questionsRepository = questionsRepository;
         this.IOService = IOService;
     }
 
@@ -36,7 +36,7 @@ public class TestingSystemServiceImpl implements TestingSystemService {
         registration();
         int correctAnswers = 0;
 
-        for (Question question : questionsRepositoryCsv.getQuestionList()) {
+        for (Question question : questionsRepository.getQuestionList()) {
             printQuestion(question);
 
             String userAnswer = null;

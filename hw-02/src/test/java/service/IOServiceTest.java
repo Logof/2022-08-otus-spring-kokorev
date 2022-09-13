@@ -1,5 +1,6 @@
 package service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,17 +12,23 @@ import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("Сервис ввода/вывода ")
 public class IOServiceTest {
 
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @Mock
-    Scanner scanner;
+    private Scanner scanner;
+
+    @BeforeEach
+    public void setup(){
+        System.setOut(new PrintStream(outputStreamCaptor));
+    }
 
     @DisplayName("Проверка корректного вывода сообщений")
     @Test
     public void shouldCorrectlyDisplayMessages(){
-        IOServiceImpl ioService = new IOServiceImpl(new PrintStream(outputStreamCaptor), scanner);
+        IOServiceImpl ioService = new IOServiceImpl();
 
         ioService.messageOutput("Hello world");
         assertEquals(outputStreamCaptor.toString(), "Hello world\n");

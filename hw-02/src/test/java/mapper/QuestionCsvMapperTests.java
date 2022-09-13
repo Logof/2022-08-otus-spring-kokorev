@@ -24,10 +24,10 @@ import static org.mockito.BDDMockito.given;
 public class QuestionCsvMapperTests {
 
     @Mock
-    AnswerCsvMapper answerCsvMapper;
+    private AnswerCsvMapper answerCsvMapper;
 
     @InjectMocks
-    QuestionCsvMapper questionCsvMapper;
+    private QuestionCsvMapper questionCsvMapper;
 
     @DisplayName("корректно создаётся объект Question с помощью QuestionCsvMapper")
     @Test
