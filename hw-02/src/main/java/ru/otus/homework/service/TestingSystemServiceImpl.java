@@ -51,7 +51,6 @@ public class TestingSystemServiceImpl implements TestingSystemService {
             } catch (IncorrectNumberAnswerException e) {
                 ioService.messageOutput(e.getMessage());
             }
-            ioService.messageOutput("");
         }
         ioService.messageOutput("\n");
         ioService.messageOutput(COUNT_OF_CORRECT_ANSWERS + correctAnswers);
