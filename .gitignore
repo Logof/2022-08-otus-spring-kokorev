@@ -1,7 +1,10 @@
 /.idea/
 /hw-01/target
 /hw-01/*.iml
+/hw-01/.idea/
 /*.iml
 /.*
 /hw-02/target
 /hw-02/*.iml
+/hw-02/.idea/
+
