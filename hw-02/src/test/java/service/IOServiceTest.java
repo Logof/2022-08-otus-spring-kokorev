@@ -3,7 +3,9 @@ package service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.service.IOServiceImpl;
 
 import java.io.ByteArrayOutputStream;
@@ -12,6 +14,7 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 public class IOServiceTest {
 
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
@@ -20,7 +23,7 @@ public class IOServiceTest {
     private InputStream scanner;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         System.setOut(new PrintStream(outputStreamCaptor));
     }
 

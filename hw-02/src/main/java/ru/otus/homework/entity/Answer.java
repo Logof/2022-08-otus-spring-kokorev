@@ -4,11 +4,16 @@ import java.util.Objects;
 
 public class Answer extends BasicEntity {
 
+    private final String answerText;
     private final boolean correctAnswer;
 
-    public Answer(String value, boolean correctAnswer) {
-        super(value);
+    public Answer(String answerText, boolean correctAnswer) {
+        this.answerText = answerText;
         this.correctAnswer = correctAnswer;
+    }
+
+    public String getAnswerText() {
+        return answerText;
     }
 
     public boolean isCorrectAnswer() {
@@ -17,7 +22,7 @@ public class Answer extends BasicEntity {
 
     @Override
     public String toString() {
-        return getValue().trim();
+        return answerText.trim();
     }
 
     @Override
@@ -29,7 +34,6 @@ public class Answer extends BasicEntity {
         if (!(object instanceof Answer)) {
             return false;
         }
-
-        return Objects.equals(((Answer)object).getValue(), getValue());
+        return Objects.equals(((Answer)object).getAnswerText().toUpperCase(), answerText.toUpperCase());
     }
 }

@@ -5,20 +5,20 @@ import org.springframework.stereotype.Repository;
 import ru.otus.homework.entity.Question;
 import ru.otus.homework.exeption.QuestionNotFoundException;
 import ru.otus.homework.mapper.CsvMapper;
-import ru.otus.homework.service.FileReaderCsv;
+import ru.otus.homework.service.FileReader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class QuestionsRepositoryCsv implements QuestionsRepository {
-    private final FileReaderCsv questionFileReader;
+    private final FileReader questionFileReader;
 
     private final CsvMapper<Question> questionCsvMapper;
 
     private final String filePath;
 
-    public QuestionsRepositoryCsv(FileReaderCsv questionFileReader, CsvMapper<Question> questionCsvMapper,
+    public QuestionsRepositoryCsv(FileReader questionFileReader, CsvMapper<Question> questionCsvMapper,
                                   @Value("${test.file}") String filePath) {
         this.questionFileReader = questionFileReader;
         this.questionCsvMapper = questionCsvMapper;
