@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.homework.entity.Answer;
 import ru.otus.homework.entity.Question;
 import ru.otus.homework.enums.QuestionTypeEnum;
@@ -18,7 +17,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest
 @DisplayName("Маппинг вопросов ")
 @ExtendWith(MockitoExtension.class)
 public class QuestionCsvMapperTests {

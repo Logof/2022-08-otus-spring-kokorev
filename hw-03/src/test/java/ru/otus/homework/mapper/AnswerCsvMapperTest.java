@@ -2,12 +2,10 @@ package ru.otus.homework.mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.homework.entity.Answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 @DisplayName("Маппинг ответов ")
 public class AnswerCsvMapperTest {
 

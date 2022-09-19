@@ -1,10 +1,9 @@
 package ru.otus.homework.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.homework.entity.Answer;
 import ru.otus.homework.entity.Question;
@@ -20,15 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DisplayName("Проверка парсинга ввода ответов при выборе варианта ответа")
 public class QuestionServiceImplTest {
-    private QuestionServiceImpl questionService;
 
-    @Mock
+    @Autowired
+    private QuestionService questionService;
+
+    @Autowired
     private MessageService messageService;
-
-    @BeforeEach
-    public void setup() {
-        questionService = new QuestionServiceImpl(messageService);
-    }
 
     @DisplayName("1 ваниант правильного ответа")
     @Test
@@ -77,7 +73,7 @@ public class QuestionServiceImplTest {
         IncorrectNumberAnswerException thrown = Assertions.assertThrows(IncorrectNumberAnswerException.class, () -> {
             List<Answer> answersExpected = questionService.getAnswersByUserAnswers(questionActual, "100");
         });
-        Assertions.assertEquals("Incorrect answer number", thrown.getMessage());
+        Assertions.assertEquals(thrown.getMessage(), messageService.getMessage("exception.answer.number"));
     }
 
 
@@ -89,7 +85,7 @@ public class QuestionServiceImplTest {
         IncorrectNumberAnswerException thrown = Assertions.assertThrows(IncorrectNumberAnswerException.class, () -> {
             List<Answer> answersExpected = questionService.getAnswersByUserAnswers(questionActual, "йцукен");
         });
-        Assertions.assertEquals("java.lang.NumberFormatException: For input string: \"йцукен\"", thrown.getMessage());
+        Assertions.assertEquals(thrown.getMessage(), messageService.getMessage("exception.answer.format"));
     }
 
     @DisplayName("Ответ не введен")
@@ -97,7 +93,7 @@ public class QuestionServiceImplTest {
     public void shouldCorrectlyParsingUserAnswerNotInput() throws IncorrectNumberAnswerException {
         Question questionActual = new Question("Quest", QuestionTypeEnum.CHOICE_ANSWERS, new ArrayList<>());
         List<Answer> answersExpected = questionService.getAnswersByUserAnswers(questionActual, null);
-        assertEquals(answersExpected, new ArrayList<Answer>());
+        assertEquals(answersExpected, null);
     }
 
     @DisplayName("Ваниант ответа вводится пользователем")

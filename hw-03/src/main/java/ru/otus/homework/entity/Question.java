@@ -59,8 +59,8 @@ public class Question extends BasicEntity {
         }
 
         return ((Question) object).getQuestionText().equals(questionText)
-                && Objects.equals(((Question) object).getAnswerOptions().stream().collect(groupingBy(answer -> answer, counting())),
-                this.answerOptions.stream().collect(groupingBy(answer -> answer, counting())))
+                && Objects.equals(((Question) object).getAnswerOptions().stream().collect(groupingBy(answer -> answer.getAnswerText().toUpperCase(), counting())),
+                this.answerOptions.stream().collect(groupingBy(answer -> answer.getAnswerText().toUpperCase(), counting())))
                 && Objects.equals(((Question) object).getQuestionType(), this.questionType);
     }
 

@@ -22,14 +22,14 @@ public class QuestionServiceImpl implements QuestionService {
         this.messageService = messageService;
     }
 
-    public List<Answer> getAnswersByUserAnswers(Question question, String userAnswerString) {
-        List<Answer> result = new ArrayList<>();
+    @Override
+    public List<Answer> getAnswersByUserAnswers(Question question, String userAnswerString) throws IncorrectNumberAnswerException {
         if (question == null || userAnswerString == null || userAnswerString.isEmpty()) {
-            return result;
+            return null;
         }
 
         String[] rawAnswerArray = userAnswerString.split(",");
-
+        List<Answer> result = new ArrayList<>();
         if (question.getQuestionType() == QuestionTypeEnum.CHOICE_ANSWERS) {
             for (String answer : rawAnswerArray) {
                 int answerNumber;
@@ -62,10 +62,10 @@ public class QuestionServiceImpl implements QuestionService {
             return false;
         }
 
-        return Objects.equals(question.getCorrectAnswer().stream()
-                        .collect(groupingBy(answer -> answer.getAnswerText(), counting())),
-                userAnswers.stream()
-                        .collect(groupingBy(answer -> answer.getAnswerText(), counting())));
+        return Objects.equals(question.getCorrectAnswer().stream().map(Answer::getAnswerTextUpperCase)
+                        .collect(groupingBy(answer -> answer, counting())),
+                userAnswers.stream().map(Answer::getAnswerTextUpperCase)
+                        .collect(groupingBy(answer -> answer, counting())));
     }
 
 }

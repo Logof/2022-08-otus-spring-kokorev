@@ -16,6 +16,10 @@ public class Answer extends BasicEntity {
         return answerText;
     }
 
+    public String getAnswerTextUpperCase() {
+        return answerText.toUpperCase();
+    }
+
     public boolean isCorrectAnswer() {
         return correctAnswer;
     }

@@ -2,14 +2,12 @@ package ru.otus.homework.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-@SpringBootTest
 @DisplayName("Чтение CSV файлов ")
 public class FileReaderCsvTest {
     @DisplayName("корректно читаеься CSV файл")
