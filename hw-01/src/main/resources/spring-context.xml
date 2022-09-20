@@ -4,22 +4,22 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="OutputService" class="ru.otus.homework.service.OutputServiceImpl" autowire="byName" />
+    <bean name="OutputService" class="ru.otus.OutputServiceImpl" autowire="byName" />
 
-    <bean name="QuestionCsvMapper" class="ru.otus.homework.mapper.QuestionCsvMapper">
+    <bean name="QuestionCsvMapper" class="ru.otus.QuestionCsvMapper">
         <constructor-arg name="answerMapper" ref="AnswerCsvMapper" />
     </bean>
 
-    <bean name="AnswerCsvMapper" class="ru.otus.homework.mapper.AnswerCsvMapper" autowire="byName"/>
+    <bean name="AnswerCsvMapper" class="ru.otus.AnswerCsvMapper" autowire="byName"/>
 
-    <bean name="QuestionFileReader" class="ru.otus.homework.service.QuestionFileReaderImpl" />
+    <bean name="QuestionFileReader" class="ru.otus.QuestionFileReaderImpl" />
 
-    <bean name="TestingSystemService" class="ru.otus.homework.service.TestingSystemServiceImpl">
+    <bean name="TestingSystemService" class="ru.otus.TestingSystemServiceImpl">
         <constructor-arg name="questionsDao" ref="QuestionsDao" />
-        <constructor-arg name="outputService" ref="OutputService" />
+        <constructor-arg name="IOService" ref="OutputService" />
     </bean>
 
-    <bean name="QuestionsDao" class="ru.otus.homework.dao.QuestionsDaoCsv" autowire="byName" >
+    <bean name="QuestionsDao" class="ru.otus.QuestionsDaoCsv" autowire="byName" >
         <constructor-arg name="questionFileReader" ref="QuestionFileReader" />
         <constructor-arg name="questionCsvMapper" ref="QuestionCsvMapper" />
         <constructor-arg name="filePath" value="/csv/test01.csv" />
