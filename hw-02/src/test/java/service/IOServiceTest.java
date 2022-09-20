@@ -1,6 +1,5 @@
 package service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,17 +21,12 @@ public class IOServiceTest {
     @Mock
     private InputStream scanner;
 
-    @BeforeEach
-    public void setup() {
-        System.setOut(new PrintStream(outputStreamCaptor));
-    }
-
     @DisplayName("Проверка корректного вывода сообщений")
     @Test
     public void shouldCorrectlyDisplayMessages(){
         IOServiceImpl ioService = new IOServiceImpl(new PrintStream(outputStreamCaptor), scanner);
 
-        ioService.messageOutput("Hello world");
+        ioService.messageOutputLine("Hello world");
         assertEquals(outputStreamCaptor.toString(), "Hello world\n");
     }
 }

@@ -37,15 +37,15 @@ public class Question extends BasicEntity {
     }
 
     @Override
-    public String toString() {
+    public String toPrintable() {
         StringBuilder stringBuilder = new StringBuilder();
-        if (answerOptions.size() > 0) {
-            for (Answer answer : answerOptions) {
-                stringBuilder.append("\t").append(answerOptions.indexOf(answer) + 1).append(". ")
-                        .append(answer.getAnswerText()).append("\n");
+        stringBuilder.append(questionText.trim()).append(":\n");
+        if (questionType == QuestionTypeEnum.CHOICE_ANSWERS) {
+            for (int i = 0; i < answerOptions.size(); i++) {
+                stringBuilder.append("\t" + (i + 1) + ". " + answerOptions.get(i).toPrintable()).append("\n");
             }
         }
-        return questionText.trim() + ":\n" + ((answerOptions.size() == 0) ? "\n": stringBuilder.toString());
+        return stringBuilder.toString();
     }
 
     @Override

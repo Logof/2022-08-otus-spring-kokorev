@@ -14,20 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Проверка парсинга ввода ответов при выборе варианта ответа")
-public class QuestionServiceImplTest {
+public class ObjectServiceImplTest {
     private QuestionServiceImpl questionService;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         questionService = new QuestionServiceImpl();
     }
 
     @DisplayName("1 ваниант правильного ответа")
     @Test
-    public void shouldCorrectlyParsingUserAnswer(){
+    public void shouldCorrectlyParsingUserAnswer() {
 
         List<Answer> answerList = new ArrayList<>();
         answerList.add(new Answer("Answer1", true));
@@ -121,7 +121,7 @@ public class QuestionServiceImplTest {
         userAnswer.add(new Answer("Answer1", true));
 
         boolean resultExpected = questionService.checkingUserAnswers(questionActual, userAnswer);
-        assertEquals(resultExpected, true);
+        assertTrue(resultExpected);
     }
 
 
@@ -140,7 +140,7 @@ public class QuestionServiceImplTest {
         userAnswer.add(new Answer("Answer1", true));
 
         boolean resultExpected = questionService.checkingUserAnswers(questionActual, userAnswer);
-        assertEquals(resultExpected, true);
+        assertTrue(resultExpected);
     }
 
     @DisplayName("Сравниваем введенный ответ пользователя с правильным ответом на вопрос")
@@ -157,6 +157,6 @@ public class QuestionServiceImplTest {
         userAnswer.add(new Answer("Answer4", true));
 
         boolean resultExpected = questionService.checkingUserAnswers(questionActual, userAnswer);
-        assertEquals(resultExpected, false);
+        assertFalse(resultExpected);
     }
 }

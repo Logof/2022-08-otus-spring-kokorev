@@ -1,8 +1,5 @@
 package ru.otus.homework.service;
 
-import ru.otus.homework.entity.Question;
-import ru.otus.homework.enums.QuestionTypeEnum;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -20,7 +17,7 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public void messageOutput(String message) {
+    public void messageOutputLine(String message) {
         output.println(message);
     }
 
@@ -28,15 +25,5 @@ public class IOServiceImpl implements IOService {
     public String readStringWithPrompt(String prompt) {
         output.println(prompt);
         return input.nextLine();
-    }
-
-    @Override
-    public void printQuestion(Question question) {
-        messageOutput(question.getQuestionText());
-        if (question.getQuestionType() == QuestionTypeEnum.CHOICE_ANSWERS) {
-            for (int i = 0; i < question.getAnswerOptions().size(); i++) {
-                messageOutput("\t" + (i+1) + ". "+ question.getAnswerOptions().get(i).getAnswerText());
-            }
-        }
     }
 }

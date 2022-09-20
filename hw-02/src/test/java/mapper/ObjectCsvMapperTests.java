@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Маппинг вопросов ")
 @ExtendWith(MockitoExtension.class)
-public class QuestionCsvMapperTests {
+public class ObjectCsvMapperTests {
 
     @Mock
     private AnswerCsvMapper answerCsvMapper;

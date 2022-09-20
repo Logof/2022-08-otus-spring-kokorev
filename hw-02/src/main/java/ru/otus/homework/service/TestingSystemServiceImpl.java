@@ -37,23 +37,27 @@ public class TestingSystemServiceImpl implements TestingSystemService {
         int correctAnswers = 0;
 
         for (Question question : questionsRepository.getQuestionList()) {
-            ioService.printQuestion(question);
+            ioService.messageOutputLine(question.toPrintable());
 
             String userAnswer = null;
             switch (question.getQuestionType()) {
-                case CHOICE_ANSWERS: userAnswer = ioService.readStringWithPrompt(SELECT_ONE_OR_MORE_ANSWERS); break;
-                case ENTER_ANSWER: userAnswer = ioService.readStringWithPrompt(ENTER_AN_ANSWER); break;
+                case CHOICE_ANSWERS:
+                    userAnswer = ioService.readStringWithPrompt(SELECT_ONE_OR_MORE_ANSWERS);
+                    break;
+                case ENTER_ANSWER:
+                    userAnswer = ioService.readStringWithPrompt(ENTER_AN_ANSWER);
+                    break;
             }
 
             try {
                 List<Answer> userAnswerList = questionService.getAnswersByUserAnswers(question, userAnswer);
-                correctAnswers += questionService.checkingUserAnswers(question, userAnswerList) ? 1 : 0 ;
+                correctAnswers += questionService.checkingUserAnswers(question, userAnswerList) ? 1 : 0;
             } catch (IncorrectNumberAnswerException e) {
-                ioService.messageOutput(e.getMessage());
+                ioService.messageOutputLine(e.getMessage());
             }
         }
-        ioService.messageOutput("\n");
-        ioService.messageOutput(COUNT_OF_CORRECT_ANSWERS + correctAnswers);
+        ioService.messageOutputLine("\n");
+        ioService.messageOutputLine(COUNT_OF_CORRECT_ANSWERS + correctAnswers);
     }
 
 }
