@@ -38,7 +38,7 @@ public class TestingSystemServiceImpl implements TestingSystemService {
         int correctAnswers = 0;
 
         for (Question question : questionsRepository.getQuestionList()) {
-            ioService.printQuestion(question);
+            ioService.messageOutputLine(question.toPrintable());
 
             String userAnswer = null;
             switch (question.getQuestionType()) {
@@ -56,11 +56,11 @@ public class TestingSystemServiceImpl implements TestingSystemService {
                 List<Answer> userAnswerList = questionService.getAnswersByUserAnswers(question, userAnswer);
                 correctAnswers += questionService.checkingUserAnswers(question, userAnswerList) ? 1 : 0;
             } catch (IncorrectNumberAnswerException e) {
-                ioService.messageOutput(e.getMessage());
+                ioService.messageOutputLine(e.getMessage());
             }
         }
-        ioService.messageOutput("\n");
-        ioService.messageOutput(messageService.getMessage("test.answer.true.total") + correctAnswers);
+        ioService.messageOutputLine("\n");
+        ioService.messageOutputLine(messageService.getMessage("test.answer.true.total") + correctAnswers);
     }
 
 }

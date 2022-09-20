@@ -88,11 +88,14 @@ public class QuestionServiceTest {
             String userAnswerString = answersArray[i];
             Question question = questionList.get(i);
 
-            if (i > 1) {
+            if (i > 0) {
                 IncorrectNumberAnswerException thrown = Assertions.assertThrows(IncorrectNumberAnswerException.class, () -> {
-                    List<Answer> userAnswer = questionService.getAnswersByUserAnswers(question, userAnswerString);
+                    questionService.getAnswersByUserAnswers(question, userAnswerString);
                 });
-                Assertions.assertEquals(thrown.getMessage(), messageService.getMessage("exception.answer.number"));
+                Assertions.assertEquals(thrown.getMessage(),
+                        (i == 1) ? messageService.getMessage("exception.answer.format") :
+                                messageService.getMessage("exception.answer.number")
+                );
             } else {
                 List<Answer> userAnswer = questionService.getAnswersByUserAnswers(question, userAnswerString);
                 assertEquals(questionService.checkingUserAnswers(question, userAnswer), resultActual[i]);

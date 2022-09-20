@@ -40,4 +40,9 @@ public class Answer extends BasicEntity {
         }
         return Objects.equals(((Answer) object).getAnswerText().toUpperCase(), answerText.toUpperCase());
     }
+
+    @Override
+    String toPrintable() {
+        return toString();
+    }
 }

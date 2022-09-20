@@ -1,3 +1,2 @@
-Вопрос 1;ENTER_ANSWER;hello world;true;;;;;
-Вопрос 2;CHOICE_ANSWERS;Ответ 1;TRUE;Ответ 2;;Ответ 3;true
-Вопрос 3;CHOICE_ANSWERS;Ответ 1;TRUE;Ответ 2;;Ответ 3;
+Question 1;ENTER_ANSWER;hello world;true;;;;;
+Question 2;CHOICE_ANSWERS;Answer 1;TRUE;Answer 2;;Answer 3;true

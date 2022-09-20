@@ -1,5 +1,5 @@
 package ru.otus.homework.entity;
 
-public class BasicEntity {
-
+public abstract class BasicEntity {
+    abstract String toPrintable();
 }

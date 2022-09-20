@@ -34,6 +34,11 @@ public class Answer extends BasicEntity {
         if (!(object instanceof Answer)) {
             return false;
         }
-        return Objects.equals(((Answer)object).getAnswerText().toUpperCase(), answerText.toUpperCase());
+        return Objects.equals(((Answer) object).getAnswerText().toUpperCase(), answerText.toUpperCase());
+    }
+
+    @Override
+    String toPrintable() {
+        return toString();
     }
 }
