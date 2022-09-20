@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Проверка парсинга ввода ответов при выборе варианта ответа")
-public class ObjectServiceImplTest {
+public class QuestionServiceImplTest {
     private QuestionServiceImpl questionService;
 
     @BeforeEach
@@ -70,7 +70,7 @@ public class ObjectServiceImplTest {
         Question questionActual = new Question("Quest", QuestionTypeEnum.CHOICE_ANSWERS, new ArrayList<>());
 
         IncorrectNumberAnswerException thrown = Assertions.assertThrows(IncorrectNumberAnswerException.class, () -> {
-            List<Answer> answersExpected = questionService.getAnswersByUserAnswers(questionActual, "100");
+            questionService.getAnswersByUserAnswers(questionActual, "100");
         });
         Assertions.assertEquals("Incorrect answer number", thrown.getMessage());
     }
@@ -82,7 +82,7 @@ public class ObjectServiceImplTest {
         Question questionActual = new Question("Quest", QuestionTypeEnum.CHOICE_ANSWERS, new ArrayList<>());
 
         IncorrectNumberAnswerException thrown = Assertions.assertThrows(IncorrectNumberAnswerException.class, () -> {
-            List<Answer> answersExpected = questionService.getAnswersByUserAnswers(questionActual, "йцукен");
+            questionService.getAnswersByUserAnswers(questionActual, "йцукен");
         });
         Assertions.assertEquals("java.lang.NumberFormatException: For input string: \"йцукен\"", thrown.getMessage());
     }

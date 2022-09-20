@@ -8,12 +8,12 @@ public class Answer extends BasicEntity {
     private final boolean correctAnswer;
 
     public Answer(String answerText, boolean correctAnswer) {
-        this.answerText = answerText;
+        this.answerText = answerText.trim();
         this.correctAnswer = correctAnswer;
     }
 
     public String getAnswerText() {
-        return answerText;
+        return answerText.trim();
     }
 
     public boolean isCorrectAnswer() {
@@ -35,10 +35,5 @@ public class Answer extends BasicEntity {
             return false;
         }
         return Objects.equals(((Answer) object).getAnswerText().toUpperCase(), answerText.toUpperCase());
-    }
-
-    @Override
-    String toPrintable() {
-        return toString();
     }
 }

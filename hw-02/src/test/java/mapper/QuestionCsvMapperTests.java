@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Маппинг вопросов ")
 @ExtendWith(MockitoExtension.class)
-public class ObjectCsvMapperTests {
+public class QuestionCsvMapperTests {
 
     @Mock
     private AnswerCsvMapper answerCsvMapper;
@@ -34,7 +34,7 @@ public class ObjectCsvMapperTests {
     public void shouldHaveCorrectQuestionCsvMapperConverter() {
 
         String[] rawData = {"Вопрос", "ENTER_ANSWER", "Ответ", "true"};
-        given(answerCsvMapper.toEntity(Arrays.copyOfRange(rawData,2, rawData.length)))
+        given(answerCsvMapper.toEntity(Arrays.copyOfRange(rawData, 2, rawData.length)))
                 .willReturn(new Answer("Ответ", true));
 
         Question questionExpected = questionCsvMapper.toEntity(rawData);
@@ -42,6 +42,7 @@ public class ObjectCsvMapperTests {
         List<Answer> answerList = new ArrayList<>();
         answerList.add(new Answer("Ответ", true));
         Question questionActual = new Question("Вопрос", QuestionTypeEnum.ENTER_ANSWER, answerList);
+
         assertEquals(questionExpected, questionActual);
 
     }
