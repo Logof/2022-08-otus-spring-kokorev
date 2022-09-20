@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-
 public class Question extends BasicEntity {
 
     private final String questionText;
@@ -36,17 +33,6 @@ public class Question extends BasicEntity {
         return questionText;
     }
 
-    @Override
-    public String toPrintable() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(questionText.trim()).append(":\n");
-        if (questionType == QuestionTypeEnum.CHOICE_ANSWERS) {
-            for (int i = 0; i < answerOptions.size(); i++) {
-                stringBuilder.append("\t" + (i + 1) + ". " + answerOptions.get(i).toPrintable()).append("\n");
-            }
-        }
-        return stringBuilder.toString();
-    }
 
     @Override
     public boolean equals(Object object) {
@@ -59,9 +45,9 @@ public class Question extends BasicEntity {
         }
 
         return ((Question) object).getQuestionText().equals(questionText)
-                && Objects.equals(((Question) object).getAnswerOptions().stream().collect(groupingBy(answer -> answer.getAnswerText().toUpperCase(), counting())),
-                this.answerOptions.stream().collect(groupingBy(answer -> answer.getAnswerText().toUpperCase(), counting())))
-                && Objects.equals(((Question) object).getQuestionType(), this.questionType);
+                && Objects.equals(((Question) object).getQuestionType(), this.questionType)
+                && ((Question) object).getAnswerOptions().containsAll(this.answerOptions)
+                && this.answerOptions.containsAll(((Question) object).getAnswerOptions());
     }
 
     public List<Answer> getCorrectAnswer() {

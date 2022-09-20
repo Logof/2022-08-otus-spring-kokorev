@@ -10,6 +10,9 @@ import java.util.List;
 
 @Service
 public class TestingSystemServiceImpl implements TestingSystemService {
+    private final static String SELECT_ONE_OR_MORE_ANSWERS = "Select one or more answers";
+    private final static String ENTER_AN_ANSWER = "Enter an answer";
+    private final static String COUNT_OF_CORRECT_ANSWERS = "Count of correct answers: ";
 
     private final IOService ioService;
 
@@ -19,16 +22,16 @@ public class TestingSystemServiceImpl implements TestingSystemService {
 
     private final QuestionService questionService;
 
-    private final MessageService messageService;
+    private final ConverterService<Question> questionConverterService;
 
     public TestingSystemServiceImpl(QuestionsRepository questionsRepository, IOService ioService,
                                     UserService userService, QuestionService questionService,
-                                    MessageService messageService) {
+                                    ConverterService<Question> questionConverterService) {
         this.questionsRepository = questionsRepository;
         this.ioService = ioService;
         this.userService = userService;
         this.questionService = questionService;
-        this.messageService = messageService;
+        this.questionConverterService = questionConverterService;
     }
 
     @Override
@@ -38,17 +41,15 @@ public class TestingSystemServiceImpl implements TestingSystemService {
         int correctAnswers = 0;
 
         for (Question question : questionsRepository.getQuestionList()) {
-            ioService.messageOutputLine(question.toPrintable());
+            ioService.messageOutputLine(questionConverterService.toPrintable(question));
 
             String userAnswer = null;
             switch (question.getQuestionType()) {
                 case CHOICE_ANSWERS:
-                    userAnswer =
-                            ioService.readStringWithPrompt(messageService.getMessage("answer.choice.promt"));
+                    userAnswer = ioService.readStringWithPrompt(SELECT_ONE_OR_MORE_ANSWERS);
                     break;
                 case ENTER_ANSWER:
-                    userAnswer =
-                            ioService.readStringWithPrompt(messageService.getMessage("answer.enter.promt"));
+                    userAnswer = ioService.readStringWithPrompt(ENTER_AN_ANSWER);
                     break;
             }
 
@@ -60,7 +61,7 @@ public class TestingSystemServiceImpl implements TestingSystemService {
             }
         }
         ioService.messageOutputLine("\n");
-        ioService.messageOutputLine(messageService.getMessage("test.answer.true.total") + correctAnswers);
+        ioService.messageOutputLine(COUNT_OF_CORRECT_ANSWERS + correctAnswers);
     }
 
 }
