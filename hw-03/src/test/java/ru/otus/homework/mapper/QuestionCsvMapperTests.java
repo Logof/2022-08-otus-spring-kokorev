@@ -1,4 +1,4 @@
-package ru.otus.homework.mapper;
+package mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.homework.entity.Answer;
 import ru.otus.homework.entity.Question;
 import ru.otus.homework.enums.QuestionTypeEnum;
+import ru.otus.homework.mapper.AnswerCsvMapper;
+import ru.otus.homework.mapper.QuestionCsvMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,7 @@ public class QuestionCsvMapperTests {
         List<Answer> answerList = new ArrayList<>();
         answerList.add(new Answer("Ответ", true));
         Question questionActual = new Question("Вопрос", QuestionTypeEnum.ENTER_ANSWER, answerList);
+
         assertEquals(questionExpected, questionActual);
 
     }

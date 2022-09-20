@@ -48,12 +48,16 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public boolean checkingUserAnswers(Question question, List<Answer> userAnswers) {
-        if (question.getAnswerOptions() == null || question.getAnswerOptions().size() == 0) {
+        if (question.getAnswerOptions() == null) {
             return false;
         }
 
-        if (userAnswers == null || userAnswers.size() == 0) {
+        if (userAnswers == null) {
             return false;
+        }
+
+        if (question.getAnswerOptions().size() == 0 && userAnswers.size() == 0) {
+            return true;
         }
 
         var correctAnswerGroup = question.getCorrectAnswer().stream()

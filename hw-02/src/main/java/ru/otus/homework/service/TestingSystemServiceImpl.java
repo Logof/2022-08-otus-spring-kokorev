@@ -22,12 +22,16 @@ public class TestingSystemServiceImpl implements TestingSystemService {
 
     private final QuestionService questionService;
 
+    private final ConverterService<Question> questionConverterService;
+
     public TestingSystemServiceImpl(QuestionsRepository questionsRepository, IOService ioService,
-                                    UserService userService, QuestionService questionService) {
+                                    UserService userService, QuestionService questionService,
+                                    ConverterService<Question> questionConverterService) {
         this.questionsRepository = questionsRepository;
         this.ioService = ioService;
         this.userService = userService;
         this.questionService = questionService;
+        this.questionConverterService = questionConverterService;
     }
 
     @Override
@@ -37,7 +41,7 @@ public class TestingSystemServiceImpl implements TestingSystemService {
         int correctAnswers = 0;
 
         for (Question question : questionsRepository.getQuestionList()) {
-            ioService.messageOutputLine(question.toPrintable());
+            ioService.messageOutputLine(questionConverterService.toPrintable(question));
 
             String userAnswer = null;
             switch (question.getQuestionType()) {
