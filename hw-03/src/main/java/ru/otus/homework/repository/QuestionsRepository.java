@@ -7,4 +7,6 @@ import java.util.List;
 public interface QuestionsRepository {
 
     List<Question> getQuestionList();
+
+    List<Question> getQuestionList(String filePath);
 }

@@ -1,5 +1,6 @@
 package ru.otus.homework.entity;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class Answer extends BasicEntity {
@@ -35,5 +36,9 @@ public class Answer extends BasicEntity {
             return false;
         }
         return Objects.equals(((Answer) object).getAnswerText().toUpperCase(), answerText.toUpperCase());
+    }
+
+    public String getAnswerTextUpperCase() {
+        return toString().toUpperCase(Locale.ROOT);
     }
 }

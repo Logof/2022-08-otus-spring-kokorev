@@ -31,7 +31,8 @@ public class IOServiceTest {
     public void shouldCorrectlyDisplayMessages() {
         IOServiceImpl ioService = new IOServiceImpl(new PrintStream(outputStreamCaptor), scanner);
 
+        String actualString = "Hello world" + System.lineSeparator();
         ioService.messageOutputLine("Hello world");
-        assertEquals(outputStreamCaptor.toString(), "Hello world\n");
+        assertEquals(outputStreamCaptor.toString(), actualString);
     }
 }
