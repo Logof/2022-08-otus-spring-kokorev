@@ -4,9 +4,6 @@ spring:
     encoding: "UTF-8"
 
 application:
-  locale: ru
-  test:
-    file:
-      name: test01.csv
-      path: /csv
-      localize: false
+  locale: en
+  file:
+    location: /csv/$locale/test01.csv

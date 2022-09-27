@@ -13,6 +13,7 @@ import ru.otus.homework.repository.QuestionsRepository;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class QuestionServiceTest {
@@ -30,14 +31,13 @@ public class QuestionServiceTest {
     @DisplayName("Вараант 1: Три ответа верные")
     public void test1() {
         String[] answersArray = {"hello world", "1,3", "1"};
-        boolean[] resultActual = {true, true, true};
 
         List<Question> questionList = questionsRepository.getQuestionList();
 
         int i = 0;
         for (Question question : questionList) {
             List<Answer> userAnswer = questionService.getAnswersByUserAnswers(question, answersArray[i]);
-            assertEquals(questionService.checkingUserAnswers(question, userAnswer), resultActual[i]);
+            assertTrue(questionService.checkingUserAnswers(question, userAnswer));
             i += 1;
         }
 
