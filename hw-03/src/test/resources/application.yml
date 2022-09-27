@@ -5,8 +5,5 @@ spring:
 
 application:
   locale: ru
-  test:
-    file:
-      name: test.csv
-      path: /csv
-      localize: false
+  file:
+    location: /csv/$locale/test.csv

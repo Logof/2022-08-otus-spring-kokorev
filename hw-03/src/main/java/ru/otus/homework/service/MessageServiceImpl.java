@@ -1,29 +1,23 @@
 package ru.otus.homework.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-
-import java.util.Locale;
 
 @Service
 public class MessageServiceImpl implements MessageService {
     private final MessageSource messageSource;
 
-    private final Locale locale;
+    private final LocaleProviderService localeProviderService;
 
-    public MessageServiceImpl(MessageSource messageSource, @Value("${application.locale}") String localeName) {
+
+    public MessageServiceImpl(MessageSource messageSource, LocaleProviderService localeProviderService) {
         this.messageSource = messageSource;
-        this.locale = new Locale(localeName);
+        this.localeProviderService = localeProviderService;
     }
 
     @Override
     public String getMessage(String code) {
-        return messageSource.getMessage(code, new Object[]{}, locale);
+        return messageSource.getMessage(code, new Object[]{}, localeProviderService.getLocale());
     }
 
-    @Override
-    public String getLocale() {
-        return locale.getLanguage();
-    }
 }

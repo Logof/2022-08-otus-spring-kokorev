@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.homework.entity.Answer;
 import ru.otus.homework.entity.Question;
 import ru.otus.homework.enums.QuestionTypeEnum;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 @DisplayName("Проверка парсинга ввода ответов при выборе варианта ответа")
@@ -23,7 +25,7 @@ public class QuestionServiceImplTest {
     @Autowired
     private QuestionService questionService;
 
-    @Autowired
+    @MockBean
     private MessageService messageService;
 
     @DisplayName("1 ваниант правильного ответа")
@@ -68,18 +70,22 @@ public class QuestionServiceImplTest {
     @DisplayName("Введеный ответ не попадает в список номеров вариантов ответов")
     @Test()
     public void shouldCorrectlyParsingUserAnswerNotSupport() {
+        given(messageService.getMessage("exception.answer.number"))
+                .willReturn("Incorrect answer number. The answer does not count.");
         Question questionActual = new Question("Quest", QuestionTypeEnum.CHOICE_ANSWERS, new ArrayList<>());
 
         IncorrectNumberAnswerException thrown = Assertions.assertThrows(IncorrectNumberAnswerException.class, () -> {
             List<Answer> answersExpected = questionService.getAnswersByUserAnswers(questionActual, "100");
         });
-        Assertions.assertEquals(thrown.getMessage(), messageService.getMessage("exception.answer.number"));
+        Assertions.assertEquals(thrown.getMessage(), "Incorrect answer number. The answer does not count.");
     }
 
 
     @DisplayName("Введеный ответ не попадает в список номеров вариантов ответов - не верный тип")
     @Test()
     public void shouldCorrectlyParsingUserAnswerNotNumber() throws IncorrectNumberAnswerException {
+        given(messageService.getMessage("exception.answer.format"))
+                .willReturn("The response number must be specified as a number or numbers separated by a comma.");
         Question questionActual = new Question("Quest", QuestionTypeEnum.CHOICE_ANSWERS, new ArrayList<>());
 
         IncorrectNumberAnswerException thrown = Assertions.assertThrows(IncorrectNumberAnswerException.class, () -> {

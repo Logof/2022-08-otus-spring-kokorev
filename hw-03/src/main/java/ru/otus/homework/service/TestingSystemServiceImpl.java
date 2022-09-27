@@ -1,14 +1,11 @@
 package ru.otus.homework.service;
 
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.entity.Answer;
 import ru.otus.homework.entity.Question;
 import ru.otus.homework.exeption.IncorrectNumberAnswerException;
 import ru.otus.homework.repository.QuestionsRepository;
 
-import java.io.File;
 import java.util.List;
 
 @Service
