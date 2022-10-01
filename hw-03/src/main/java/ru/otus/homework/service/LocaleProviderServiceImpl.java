@@ -9,11 +9,7 @@ import java.util.Locale;
 public class LocaleProviderServiceImpl implements LocaleProviderService {
 
     private final Locale locale;
-
-    public LocaleProviderServiceImpl() {
-        this.locale = Locale.getDefault();
-    }
-
+    
     public LocaleProviderServiceImpl(@Value("${application.locale}") String localeName) {
         if (localeName.isBlank()) {
             this.locale = Locale.getDefault();

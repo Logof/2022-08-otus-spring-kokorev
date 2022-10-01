@@ -1,8 +1,7 @@
- ,-----.  ,--------. ,--. ,--.  ,---.   
-'  .-.  ' '--.  .--' |  | |  | '   .-'  
+${AnsiColor.BRIGHT_WHITE} ,-----.  ,--------. ,--. ,--.  ,---.
+${AnsiColor.BRIGHT_BLUE}'  .-.  ' '--.  .--' |  | |  | '   .-'
 |  | |  |    |  |    |  | |  | `.  `-.  
-'  '-'  '    |  |    '  '-'  ' .-'    | 
- `-----'     `--'     `-----'  `-----'  
-                                        
-${application.title} ${application.version}
-Powered by Spring Boot ${spring-boot.version}
+${AnsiColor.BRIGHT_RED}'  '-'  '    |  |    '  '-'  ' .-'    |
+ `-----'     `--'     `-----'  `-----'
+Application Version: ${application.version}${application.formatted-version}
+Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}
