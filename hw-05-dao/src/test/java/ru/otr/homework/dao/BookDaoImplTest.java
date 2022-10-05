@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Класс BookDaoImpl")
 @SpringBootTest
+
 public class BookDaoImplTest {
 
     @Autowired
