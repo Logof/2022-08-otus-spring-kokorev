@@ -5,9 +5,10 @@ import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.BookAssociationDao;
 import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.entity.Book;
-import ru.otus.homework.exception.BookNotFountException;
+import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.mapper.BookMapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class BookDaoImpl implements BookDao {
                 Map.of("isbn", isbn), new BookMapper());
 
         if (books.size() != 1) {
-            throw new BookNotFountException("Not found or too many values found");
+            throw new DataNotFountException("Not found or too many values found");
         }
 
         books.get(0).setAuthors(bookAssociationDao.getAutors(books.get(0).getIsbn()));
@@ -54,7 +55,7 @@ public class BookDaoImpl implements BookDao {
     public List<Book> getAll() {
         List<Book> books = jdbc.query("SELECT isbn, title FROM books", Map.of(), new BookMapper());
         if (books.size() == 0) {
-            throw new BookNotFountException("Not found or too many values found");
+            return books;
         }
 
         for (Book book : books) {
@@ -65,14 +66,33 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Integer insert(Book book) {
-        return jdbc.update("INSERT INTO books (id, title) VALUES (:isbn, :title)",
+    public int insert(Book book) {
+        return jdbc.update("INSERT INTO books (isbn, title) VALUES (:isbn, :title)",
                 Map.of("isbn", book.getIsbn(), "title", book.getTitle()));
     }
 
     @Override
-    public Integer update(Book book) {
-        return jdbc.update("UPDATE books set title = :title WHERE id = :id",
-                Map.of("id", book.getIsbn(), "title", book.getTitle()));
+    public int update(String isbn, Book book) {
+        if (isbn == null || book == null || book.getIsbn() == null) {
+            return 0;
+        }
+        Map<String, Object> queryParam = new HashMap<>();
+        queryParam.put("isbn", isbn);
+        queryParam.put("new_isbn", book.getIsbn());
+        StringBuilder query = new StringBuilder("UPDATE books set ");
+
+        if (book.getTitle() != null && !book.getTitle().isBlank()) {
+            queryParam.put("new_title", book.getTitle());
+            query.append("title = :new_title, ");
+        }
+        query.append("isbn = :new_isbn WHERE isbn = :isbn");
+
+        int updateRowCount = jdbc.update(query.toString(), queryParam);
+
+        if (updateRowCount > 0) {
+            bookAssociationDao.updateIsbnExternalLinks(isbn, book.getIsbn());
+        }
+        return updateRowCount;
     }
+
 }

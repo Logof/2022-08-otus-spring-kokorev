@@ -4,7 +4,8 @@ import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.dao.BookAssociationDao;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.exception.DeleteRowException;
+import ru.otus.homework.entity.BookAssociation;
+import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.PrintService;
 
@@ -31,8 +32,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void delete(long authorId) {
-        if (bookAssociationDao.isExistExternalLink(authorId, AUTHOR_CLASS_NAME)) {
-            throw new DeleteRowException("It' i's not possible to delete an entry while it has the possibility of an association");
+        if (bookAssociationDao.isExist(new BookAssociation(null, authorId, AUTHOR_CLASS_NAME))) {
+            throw new DeleteDataException("It' i's not possible to delete an entry while it has the possibility of an association");
         } else {
             authorDao.delete(authorId);
             ioService.outputString("Entry deleted");

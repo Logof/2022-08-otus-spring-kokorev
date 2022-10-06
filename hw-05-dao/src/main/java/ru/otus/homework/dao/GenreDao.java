@@ -7,15 +7,15 @@ import java.util.List;
 public interface GenreDao {
     long count();
 
-    void delete(long id);
+    int delete(long id);
 
     List<Genre> getAll();
 
     Genre getGenreById(Long id);
 
-    void insert(Genre object);
+    int insert(Genre object);
 
-    void update(Genre object);
+    int update(Genre object);
 
     long generateId();
 }

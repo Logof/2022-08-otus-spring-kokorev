@@ -11,6 +11,7 @@ import ru.otus.homework.entity.BookAssociation;
 import ru.otus.homework.entity.Genre;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,24 +36,34 @@ public class BookAssociationDaoImpl implements BookAssociationDao {
     }
 
     @Override
-    public boolean isExist(String isbn, long externalId, String className) {
-        long count = jdbc.queryForObject(
-                "SELECT count(1) FROM assoc WHERE isbn = :isbn AND external_id = :external_id AND external_class = :external_class",
-                Map.of("isbn", isbn, "external_id", externalId, "external_class", className), Long.class);
+    public boolean isExist(BookAssociation bookAssociation) {
+        StringBuilder queryBuilder = new StringBuilder().append("SELECT count(1) FROM assoc WHERE 1=1 ");
+        Map<String, Object> queryParam = new HashMap<>();
+        if (bookAssociation.getIsbn() != null && !bookAssociation.getIsbn().isBlank()) {
+            queryBuilder.append("AND isbn = :isbn ");
+            queryParam.put("isbn", bookAssociation.getIsbn());
+        }
+        if (bookAssociation.getExternalClass() != null && !bookAssociation.getExternalClass().isBlank()) {
+            queryBuilder.append("AND external_class = :external_class ");
+            queryParam.put("external_class", bookAssociation.getExternalClass());
+        }
+        queryBuilder.append("AND external_id = :external_id");
+        queryParam.put("external_id", bookAssociation.getExternalId());
+        long count = jdbc.queryForObject(queryBuilder.toString(), queryParam, Long.class);
         return count > 0;
     }
 
     @Override
-    public void delete(String isbn, long externalId, String className) {
-        jdbc.update("DELETE assoc WHERE isbn = :isbn AND external_id = :external_id AND external_class = :external_class",
-                Map.of("isbn", isbn,
-                        "external_id", externalId,
-                        "external_class", className));
+    public int delete(BookAssociation bookAssociation) {
+        return jdbc.update("DELETE assoc WHERE isbn = :isbn AND external_id = :external_id AND external_class = :external_class",
+                Map.of("isbn", bookAssociation.getIsbn(),
+                        "external_id", bookAssociation.getExternalClass(),
+                        "external_class", bookAssociation.getExternalClass()));
     }
 
     @Override
-    public void insert(BookAssociation bookAssociation) {
-        jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :external_id, :external_class)",
+    public int insert(BookAssociation bookAssociation) {
+        return jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :external_id, :external_class)",
                 Map.of("isbn", bookAssociation.getIsbn(),
                         "external_id", bookAssociation.getExternalId(),
                         "external_class", bookAssociation.getExternalClass()));
@@ -83,10 +94,8 @@ public class BookAssociationDaoImpl implements BookAssociationDao {
     }
 
     @Override
-    public boolean isExistExternalLink(long externalId, String className) {
-        long count = jdbc.queryForObject(
-                "SELECT count(1) FROM assoc WHERE external_class = :external_class AND external_id = :external_id",
-                Map.of("external_id", externalId, "external_class", className), Long.class);
-        return count > 0;
+    public int updateIsbnExternalLinks(String isbn, String newIsbn) {
+        return jdbc.update("UPDATE assoc SET isbn = :newIsbn WHERE isbn = :isbn",
+                Map.of("newIsbn", newIsbn, "isbn", isbn));
     }
 }

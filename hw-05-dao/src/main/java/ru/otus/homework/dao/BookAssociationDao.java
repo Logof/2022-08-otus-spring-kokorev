@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface BookAssociationDao {
 
-    boolean isExist(String isbn, long authorId, String className);
+    boolean isExist(BookAssociation bookAssociation);
 
-    void delete(String isbn, long authorId, String className);
+    int delete(BookAssociation bookAssociation);
 
-    void insert(BookAssociation bookAssociation);
+    int insert(BookAssociation bookAssociation);
 
     List<Long> getExternalIdsById(String isbn, String authorClassName);
 
@@ -20,5 +20,5 @@ public interface BookAssociationDao {
 
     List<Genre> getGenres(String isbn);
 
-    boolean isExistExternalLink(long externalId, String className);
+    int updateIsbnExternalLinks(String isbn, String newIsbn);
 }

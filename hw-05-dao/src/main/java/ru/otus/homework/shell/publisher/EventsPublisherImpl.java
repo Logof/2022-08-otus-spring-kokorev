@@ -2,13 +2,11 @@ package ru.otus.homework.shell.publisher;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import ru.otus.homework.entity.Book;
 import ru.otus.homework.shell.event.author.AddAuthorEvent;
 import ru.otus.homework.shell.event.author.DeleteAuthorByIdEvent;
 import ru.otus.homework.shell.event.author.OutputAllAuthorsEvent;
-import ru.otus.homework.shell.event.book.AddBookEvent;
-import ru.otus.homework.shell.event.book.DeleteBookByIdEvent;
-import ru.otus.homework.shell.event.book.OutputAllBooksEvent;
-import ru.otus.homework.shell.event.book.OutputBookEvent;
+import ru.otus.homework.shell.event.book.*;
 import ru.otus.homework.shell.event.genre.AddGenreEvent;
 import ru.otus.homework.shell.event.genre.DeleteGenreByIdEvent;
 import ru.otus.homework.shell.event.genre.OutputAllGenresEvent;
@@ -38,6 +36,16 @@ public class EventsPublisherImpl implements EventsPublisher {
     @Override
     public void addBook(String isbn, String bookName) {
         applicationEventPublisher.publishEvent(new AddBookEvent(isbn, bookName));
+    }
+
+    @Override
+    public void updateBook(String isbn, Book book) {
+        applicationEventPublisher.publishEvent(new UpdateBookEvent(isbn, book));
+    }
+
+    @Override
+    public void updateBook(String isbn, String newIsbn) {
+        applicationEventPublisher.publishEvent(new UpdateBookEvent(isbn, new Book(newIsbn, null)));
     }
 
     @Override

@@ -1,11 +1,17 @@
 package ru.otus.homework.shell.publisher;
 
+import ru.otus.homework.entity.Book;
+
 public interface EventsPublisher {
     void outputBook(String isbn);
 
     void outputAllBooks();
 
     void addBook(String isbn, String bookName);
+
+    void updateBook(String isbn, Book book);
+
+    void updateBook(String isbn, String newIsbn);
 
     void deleteBookById(String isbn);
 

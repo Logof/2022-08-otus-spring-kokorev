@@ -13,7 +13,7 @@ public class GenreCommands {
         this.commonShell = commonShell;
     }
 
-    @ShellMethod(value = "Output all genres", key = "output-genres")
+    @ShellMethod(value = "Output all genres", key = "print-genres")
     public void outputAllGenres() {
         commonShell.getEventsPublisher().outputAllGenres();
     }

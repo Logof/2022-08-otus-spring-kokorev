@@ -12,11 +12,11 @@ public class AuthorPrintService implements PrintService<Author> {
     @Override
     public String objectsToPrint(List<Author> objects) {
         return objects.stream().map(author -> String.format("%s (id=%d)", author.getFullName(), author.getId()))
-                .collect(Collectors.joining(System.lineSeparator() + "\t", "\t", ";"));
+                .collect(Collectors.joining(System.lineSeparator() + "\t", "\t", ""));
     }
 
     @Override
     public String objectToPrint(Author object) {
-        return String.format("\t%s (id=%d);", object.getFullName(), object.getId());
+        return String.format("\t%s (id=%d)", object.getFullName(), object.getId());
     }
 }

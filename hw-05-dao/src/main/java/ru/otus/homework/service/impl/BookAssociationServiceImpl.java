@@ -3,8 +3,8 @@ package ru.otus.homework.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.BookAssociationDao;
 import ru.otus.homework.entity.BookAssociation;
-import ru.otus.homework.exception.AuthorNotFountException;
-import ru.otus.homework.exception.GenreNotFountException;
+import ru.otus.homework.exception.DataNotFountException;
+import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.service.BookAssociationService;
 
 import static ru.otus.homework.dao.impl.BookAssociationDaoImpl.AUTHOR_CLASS_NAME;
@@ -21,8 +21,8 @@ public class BookAssociationServiceImpl implements BookAssociationService {
 
     @Override
     public void addAuthorAssoc(String isbn, long authorId) {
-        if (bookAssociationDao.isExist(isbn, authorId, AUTHOR_CLASS_NAME)) {
-            throw new AuthorNotFountException("Record not found");
+        if (bookAssociationDao.isExist(new BookAssociation(isbn, authorId, AUTHOR_CLASS_NAME))) {
+            throw new DataNotFountException("Record not found");
         } else {
             bookAssociationDao.insert(new BookAssociation(isbn, authorId, AUTHOR_CLASS_NAME));
         }
@@ -30,8 +30,8 @@ public class BookAssociationServiceImpl implements BookAssociationService {
 
     @Override
     public void addGenreAssoc(String isbn, long genreId) {
-        if (bookAssociationDao.isExist(isbn, genreId, GENRE_CLASS_NAME)) {
-            throw new GenreNotFountException("Record not found");
+        if (bookAssociationDao.isExist(new BookAssociation(isbn, genreId, GENRE_CLASS_NAME))) {
+            throw new DataNotFountException("Record not found");
         } else {
             bookAssociationDao.insert(new BookAssociation(isbn, genreId, GENRE_CLASS_NAME));
         }
@@ -39,23 +39,31 @@ public class BookAssociationServiceImpl implements BookAssociationService {
 
     @Override
     public void removeAuthor(String isbn, long authorId) {
-        if (bookAssociationDao.isExist(isbn, authorId, AUTHOR_CLASS_NAME)) {
-            bookAssociationDao.delete(isbn, authorId, AUTHOR_CLASS_NAME);
-            //ioService.outputString("The author has been removed from the book. BookId: " + isbn + " AuthorId: " + authorId);
+        BookAssociation removedAssoc = new BookAssociation(isbn, authorId, AUTHOR_CLASS_NAME);
+        if (bookAssociationDao.isExist(removedAssoc)) {
+            if (bookAssociationDao.delete(removedAssoc) == 0) {
+                throw new DeleteDataException("failed to delete row");
+            }
         } else {
-            //TODO Вывести ошибку
-            //ioService.outputString("The author with the ID=" + authorId + " is missing from the book ID: " + isbn);
+            throw new DataNotFountException("could not find row");
         }
     }
 
     @Override
     public void removeGenre(String isbn, long genreId) {
-        if (bookAssociationDao.isExist(isbn, genreId, GENRE_CLASS_NAME)) {
-            bookAssociationDao.delete(isbn, genreId, GENRE_CLASS_NAME);
-            //ioService.outputString("The genre has been removed from the book. BookId: " + isbn + " GenreId: " + genreId);
+        BookAssociation removedAssoc = new BookAssociation(isbn, genreId, GENRE_CLASS_NAME);
+        if (bookAssociationDao.isExist(removedAssoc)) {
+            if (bookAssociationDao.delete(removedAssoc) == 0) {
+                throw new DeleteDataException("failed to delete row");
+            }
         } else {
-            //TODO Вывести ошибку
-            //ioService.outputString("The genre with the ID=" + genreId + " is missing from the book ID: " + isbn);
+            throw new DataNotFountException("could not find row");
         }
+    }
+
+
+    @Override
+    public void updateIsbnExternalLinks(String isbn, String newIsbn) {
+        bookAssociationDao.updateIsbnExternalLinks(isbn, newIsbn);
     }
 }

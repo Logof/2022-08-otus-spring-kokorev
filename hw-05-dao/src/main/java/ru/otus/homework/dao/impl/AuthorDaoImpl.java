@@ -4,7 +4,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.exception.AuthorNotFountException;
+import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.mapper.AuthorMapper;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class AuthorDaoImpl implements AuthorDao {
         List<Author> authors = jdbc.query("SELECT id, full_name FROM authors WHERE id = :id",
                 Map.of("id", id), new AuthorMapper());
         if (authors.size() != 1) {
-            throw new AuthorNotFountException("Not found or too many values found");
+            throw new DataNotFountException("Not found or too many values found");
         }
         return authors.get(0);
     }
@@ -47,15 +47,15 @@ public class AuthorDaoImpl implements AuthorDao {
 
 
     @Override
-    public void insert(Author object) {
-        jdbc.update("INSERT INTO authors (id, full_name) VALUES (:id, :full_name)",
+    public int insert(Author object) {
+        return jdbc.update("INSERT INTO authors (id, full_name) VALUES (:id, :full_name)",
                 Map.of("id", object.getId(),
                         "full_name", object.getFullName()));
     }
 
     @Override
-    public void update(Author object) {
-        jdbc.update("UPDATE authors set full_name = :full_name WHERE id = :id",
+    public int update(Author object) {
+        return jdbc.update("UPDATE authors set full_name = :full_name WHERE id = :id",
                 Map.of("id", object.getId(),
                         "full_name", object.getFullName()));
     }

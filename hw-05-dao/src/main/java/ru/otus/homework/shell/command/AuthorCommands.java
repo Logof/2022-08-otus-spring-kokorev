@@ -13,7 +13,7 @@ public class AuthorCommands {
         this.commonShell = commonShell;
     }
 
-    @ShellMethod(value = "Output all authors", key = "output-authors")
+    @ShellMethod(value = "Output all authors", key = "print-authors")
     public void outputAllAuthors() {
         commonShell.getEventsPublisher().outputAllAuthors();
     }

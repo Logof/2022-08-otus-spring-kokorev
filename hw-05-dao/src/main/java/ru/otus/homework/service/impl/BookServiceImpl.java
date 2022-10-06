@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.BookAssociationDao;
 import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.entity.Book;
+import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.PrintService;
 
@@ -28,22 +29,30 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void add(String isbn, String title) {
-        bookDao.insert(new Book(isbn, title));
-        ioService.outputString("Book added. ISBN: " + isbn);
+    public void update(String isbn, Book book) {
+        ioService.outputString(String.format("Updated %d book(s)", bookDao.update(isbn, book)));
+    }
+
+    @Override
+    public void add(Book book) {
+        int rowAddCount = bookDao.insert(book);
+        ioService.outputString(rowAddCount == 1 ? String.format("Book added. ISBN: %s", book.getIsbn())
+                : String.format("Added %d book(s) by ISBN %s ", rowAddCount, book.getIsbn()));
     }
 
 
     @Override
-    public void delete(String isbn) {
+    public void deleteById(String isbn) {
         if (bookDao.getBookById(isbn) != null) {
             bookDao.delete(isbn);
             ioService.outputString("Book deleted. ID: " + isbn);
+        } else {
+            throw new DataNotFountException("");
         }
     }
 
     @Override
-    public void outputAll() {
+    public void getAll() {
         List<Book> books = bookDao.getAll();
         ioService.outputString("Total books: " + bookDao.count());
         for (Book book : books) {
@@ -52,7 +61,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void output(String isbn) {
+    public void getById(String isbn) {
         ioService.outputString(printService.objectToPrint(bookDao.getBookById(isbn)));
     }
 

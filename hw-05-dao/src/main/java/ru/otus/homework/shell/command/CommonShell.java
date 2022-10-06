@@ -12,14 +12,14 @@ public class CommonShell {
     private final EventsPublisher eventsPublisher;
 
     @Setter
-    private String isbn;
+    private String currBook;
 
     public CommonShell(EventsPublisher eventsPublisher) {
         this.eventsPublisher = eventsPublisher;
     }
 
     public Availability isEmptyIsbn() {
-        return isbn == null
+        return currBook == null
                 ? Availability.unavailable("You need to select a book. Command: output-books AND select-book")
                 : Availability.available();
     }

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:h2:mem:libraryDB
+  sql:
+    init:
+      mode: always
+      schema-locations: sql/schema.sql
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  shell:
+    interactive:
+      enabled: false

@@ -3,8 +3,9 @@ package ru.otus.homework.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.BookAssociationDao;
 import ru.otus.homework.dao.GenreDao;
+import ru.otus.homework.entity.BookAssociation;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.exception.DeleteRowException;
+import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.service.GenreService;
 import ru.otus.homework.service.PrintService;
 
@@ -31,8 +32,8 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public void delete(long genreId) {
-        if (bookAssociationDao.isExistExternalLink(genreId, GENRE_CLASS_NAME)) {
-            throw new DeleteRowException("It' i's not possible to delete an entry while it has the possibility of an association");
+        if (bookAssociationDao.isExist(new BookAssociation(null, genreId, GENRE_CLASS_NAME))) {
+            throw new DeleteDataException("It' i's not possible to delete an entry while it has the possibility of an association");
         } else {
             genreDao.delete(genreId);
             ioService.outputString("Entry deleted");

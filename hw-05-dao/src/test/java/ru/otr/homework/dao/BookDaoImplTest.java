@@ -1,36 +1,46 @@
 package ru.otr.homework.dao;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import ru.otus.homework.Application;
 import ru.otus.homework.dao.BookDao;
+import ru.otus.homework.entity.Book;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
-@DisplayName("Класс BookDaoImpl")
-@SpringBootTest
-
+@DisplayName("Тест BookDao")
+@SpringBootTest(classes = Application.class)
 public class BookDaoImplTest {
 
     @Autowired
     private BookDao bookDao;
 
-    @Test
-    public void contextLoads() throws Exception {
-        assertThat(bookDao).isNotNull();
+    @Autowired
+    private NamedParameterJdbcOperations jdbc;
+
+    @BeforeEach
+    private void clearData() {
+        jdbc.update("DELETE books", Map.of());
     }
-
-    /*
-
 
     @DisplayName("Добавление")
     @Test
     void insertTest() {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
-        Integer countInsertRow = bookDao.insert(bookActual);
+        int countInsertRow = bookDao.insert(bookActual);
         assertEquals(countInsertRow, 1);
+
+        Book bookExpected = bookDao.getBookById(bookActual.getIsbn());
+        assertEquals(bookExpected, bookActual);
     }
 
     @DisplayName("Обновление")
@@ -39,7 +49,7 @@ public class BookDaoImplTest {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
         bookDao.insert(bookActual);
         bookActual.setTitle("Test Title");
-        Integer countUpdateRow = bookDao.update(bookActual);
+        int countUpdateRow = bookDao.update(bookActual.getIsbn(), bookActual);
         assertEquals(countUpdateRow, 1);
 
         Book bookExpected = bookDao.getBookById(bookActual.getIsbn());
@@ -49,42 +59,44 @@ public class BookDaoImplTest {
     @DisplayName("Удаление")
     @Test
     void deleteTest() {
-        Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
-        Book bookExpected = new Book("YYY-Y-YYY-YYYYY-Y", "Test title");
+        Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test1");
+        Book bookExpected = new Book("YYY-Y-YYY-YYYYY-Y", "Test2");
         bookDao.insert(bookActual);
         bookDao.insert(bookExpected);
 
         bookDao.delete(bookActual.getIsbn());
 
-        boolean bookActualNotDelete = true;
-        boolean bookExpectedNotDelete = true;
+        boolean bookActualRecordFound = false;
+        boolean bookExpectedRecordFound = false;
 
         for (Book book : bookDao.getAll()) {
             if (book.getTitle().equals(bookActual.getTitle())) {
-                bookActualNotDelete = false;
+                bookActualRecordFound = true;
             }
             if (book.getTitle().equals(bookExpected.getTitle())) {
-                bookExpectedNotDelete = false;
+                bookExpectedRecordFound = true;
             }
         }
-        assertFalse(bookActualNotDelete);
-        assertTrue(bookExpectedNotDelete);
+        assertFalse(bookActualRecordFound);
+        assertTrue(bookExpectedRecordFound);
     }
 
-    @DisplayName("Получение всех")
+    @DisplayName("Получение всех записей")
     @Test
-    void getAll() {
-        List<Book> booksBeginCount = bookDao.getAll();
+    void getAllTest() {
+        List<Book> booksActualList = new ArrayList<>();
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
+        booksActualList.add(bookActual);
+
         bookDao.insert(bookActual);
-        List<Book> booksFinalCount = bookDao.getAll();
-        assertTrue(booksFinalCount.size() - booksBeginCount.size() >= 1);
+        List<Book> booksExpectedList = bookDao.getAll();
+        assertEquals(booksExpectedList, booksActualList);
     }
 
 
-    @DisplayName("Получение одного")
+    @DisplayName("Получение одной записи")
     @Test
-    void getById() {
+    void getByIdTest() {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
         bookDao.insert(bookActual);
 
@@ -96,10 +108,10 @@ public class BookDaoImplTest {
 
     @DisplayName("Количество")
     @Test
-    void count() {
+    void countTest() {
         long beginRecordCount = bookDao.count();
         Book book = new Book("XXX-X-XXX-XXXXX-X", "Test title");
         bookDao.insert(book);
         assertTrue(bookDao.count() >= 1 && beginRecordCount < bookDao.count());
-    }*/
+    }
 }

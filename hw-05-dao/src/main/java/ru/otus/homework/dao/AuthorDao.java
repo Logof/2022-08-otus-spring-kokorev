@@ -13,9 +13,9 @@ public interface AuthorDao {
 
     List<Author> getAll();
 
-    void insert(Author object);
+    int insert(Author object);
 
-    void update(Author object);
+    int update(Author object);
 
     long generateId();
 }

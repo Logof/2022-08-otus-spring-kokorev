@@ -13,8 +13,8 @@ public interface BookDao {
 
     List<Book> getAll();
 
-    Integer insert(Book book);
+    int insert(Book book);
 
-    Integer update(Book book);
+    int update(String isbn, Book book);
 
 }

@@ -17,25 +17,25 @@ public class WorkWithLinksCommands {
     @ShellMethod(value = "Add an author to a book. Accepts author id", key = "add-link-author")
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void addAnAuthorToABook(@ShellOption long authorId) {
-        commonShell.getEventsPublisher().addAnAuthorToABook(commonShell.getIsbn(), authorId);
+        commonShell.getEventsPublisher().addAnAuthorToABook(commonShell.getCurrBook(), authorId);
     }
 
     @ShellMethod(value = "Add an genre to a book. Accepts genre id", key = "add-link-genre")
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void addAnGenreToABook(@ShellOption long genreId) {
-        commonShell.getEventsPublisher().addAnGenreToABook(commonShell.getIsbn(), genreId);
+        commonShell.getEventsPublisher().addAnGenreToABook(commonShell.getCurrBook(), genreId);
     }
 
     @ShellMethod(value = "Remove the author from the book. Accepts author id", key = "remove-link-author")
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void removeTheAuthorFromTheBook(@ShellOption long authorId) {
-        commonShell.getEventsPublisher().removeTheAuthorFromTheBook(commonShell.getIsbn(), authorId);
+        commonShell.getEventsPublisher().removeTheAuthorFromTheBook(commonShell.getCurrBook(), authorId);
     }
 
     @ShellMethod(value = "Remove the genre from the book. Accepts genre id", key = "remove-link-genre")
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void removeTheGenreFromTheBook(@ShellOption long genreId) {
-        commonShell.getEventsPublisher().removeTheGenreFromTheBook(commonShell.getIsbn(), genreId);
+        commonShell.getEventsPublisher().removeTheGenreFromTheBook(commonShell.getCurrBook(), genreId);
     }
 
 
