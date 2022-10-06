@@ -1,6 +1,5 @@
 package ru.otus.homework.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,11 +19,6 @@ public class IOServiceTest {
 
     @Mock
     private InputStream scanner;
-
-    @BeforeEach
-    public void setup() {
-        System.setOut(new PrintStream(outputStreamCaptor));
-    }
 
     @DisplayName("Проверка корректного вывода сообщений")
     @Test
