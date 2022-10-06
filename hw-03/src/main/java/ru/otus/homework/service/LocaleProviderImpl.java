@@ -1,17 +1,17 @@
 package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
-@Service
-public class LocaleProviderServiceImpl implements LocaleProviderService {
+@Component
+public class LocaleProviderImpl implements LocaleProvider {
 
     private final Locale locale;
-    
-    public LocaleProviderServiceImpl(@Value("${application.locale}") String localeName) {
-        if (localeName.isBlank()) {
+
+    public LocaleProviderImpl(@Value("${application.locale}") String localeName) {
+        if (localeName == null || localeName.isBlank()) {
             this.locale = Locale.getDefault();
         } else {
             this.locale = new Locale(localeName);

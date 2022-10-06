@@ -7,17 +7,17 @@ import org.springframework.stereotype.Service;
 public class MessageServiceImpl implements MessageService {
     private final MessageSource messageSource;
 
-    private final LocaleProviderService localeProviderService;
+    private final LocaleProvider localeProvider;
 
 
-    public MessageServiceImpl(MessageSource messageSource, LocaleProviderService localeProviderService) {
+    public MessageServiceImpl(MessageSource messageSource, LocaleProvider localeProvider) {
         this.messageSource = messageSource;
-        this.localeProviderService = localeProviderService;
+        this.localeProvider = localeProvider;
     }
 
     @Override
     public String getMessage(String code) {
-        return messageSource.getMessage(code, new Object[]{}, localeProviderService.getLocale());
+        return messageSource.getMessage(code, new Object[]{}, localeProvider.getLocale());
     }
 
 }
