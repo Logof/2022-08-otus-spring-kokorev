@@ -4,7 +4,7 @@ import ru.otus.homework.entity.Book;
 
 public interface BookService {
 
-    void update(String isbn, Book book);
+    void update(Book book);
 
     void add(Book book);
 

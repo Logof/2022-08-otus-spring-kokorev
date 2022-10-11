@@ -11,8 +11,9 @@ import java.util.stream.Collectors;
 public class AuthorPrintService implements PrintService<Author> {
     @Override
     public String objectsToPrint(List<Author> objects) {
-        return objects.stream().map(author -> String.format("%s (id=%d)", author.getFullName(), author.getId()))
-                .collect(Collectors.joining(System.lineSeparator() + "\t", "\t", ""));
+        return String.format("Total authors: %d%s%s", objects.size(), System.lineSeparator(),
+                objects.stream().map(author -> String.format("%s (id=%d)", author.getFullName(), author.getId()))
+                        .collect(Collectors.joining(System.lineSeparator() + "\t", "\t", "")));
     }
 
     @Override

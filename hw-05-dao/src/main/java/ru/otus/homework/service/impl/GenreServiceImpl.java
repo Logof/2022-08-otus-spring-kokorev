@@ -5,6 +5,7 @@ import ru.otus.homework.dao.BookAssociationDao;
 import ru.otus.homework.dao.GenreDao;
 import ru.otus.homework.entity.BookAssociation;
 import ru.otus.homework.entity.Genre;
+import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.service.GenreService;
 import ru.otus.homework.service.PrintService;
@@ -31,36 +32,37 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void delete(long genreId) {
+    public void delete(long genreId) throws DeleteDataException {
         if (bookAssociationDao.isExist(new BookAssociation(null, genreId, GENRE_CLASS_NAME))) {
             throw new DeleteDataException("It' i's not possible to delete an entry while it has the possibility of an association");
-        } else {
-            genreDao.delete(genreId);
-            ioService.outputString("Entry deleted");
         }
+        genreDao.delete(genreId);
+        ioService.outString("Entry deleted");
+
     }
 
     @Override
     public void add(String genreName) {
         long id = genreDao.generateId();
         genreDao.insert(new Genre(id, genreName));
-        ioService.outputString("Genre added. ID: " + id);
+        ioService.outString(String.format("Genre added. ID: %d", id));
     }
 
     @Override
     public void outputAll() {
         List<Genre> genres = genreDao.getAll();
-        ioService.outputString("Total genres: " + genreDao.count());
-        ioService.outputString(printService.objectsToPrint(genres));
+        ioService.outString(printService.objectsToPrint(genres));
     }
 
     @Override
     public void setDescription(long genreId, String description) {
         Genre genre = genreDao.getGenreById(genreId);
-        if (genre != null) {
-            genreDao.update(genre);
-            ioService.outputString("Genre description is set. ID: " + genreId + " Description: " + description);
+        if (genre == null) {
+            //TODO поправить
+            throw new DataNotFountException("");
         }
+        genreDao.update(genre);
+        ioService.outString(String.format("Genre description is set. ID: %d Description: %s", genreId, description));
     }
 
 }

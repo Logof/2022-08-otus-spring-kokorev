@@ -5,10 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
 import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.entity.Book;
+import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = Application.class)
 public class BookDaoImplTest {
 
+    @MockBean
+    OutputServiceStreams outputServiceStreams;
+
     @Autowired
     private BookDao bookDao;
 
@@ -28,7 +33,7 @@ public class BookDaoImplTest {
     private NamedParameterJdbcOperations jdbc;
 
     @BeforeEach
-    private void clearData() {
+    public void clearData() {
         jdbc.update("DELETE books", Map.of());
     }
 
@@ -49,7 +54,7 @@ public class BookDaoImplTest {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
         bookDao.insert(bookActual);
         bookActual.setTitle("Test Title");
-        int countUpdateRow = bookDao.update(bookActual.getIsbn(), bookActual);
+        int countUpdateRow = bookDao.update(bookActual);
         assertEquals(countUpdateRow, 1);
 
         Book bookExpected = bookDao.getBookById(bookActual.getIsbn());

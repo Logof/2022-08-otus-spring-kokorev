@@ -4,7 +4,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.service.BookService;
-import ru.otus.homework.shell.event.book.*;
+import ru.otus.homework.shell.event.book.AddBookEvent;
+import ru.otus.homework.shell.event.book.DeleteBookByIdEvent;
+import ru.otus.homework.shell.event.book.OutputBookEvent;
+import ru.otus.homework.shell.event.book.UpdateBookEvent;
 
 @Component
 public class BookShellEventListener {
@@ -22,7 +25,7 @@ public class BookShellEventListener {
 
     @EventListener
     public void updateBookEvent(UpdateBookEvent event) {
-        bookService.update(event.getIsbn(), event.getBook());
+        bookService.update(event.getBook());
     }
 
     @EventListener
@@ -31,7 +34,7 @@ public class BookShellEventListener {
     }
 
     @EventListener
-    public void outputAllBooksEvent(OutputAllBooksEvent event) {
+    public void outputAllBooksEvent() {
         bookService.getAll();
     }
 

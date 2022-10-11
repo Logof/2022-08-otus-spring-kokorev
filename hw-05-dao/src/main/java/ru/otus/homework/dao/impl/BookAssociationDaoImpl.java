@@ -49,16 +49,17 @@ public class BookAssociationDaoImpl implements BookAssociationDao {
         }
         queryBuilder.append("AND external_id = :external_id");
         queryParam.put("external_id", bookAssociation.getExternalId());
-        long count = jdbc.queryForObject(queryBuilder.toString(), queryParam, Long.class);
-        return count > 0;
+        Long count = jdbc.queryForObject(queryBuilder.toString(), queryParam, Long.class);
+        return count != null && count > 0;
     }
 
     @Override
     public int delete(BookAssociation bookAssociation) {
-        return jdbc.update("DELETE assoc WHERE isbn = :isbn AND external_id = :external_id AND external_class = :external_class",
+        return jdbc.update("DELETE FROM assoc WHERE isbn = :isbn AND external_id = :external_id and external_class = :external_class",
                 Map.of("isbn", bookAssociation.getIsbn(),
-                        "external_id", bookAssociation.getExternalClass(),
-                        "external_class", bookAssociation.getExternalClass()));
+                        "external_id", bookAssociation.getExternalId(),
+                        "external_class", bookAssociation.getExternalClass()
+                ));
     }
 
     @Override

@@ -8,7 +8,6 @@ import ru.otus.homework.entity.Book;
 import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.mapper.BookMapper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,27 +71,17 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public int update(String isbn, Book book) {
-        if (isbn == null || book == null || book.getIsbn() == null) {
+    public int update(Book book) {
+        if (book == null
+                || book.getIsbn() == null
+                || book.getIsbn().isBlank()
+                || book.getTitle() == null
+                || book.getTitle().isBlank()) {
             return 0;
         }
-        Map<String, Object> queryParam = new HashMap<>();
-        queryParam.put("isbn", isbn);
-        queryParam.put("new_isbn", book.getIsbn());
-        StringBuilder query = new StringBuilder("UPDATE books set ");
 
-        if (book.getTitle() != null && !book.getTitle().isBlank()) {
-            queryParam.put("new_title", book.getTitle());
-            query.append("title = :new_title, ");
-        }
-        query.append("isbn = :new_isbn WHERE isbn = :isbn");
-
-        int updateRowCount = jdbc.update(query.toString(), queryParam);
-
-        if (updateRowCount > 0) {
-            bookAssociationDao.updateIsbnExternalLinks(isbn, book.getIsbn());
-        }
-        return updateRowCount;
+        return jdbc.update("UPDATE books set title = :new_title WHERE isbn = :isbn",
+                Map.of("isbn", book.getIsbn(), "new_title", book.getTitle()));
     }
 
 }

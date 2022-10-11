@@ -34,23 +34,21 @@ public class AuthorServiceImpl implements AuthorService {
     public void delete(long authorId) {
         if (bookAssociationDao.isExist(new BookAssociation(null, authorId, AUTHOR_CLASS_NAME))) {
             throw new DeleteDataException("It' i's not possible to delete an entry while it has the possibility of an association");
-        } else {
-            authorDao.delete(authorId);
-            ioService.outputString("Entry deleted");
         }
+        authorDao.delete(authorId);
+        ioService.outString("Entry deleted");
     }
 
     @Override
     public void add(String fullName) {
         long id = authorDao.generateId();
         authorDao.insert(new Author(id, fullName));
-        ioService.outputString("Author added. ID: " + id);
+        ioService.outString(String.format("Author added. ID: %d", id));
     }
 
     @Override
     public void outputAll() {
         List<Author> authors = authorDao.getAll();
-        ioService.outputString("Total authors: " + authorDao.count());
-        ioService.outputString(printService.objectsToPrint(authors));
+        ioService.outString(printService.objectsToPrint(authors));
     }
 }

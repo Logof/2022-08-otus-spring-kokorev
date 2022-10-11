@@ -5,10 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
 import ru.otus.homework.dao.GenreDao;
 import ru.otus.homework.entity.Genre;
+import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = Application.class)
 public class GenreDaoTest {
 
+    @MockBean
+    OutputServiceStreams outputServiceStreams;
+
     @Autowired
     private GenreDao genreDao;
 
@@ -27,7 +32,7 @@ public class GenreDaoTest {
     private NamedParameterJdbcOperations jdbc;
 
     @BeforeEach
-    private void clearData() {
+    public void clearData() {
         jdbc.update("DELETE genres", Map.of());
     }
 
@@ -119,7 +124,7 @@ public class GenreDaoTest {
     void generateIdTest() {
         long beginRecordCount = genreDao.count();
         genreDao.generateId();
-        assertTrue(genreDao.generateId() == beginRecordCount + 1);
+        assertEquals(genreDao.generateId(), beginRecordCount + 1);
     }
 
 }

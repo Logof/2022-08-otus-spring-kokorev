@@ -5,10 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.entity.Author;
+import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = Application.class)
 public class AuthorDaoImplTest {
 
+    @MockBean
+    OutputServiceStreams outputServiceStreams;
+
     @Autowired
     private AuthorDao authorDao;
 
@@ -27,7 +32,7 @@ public class AuthorDaoImplTest {
     private NamedParameterJdbcOperations jdbc;
 
     @BeforeEach
-    private void clearData() {
+    public void clearData() {
         jdbc.update("DELETE authors", Map.of());
     }
 

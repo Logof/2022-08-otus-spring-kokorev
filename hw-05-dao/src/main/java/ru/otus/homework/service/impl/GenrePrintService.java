@@ -11,8 +11,9 @@ import java.util.stream.Collectors;
 public class GenrePrintService implements PrintService<Genre> {
     @Override
     public String objectsToPrint(List<Genre> objects) {
-        return objects.stream().map(genre -> String.format("%s (id=%d)", genre.getGenreName(), genre.getId()))
-                .collect(Collectors.joining(System.lineSeparator() + "\t", "\t", ""));
+        return String.format("Total genres: %d%s%s", objects.size(), System.lineSeparator(),
+                objects.stream().map(genre -> String.format("%s (id=%d)", genre.getGenreName(), genre.getId()))
+                        .collect(Collectors.joining(System.lineSeparator() + "\t", "\t", "")));
     }
 
     @Override

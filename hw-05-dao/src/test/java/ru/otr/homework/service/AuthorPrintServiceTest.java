@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Тест сервиса по подготовке сущьности \"Автор\" к печати")
 public class AuthorPrintServiceTest {
 
-    private AuthorPrintService authorPrintService = new AuthorPrintService();
+    private final AuthorPrintService authorPrintService = new AuthorPrintService();
 
     @DisplayName("Подготовка к печати списка авторов")
     @Test
@@ -24,7 +24,7 @@ public class AuthorPrintServiceTest {
         authorList.add(new Author(3, "Author 3"));
 
         String stringExpect = authorPrintService.objectsToPrint(authorList);
-        String stringActual = "\tAuthor 1 (id=1)" + System.lineSeparator() + "\tAuthor 2 (id=2)" + System.lineSeparator() + "\tAuthor 3 (id=3)";
+        String stringActual = "Total authors: 3" + System.lineSeparator() + "\tAuthor 1 (id=1)" + System.lineSeparator() + "\tAuthor 2 (id=2)" + System.lineSeparator() + "\tAuthor 3 (id=3)";
         assertEquals(stringExpect, stringActual);
     }
 

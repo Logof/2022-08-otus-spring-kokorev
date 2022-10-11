@@ -5,12 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
 import ru.otus.homework.dao.BookAssociationDao;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.BookAssociation;
 import ru.otus.homework.entity.Genre;
+import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = Application.class)
 public class BookAssociatorsDaoTest {
 
+    @MockBean
+    OutputServiceStreams outputServiceStreams;
+
     @Autowired
     private BookAssociationDao bookAssociationDao;
 
@@ -30,7 +35,7 @@ public class BookAssociatorsDaoTest {
     private NamedParameterJdbcOperations jdbc;
 
     @BeforeEach
-    private void clearData() {
+    public void clearData() {
         jdbc.update("DELETE assoc", Map.of());
     }
 
@@ -97,9 +102,9 @@ public class BookAssociatorsDaoTest {
     @Test
     void isExistTest() {
         BookAssociation bookAssociation = new BookAssociation("XXX-X-XXX-XXXXX-X", 1, "Test record");
-        int countInsertRow = bookAssociationDao.insert(bookAssociation);
-        assertFalse(bookAssociationDao.isExist(bookAssociation));
-        assertTrue(bookAssociationDao.isExist(new BookAssociation("XXX-X-XXX-XXXXX-X", 2, "Test record")));
+        bookAssociationDao.insert(bookAssociation);
+        assertTrue(bookAssociationDao.isExist(bookAssociation));
+        assertFalse(bookAssociationDao.isExist(new BookAssociation("XXX-X-XXX-XXXXX-X", 2, "Test record")));
     }
 
     @DisplayName("Получение списка авторов")
@@ -149,10 +154,10 @@ public class BookAssociatorsDaoTest {
         bookAssociationDao.insert(bookAssocGenreRow2);
 
 
-        assertTrue(bookAssociationDao.getExternalIdsById(isbn1, Genre.class.getSimpleName()).size() == 1);
-        assertTrue(bookAssociationDao.getExternalIdsById(isbn1, Author.class.getSimpleName()).size() == 1);
-        assertFalse(bookAssociationDao.getExternalIdsById(isbn2, Genre.class.getSimpleName()).size() == 1);
-        assertFalse(bookAssociationDao.getExternalIdsById(isbn2, Author.class.getSimpleName()).size() == 1);
+        assertEquals(bookAssociationDao.getExternalIdsById(isbn1, Genre.class.getSimpleName()).size(), 1);
+        assertEquals(bookAssociationDao.getExternalIdsById(isbn1, Author.class.getSimpleName()).size(), 1);
+        assertNotEquals(bookAssociationDao.getExternalIdsById(isbn2, Genre.class.getSimpleName()).size(), 1);
+        assertNotEquals(bookAssociationDao.getExternalIdsById(isbn2, Author.class.getSimpleName()).size(), 1);
 
     }
 

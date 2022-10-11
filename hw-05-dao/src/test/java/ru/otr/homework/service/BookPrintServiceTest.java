@@ -23,7 +23,7 @@ public class BookPrintServiceTest {
     @Mock
     PrintService<Author> authorPrintService;
 
-    private BookPrintService bookPrintService = new BookPrintService(genrePrintService, authorPrintService);
+    private final BookPrintService bookPrintService = new BookPrintService(genrePrintService, authorPrintService);
 
     @DisplayName("Подготовка к печати списка авторов")
     @Test
@@ -34,14 +34,14 @@ public class BookPrintServiceTest {
         bookList.add(new Book("ISBN3", "Book 3"));
 
         String stringExpect = bookPrintService.objectsToPrint(bookList);
-        String stringActual = "Title: Book 1 (ISBN: ISBN1)\n" +
+        String stringActual = "Total books: 3" + System.lineSeparator() + "Title: Book 1 (ISBN: ISBN1)\n" +
                 "Genre: \n\n" +
                 "Authors: \n\n" +
-                "---------------------------------------\n" +
+                "---------------------------------------\n\n" +
                 "Title: Book 2 (ISBN: ISBN2)\n" +
                 "Genre: \n\n" +
                 "Authors: \n\n" +
-                "---------------------------------------\n" +
+                "---------------------------------------\n\n" +
                 "Title: Book 3 (ISBN: ISBN3)\n" +
                 "Genre: \n\n" +
                 "Authors: \n\n" +

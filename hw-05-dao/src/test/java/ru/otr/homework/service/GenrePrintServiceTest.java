@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Тест сервиса по подготовке сущьности \"Жанр\" к печати")
 public class GenrePrintServiceTest {
-    private GenrePrintService genrePrintService = new GenrePrintService();
+    private final GenrePrintService genrePrintService = new GenrePrintService();
 
     @DisplayName("Подготовка к печати списка авторов")
     @Test
@@ -23,7 +23,7 @@ public class GenrePrintServiceTest {
         genreList.add(new Genre(3, "Genre 3"));
 
         String stringExpect = genrePrintService.objectsToPrint(genreList);
-        String stringActual = "\tGenre 1 (id=1)" + System.lineSeparator() + "\tGenre 2 (id=2)" + System.lineSeparator() + "\tGenre 3 (id=3)";
+        String stringActual = "Total genres: 3" + System.lineSeparator() + "\tGenre 1 (id=1)" + System.lineSeparator() + "\tGenre 2 (id=2)" + System.lineSeparator() + "\tGenre 3 (id=3)";
         assertEquals(stringExpect, stringActual);
     }
 
