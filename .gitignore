@@ -10,5 +10,6 @@
 /hw-03/target
 /hw-03/*.iml
 /hw-03/.idea/
-
-
+/hw-06-orm_jpa/target
+/hw-06-orm_jpa/*.iml
+/hw-06-orm_jpa/.idea/
