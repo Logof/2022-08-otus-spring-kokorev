@@ -25,7 +25,7 @@ public class BookPrintServiceTest {
 
     private final BookPrintService bookPrintService = new BookPrintService(genrePrintService, authorPrintService);
 
-    @DisplayName("Подготовка к печати списка авторов")
+    @DisplayName("Подготовка к печати списка книг")
     @Test
     public void verificationPreparingPrintBooksList() {
         List<Book> bookList = new ArrayList<>();
@@ -50,7 +50,7 @@ public class BookPrintServiceTest {
     }
 
 
-    @DisplayName("Подготовка к печати автора")
+    @DisplayName("Подготовка к печати книги")
     @Test
     public void verificationPreparingPrintBook() {
         Book book = new Book("ISBN1", "Book 1");

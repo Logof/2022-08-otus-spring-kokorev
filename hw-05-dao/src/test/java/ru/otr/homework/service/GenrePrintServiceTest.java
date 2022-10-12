@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GenrePrintServiceTest {
     private final GenrePrintService genrePrintService = new GenrePrintService();
 
-    @DisplayName("Подготовка к печати списка авторов")
+    @DisplayName("Подготовка к печати списка жанров")
     @Test
     public void verificationPreparingPrintAuthorsList() {
         List<Genre> genreList = new ArrayList<>();
@@ -28,7 +28,7 @@ public class GenrePrintServiceTest {
     }
 
 
-    @DisplayName("Подготовка к печати автора")
+    @DisplayName("Подготовка к печати жанра")
     @Test
     public void verificationPreparingPrintAuthor() {
         Genre genre = new Genre(1, "Genre 1");
