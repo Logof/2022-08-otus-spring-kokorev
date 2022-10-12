@@ -58,8 +58,7 @@ public class GenreServiceImpl implements GenreService {
     public void setDescription(long genreId, String description) {
         Genre genre = genreDao.getGenreById(genreId);
         if (genre == null) {
-            //TODO поправить
-            throw new DataNotFountException("");
+            throw new DataNotFountException(String.format("Genre with ID = %d not found", genreId));
         }
         genreDao.update(genre);
         ioService.outString(String.format("Genre description is set. ID: %d Description: %s", genreId, description));

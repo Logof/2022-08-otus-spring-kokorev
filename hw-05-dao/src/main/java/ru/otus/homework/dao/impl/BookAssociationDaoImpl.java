@@ -94,9 +94,4 @@ public class BookAssociationDaoImpl implements BookAssociationDao {
         return genres;
     }
 
-    @Override
-    public int updateIsbnExternalLinks(String isbn, String newIsbn) {
-        return jdbc.update("UPDATE assoc SET isbn = :newIsbn WHERE isbn = :isbn",
-                Map.of("newIsbn", newIsbn, "isbn", isbn));
-    }
 }

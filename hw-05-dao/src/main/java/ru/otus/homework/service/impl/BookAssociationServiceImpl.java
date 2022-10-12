@@ -60,10 +60,4 @@ public class BookAssociationServiceImpl implements BookAssociationService {
             throw new DataNotFountException("could not find row");
         }
     }
-
-
-    @Override
-    public void updateIsbnExternalLinks(String isbn, String newIsbn) {
-        bookAssociationDao.updateIsbnExternalLinks(isbn, newIsbn);
-    }
 }
