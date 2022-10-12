@@ -3,6 +3,7 @@ package ru.otus.homework.dao;
 import ru.otus.homework.entity.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenreDao {
     long count();
@@ -11,7 +12,7 @@ public interface GenreDao {
 
     List<Genre> getAll();
 
-    Genre getGenreById(Long id);
+    Optional<Genre> getGenreById(Long id);
 
     int insert(Genre object);
 

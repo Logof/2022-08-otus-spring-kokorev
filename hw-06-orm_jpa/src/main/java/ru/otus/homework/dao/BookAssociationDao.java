@@ -20,5 +20,4 @@ public interface BookAssociationDao {
 
     List<Genre> getGenres(String isbn);
 
-    int updateIsbnExternalLinks(String isbn, String newIsbn);
 }

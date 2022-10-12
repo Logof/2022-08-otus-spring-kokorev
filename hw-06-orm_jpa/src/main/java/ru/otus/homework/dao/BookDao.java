@@ -3,13 +3,14 @@ package ru.otus.homework.dao;
 import ru.otus.homework.entity.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
     long count();
 
-    Book getBookById(String isbn);
+    Optional<Book> getBookById(String isbn);
 
-    void delete(String isbn);
+    int delete(String isbn);
 
     List<Book> getAll();
 

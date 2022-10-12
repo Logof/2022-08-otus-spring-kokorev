@@ -11,8 +11,9 @@ import ru.otus.homework.service.GenreService;
 import ru.otus.homework.service.PrintService;
 
 import java.util.List;
+import java.util.Optional;
 
-import static ru.otus.homework.dao.impl.BookAssociationDaoImpl.GENRE_CLASS_NAME;
+import static ru.otus.homework.dao.impl.BookAssociationDaoJpa.GENRE_CLASS_NAME;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -56,12 +57,12 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public void setDescription(long genreId, String description) {
-        Genre genre = genreDao.getGenreById(genreId);
-        if (genre == null) {
+        Optional<Genre> genre = genreDao.getGenreById(genreId);
+        if (genre.isEmpty()) {
             //TODO поправить
             throw new DataNotFountException("");
         }
-        genreDao.update(genre);
+        genreDao.update(genre.get());
         ioService.outString(String.format("Genre description is set. ID: %d Description: %s", genreId, description));
     }
 

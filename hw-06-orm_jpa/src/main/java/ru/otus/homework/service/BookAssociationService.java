@@ -9,5 +9,4 @@ public interface BookAssociationService {
 
     void removeGenre(String isbn, long genreId);
 
-    void updateIsbnExternalLinks(String isbn, String newIsbn);
 }

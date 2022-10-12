@@ -28,8 +28,8 @@ public class AuthorDaoJpa implements AuthorDao {
 
     @Override
     public Optional<Author> getAuthorById(Long id) {
-        TypedQuery<Author> query = entityManager.createQuery("SELECT a FROM Author a WHERE a.id = :id", Author.class);
-        query.setParameter("id", id);
+        TypedQuery<Author> query = entityManager.createQuery("SELECT a FROM Author a WHERE a.id = :id", Author.class)
+                .setParameter("id", id);
         try {
             return Optional.of(query.getSingleResult());
         } catch (NoResultException e) {
@@ -39,8 +39,7 @@ public class AuthorDaoJpa implements AuthorDao {
 
     @Override
     public int delete(long id) {
-        return entityManager.createQuery("DELETE Author WHERE id = :id").executeUpdate();
-
+        return entityManager.createQuery("DELETE Author WHERE id = :id").setParameter("id", id).executeUpdate();
     }
 
     @Override

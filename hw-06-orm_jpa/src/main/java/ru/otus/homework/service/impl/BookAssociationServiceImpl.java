@@ -7,8 +7,8 @@ import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.service.BookAssociationService;
 
-import static ru.otus.homework.dao.impl.BookAssociationDaoImpl.AUTHOR_CLASS_NAME;
-import static ru.otus.homework.dao.impl.BookAssociationDaoImpl.GENRE_CLASS_NAME;
+import static ru.otus.homework.dao.impl.BookAssociationDaoJpa.AUTHOR_CLASS_NAME;
+import static ru.otus.homework.dao.impl.BookAssociationDaoJpa.GENRE_CLASS_NAME;
 
 @Service
 public class BookAssociationServiceImpl implements BookAssociationService {
@@ -61,9 +61,4 @@ public class BookAssociationServiceImpl implements BookAssociationService {
         }
     }
 
-
-    @Override
-    public void updateIsbnExternalLinks(String isbn, String newIsbn) {
-        bookAssociationDao.updateIsbnExternalLinks(isbn, newIsbn);
-    }
 }

@@ -11,7 +11,7 @@ import ru.otus.homework.service.PrintService;
 
 import java.util.List;
 
-import static ru.otus.homework.dao.impl.BookAssociationDaoImpl.AUTHOR_CLASS_NAME;
+import static ru.otus.homework.dao.impl.BookAssociationDaoJpa.AUTHOR_CLASS_NAME;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
