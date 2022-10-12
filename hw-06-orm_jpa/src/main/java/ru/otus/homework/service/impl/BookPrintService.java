@@ -7,12 +7,10 @@ import ru.otus.homework.entity.Genre;
 import ru.otus.homework.service.PrintService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class BookPrintService implements PrintService<Book> {
-
     private final PrintService<Genre> genrePrintService;
 
     private final PrintService<Author> authorPrintService;
@@ -31,11 +29,7 @@ public class BookPrintService implements PrintService<Book> {
     }
 
     @Override
-    public String objectToPrint(Optional<Book> object) {
-        return object.isPresent() ? objectToPrint(object) : "";
-    }
-
-    private String objectToPrint(Book object) {
+    public String objectToPrint(Book object) {
 
         String genresPrintString = "";
         String authorsPrintString = "";
