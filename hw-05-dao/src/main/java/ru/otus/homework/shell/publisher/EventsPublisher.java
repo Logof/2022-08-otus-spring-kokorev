@@ -9,9 +9,7 @@ public interface EventsPublisher {
 
     void addBook(String isbn, String bookName);
 
-    void updateBook(String isbn, Book book);
-
-    void updateBook(String isbn, String newIsbn);
+    void updateBook(Book book);
 
     void deleteBookById(String isbn);
 

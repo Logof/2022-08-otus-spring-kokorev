@@ -38,9 +38,8 @@ public class BookCommands {
 
     @ShellMethod(value = "Update selected book by ISBN", key = "update-book")
     @ShellMethodAvailability(value = "isEmptyIsbn")
-    public void updateFullBookById(@ShellOption String newIsbn, @ShellOption(defaultValue = "") String newTitle) {
-        commonShell.getEventsPublisher().updateBook(commonShell.getCurrBook(), new Book(newIsbn, newTitle));
-        commonShell.setCurrBook(newIsbn);
+    public void updateFullBookById(@ShellOption String newTitle) {
+        commonShell.getEventsPublisher().updateBook(new Book(commonShell.getCurrBook(), newTitle));
     }
 
     @ShellMethod(value = "Delete selected book by ISBN", key = "delete-book")

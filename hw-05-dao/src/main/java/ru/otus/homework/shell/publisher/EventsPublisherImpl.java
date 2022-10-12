@@ -39,13 +39,8 @@ public class EventsPublisherImpl implements EventsPublisher {
     }
 
     @Override
-    public void updateBook(String isbn, Book book) {
-        applicationEventPublisher.publishEvent(new UpdateBookEvent(isbn, book));
-    }
-
-    @Override
-    public void updateBook(String isbn, String newIsbn) {
-        applicationEventPublisher.publishEvent(new UpdateBookEvent(isbn, new Book(newIsbn, null)));
+    public void updateBook(Book book) {
+        applicationEventPublisher.publishEvent(book);
     }
 
     @Override
