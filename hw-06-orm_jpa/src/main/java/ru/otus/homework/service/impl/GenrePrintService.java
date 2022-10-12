@@ -5,6 +5,7 @@ import ru.otus.homework.entity.Genre;
 import ru.otus.homework.service.PrintService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,7 +18,10 @@ public class GenrePrintService implements PrintService<Genre> {
     }
 
     @Override
-    public String objectToPrint(Genre object) {
-        return String.format("\t%s (id=%d)", object.getGenreName(), object.getId());
+    public String objectToPrint(Optional<Genre> object) {
+        return object.isPresent()
+                ? String.format("\t%s (id=%d)", object.get().getGenreName(), object.get().getId())
+                : "";
     }
+
 }

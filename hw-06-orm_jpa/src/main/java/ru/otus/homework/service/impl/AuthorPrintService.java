@@ -5,6 +5,7 @@ import ru.otus.homework.entity.Author;
 import ru.otus.homework.service.PrintService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,7 +18,9 @@ public class AuthorPrintService implements PrintService<Author> {
     }
 
     @Override
-    public String objectToPrint(Author object) {
-        return String.format("\t%s (id=%d)", object.getFullName(), object.getId());
+    public String objectToPrint(Optional<Author> object) {
+        return object.isPresent()
+                ? String.format("\t%s (id=%d)", object.get().getFullName(), object.get().getId())
+                : "";
     }
 }
