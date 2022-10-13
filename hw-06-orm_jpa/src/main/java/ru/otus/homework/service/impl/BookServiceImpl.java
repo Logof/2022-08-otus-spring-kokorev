@@ -1,22 +1,27 @@
 package ru.otus.homework.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.repositories.BookRepository;
 import ru.otus.homework.service.BookService;
 
-import java.util.List;
+import java.util.Optional;
 
+@Service
 public class BookServiceImpl implements BookService {
 
     private final BookRepository repository;
 
-    public BookServiceImpl(BookRepository repository) {
+    private final BookPrintService printService;
+
+    public BookServiceImpl(BookRepository repository, BookPrintService printService) {
         this.repository = repository;
+        this.printService = printService;
     }
 
     @Override
-    public void addNewBook(Book book) {
+    public void saveBook(Book book) {
         repository.save(book);
     }
 
@@ -31,14 +36,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void getAll() {
-        List<Book> books = repository.findAll();
+        printService.objectsToPrint(repository.findAll());
         //ioService.outString(printService.objectsToPrint(books));
     }
 
     @Override
-    public void getById(String isbn) {
+    public void getByIsbn(String isbn) {
         //ioService.outString(printService.objectToPrint(
-        repository.findByIsbn(isbn);
+        Optional<Book> optionalBook = repository.findByIsbn(isbn);
+        if (optionalBook.isPresent()) {
+            printService.objectToPrint(optionalBook.get());
+        }
     }
 
 }

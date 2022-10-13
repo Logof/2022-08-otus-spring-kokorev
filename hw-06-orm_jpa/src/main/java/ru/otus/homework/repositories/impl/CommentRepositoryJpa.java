@@ -1,5 +1,6 @@
 package ru.otus.homework.repositories.impl;
 
+import org.springframework.stereotype.Repository;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.repositories.CommentRepository;
 
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class CommentRepositoryJpa implements CommentRepository {
     @PersistenceContext
     private final EntityManager entityManager;

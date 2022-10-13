@@ -29,6 +29,9 @@ public class BookPrintService implements PrintService<Book> {
 
     @Override
     public String objectsToPrint(List<Book> objects) {
+        if (objects == null) {
+            return "";
+        }
         return String.format("Total books: %d%s%s", objects.size(), System.lineSeparator(),
                 objects.stream().map(book -> objectToPrint(book))
                         .collect(Collectors.joining(System.lineSeparator(), "", "")));
@@ -36,6 +39,9 @@ public class BookPrintService implements PrintService<Book> {
 
     @Override
     public String objectToPrint(Book object) {
+        if (object == null) {
+            return "";
+        }
 
         String genresPrintString = "";
         String authorsPrintString = "";

@@ -1,5 +1,6 @@
 package ru.otus.homework.repositories.impl;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repositories.GenreRepository;
@@ -9,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class GenreRepositoryJpa implements GenreRepository {
     @PersistenceContext
     private final EntityManager entityManager;

@@ -1,5 +1,6 @@
 package ru.otus.homework.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.repositories.AuthorRepository;
@@ -7,6 +8,7 @@ import ru.otus.homework.service.AuthorService;
 
 import java.util.Optional;
 
+@Service
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository repository;

@@ -1,5 +1,6 @@
 package ru.otus.homework.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.repositories.CommentRepository;
@@ -7,6 +8,7 @@ import ru.otus.homework.service.CommentService;
 
 import java.util.Optional;
 
+@Service
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository repository;
