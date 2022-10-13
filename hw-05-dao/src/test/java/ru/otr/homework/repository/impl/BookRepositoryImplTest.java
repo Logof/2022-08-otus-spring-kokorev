@@ -1,4 +1,4 @@
-package ru.otr.homework.dao;
+package ru.otr.homework.repository.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
 import ru.otus.homework.entity.Book;
-import ru.otus.homework.repository.BookDao;
+import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест BookDao")
 @SpringBootTest(classes = Application.class)
-public class BookDaoImplTest {
+public class BookRepositoryImplTest {
 
     @MockBean
     OutputServiceStreams outputServiceStreams;
 
     @Autowired
-    private BookDao bookDao;
+    private BookRepository bookRepository;
 
     @Autowired
     private NamedParameterJdbcOperations jdbc;
@@ -41,10 +41,10 @@ public class BookDaoImplTest {
     @Test
     void insertTest() {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
-        int countInsertRow = bookDao.insert(bookActual);
+        int countInsertRow = bookRepository.insert(bookActual);
         assertEquals(countInsertRow, 1);
 
-        Book bookExpected = bookDao.getBookById(bookActual.getIsbn());
+        Book bookExpected = bookRepository.getBookById(bookActual.getIsbn());
         assertEquals(bookExpected, bookActual);
     }
 
@@ -52,12 +52,12 @@ public class BookDaoImplTest {
     @Test
     void updateTest() {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
-        bookDao.insert(bookActual);
+        bookRepository.insert(bookActual);
         bookActual.setTitle("Test Title");
-        int countUpdateRow = bookDao.update(bookActual);
+        int countUpdateRow = bookRepository.update(bookActual);
         assertEquals(countUpdateRow, 1);
 
-        Book bookExpected = bookDao.getBookById(bookActual.getIsbn());
+        Book bookExpected = bookRepository.getBookById(bookActual.getIsbn());
         assertEquals(bookExpected, bookActual);
     }
 
@@ -66,15 +66,15 @@ public class BookDaoImplTest {
     void deleteTest() {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test1");
         Book bookExpected = new Book("YYY-Y-YYY-YYYYY-Y", "Test2");
-        bookDao.insert(bookActual);
-        bookDao.insert(bookExpected);
+        bookRepository.insert(bookActual);
+        bookRepository.insert(bookExpected);
 
-        bookDao.delete(bookActual.getIsbn());
+        bookRepository.delete(bookActual.getIsbn());
 
         boolean bookActualRecordFound = false;
         boolean bookExpectedRecordFound = false;
 
-        for (Book book : bookDao.getAll()) {
+        for (Book book : bookRepository.getAll()) {
             if (book.getTitle().equals(bookActual.getTitle())) {
                 bookActualRecordFound = true;
             }
@@ -93,8 +93,8 @@ public class BookDaoImplTest {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
         booksActualList.add(bookActual);
 
-        bookDao.insert(bookActual);
-        List<Book> booksExpectedList = bookDao.getAll();
+        bookRepository.insert(bookActual);
+        List<Book> booksExpectedList = bookRepository.getAll();
         assertEquals(booksExpectedList, booksActualList);
     }
 
@@ -103,9 +103,9 @@ public class BookDaoImplTest {
     @Test
     void getByIdTest() {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
-        bookDao.insert(bookActual);
+        bookRepository.insert(bookActual);
 
-        Book bookExpected = bookDao.getBookById(bookActual.getIsbn());
+        Book bookExpected = bookRepository.getBookById(bookActual.getIsbn());
         assertEquals(bookExpected, bookActual);
 
         assertEquals(bookExpected, bookActual);
@@ -114,9 +114,9 @@ public class BookDaoImplTest {
     @DisplayName("Количество")
     @Test
     void countTest() {
-        long beginRecordCount = bookDao.count();
+        long beginRecordCount = bookRepository.count();
         Book book = new Book("XXX-X-XXX-XXXXX-X", "Test title");
-        bookDao.insert(book);
-        assertTrue(bookDao.count() >= 1 && beginRecordCount < bookDao.count());
+        bookRepository.insert(book);
+        assertTrue(bookRepository.count() >= 1 && beginRecordCount < bookRepository.count());
     }
 }

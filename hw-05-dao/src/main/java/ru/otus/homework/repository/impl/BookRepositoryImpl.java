@@ -1,52 +1,52 @@
 package ru.otus.homework.repository.impl;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.exception.DataNotFountException;
-import ru.otus.homework.repository.AuthorDao;
-import ru.otus.homework.repository.BookDao;
-import ru.otus.homework.repository.GenreDao;
+import ru.otus.homework.repository.AuthorRepository;
+import ru.otus.homework.repository.BookRepository;
+import ru.otus.homework.repository.GenreRepository;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public class BookDaoImpl implements BookDao {
+public class BookRepositoryImpl implements BookRepository {
     private final NamedParameterJdbcOperations jdbc;
 
-    private final AuthorDao authorDao;
+    private final AuthorRepository authorRepository;
 
-    private final GenreDao genreDao;
+    private final GenreRepository genreRepository;
 
-    public BookDaoImpl(NamedParameterJdbcOperations namedParameterJdbcOperations,
-                       AuthorDao authorDao,
-                       GenreDao genreDao) {
+    public BookRepositoryImpl(NamedParameterJdbcOperations namedParameterJdbcOperations,
+                              AuthorRepository authorRepository,
+                              GenreRepository genreRepository) {
         this.jdbc = namedParameterJdbcOperations;
-        this.authorDao = authorDao;
-        this.genreDao = genreDao;
+        this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
     }
 
     @Override
     public long count() {
-        Long count = jdbc.queryForObject("SELECT count(1) FROM books",
+        return jdbc.queryForObject("SELECT count(1) FROM books",
                 Map.of(), Long.class);
-        return count == null ? 0 : count;
     }
 
     @Override
     public Book getBookById(final String isbn) {
         Book book = jdbc.queryForObject("SELECT isbn, title FROM books WHERE isbn = :isbn",
-                Map.of("isbn", isbn), Book.class);
+                Map.of("isbn", isbn), new BeanPropertyRowMapper<>(Book.class));
 
         if (book == null) {
             throw new DataNotFountException("Not found or too many values found");
         }
 
-        book.setAuthors(authorDao.getAuthorsByIsbn(isbn));
-        book.setGenres(genreDao.getGenresByIsbn(isbn));
+        book.setAuthors(authorRepository.getAuthorsByIsbn(isbn));
+        book.setGenres(genreRepository.getGenresByIsbn(isbn));
 
         return book;
     }
@@ -59,14 +59,15 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        List<Book> books = jdbc.queryForList("SELECT isbn, title FROM books", Map.of(), Book.class);
+        List<Book> books = jdbc.query("SELECT isbn, title FROM books", Map.of(),
+                new BeanPropertyRowMapper<>(Book.class));
         if (books.size() == 0) {
             return books;
         }
 
         for (Book book : books) {
-            book.setAuthors(authorDao.getAuthorsByIsbn(book.getIsbn()));
-            book.setGenres(genreDao.getGenresByIsbn(book.getIsbn()));
+            book.setAuthors(authorRepository.getAuthorsByIsbn(book.getIsbn()));
+            book.setGenres(genreRepository.getGenresByIsbn(book.getIsbn()));
         }
         return books;
     }
@@ -85,14 +86,14 @@ public class BookDaoImpl implements BookDao {
 
         if (book.getAuthors() != null) {
             for (Author author : book.getAuthors()) {
-                authorDao.insert(author);
+                authorRepository.insert(author);
                 insertAssoc(book.getIsbn(), author.getId(), Author.class.getSimpleName());
             }
         }
 
         if (book.getGenres() != null) {
             for (Genre genre : book.getGenres()) {
-                genreDao.insert(genre);
+                genreRepository.insert(genre);
                 insertAssoc(book.getIsbn(), genre.getId(), Genre.class.getSimpleName());
             }
         }

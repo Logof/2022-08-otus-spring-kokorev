@@ -1,4 +1,4 @@
-package ru.otr.homework.dao;
+package ru.otr.homework.repository.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.repository.GenreDao;
+import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
@@ -20,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест GenreDao")
 @SpringBootTest(classes = Application.class)
-public class GenreDaoTest {
+public class GenreRepositoryTest {
 
     @MockBean
     OutputServiceStreams outputServiceStreams;
 
     @Autowired
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
 
     @Autowired
     private NamedParameterJdbcOperations jdbc;
@@ -39,41 +39,41 @@ public class GenreDaoTest {
     @DisplayName("Добавление")
     @Test
     void insertTest() {
-        Genre genreActual = new Genre(1, "Test record");
-        int countInsertRow = genreDao.insert(genreActual);
+        Genre genreActual = new Genre(1L, "Test record");
+        int countInsertRow = genreRepository.insert(genreActual);
         assertEquals(countInsertRow, 1);
 
-        Genre genreExpected = genreDao.getGenreById(genreActual.getId());
+        Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
         assertEquals(genreExpected, genreActual);
     }
 
     @DisplayName("Обновление")
     @Test
     void updateTest() {
-        Genre genreActual = new Genre(1, "Test record");
-        genreDao.insert(genreActual);
+        Genre genreActual = new Genre(1L, "Test record");
+        genreRepository.insert(genreActual);
         genreActual.setGenreName("Test Title");
-        int countUpdateRow = genreDao.update(genreActual);
+        int countUpdateRow = genreRepository.update(genreActual);
         assertEquals(countUpdateRow, 1);
 
-        Genre genreExpected = genreDao.getGenreById(genreActual.getId());
+        Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
         assertEquals(genreExpected, genreActual);
     }
 
     @DisplayName("Удаление")
     @Test
     void deleteTest() {
-        Genre genreActual = new Genre(1, "Test1");
-        Genre genreExpected = new Genre(2, "Test2");
-        genreDao.insert(genreActual);
-        genreDao.insert(genreExpected);
+        Genre genreActual = new Genre(1L, "Test1");
+        Genre genreExpected = new Genre(2L, "Test2");
+        genreRepository.insert(genreActual);
+        genreRepository.insert(genreExpected);
 
-        genreDao.delete(genreActual.getId());
+        genreRepository.deleteById(genreActual.getId());
 
         boolean genreActualRecordFound = false;
         boolean genreExpectedRecordFound = false;
 
-        for (Genre book : genreDao.getAll()) {
+        for (Genre book : genreRepository.getAll()) {
             if (book.getGenreName().equals(genreActual.getGenreName())) {
                 genreActualRecordFound = true;
             }
@@ -89,11 +89,11 @@ public class GenreDaoTest {
     @Test
     void getAllTest() {
         List<Genre> booksActualList = new ArrayList<>();
-        Genre genreActual = new Genre(1, "Test record");
+        Genre genreActual = new Genre(1L, "Test record");
         booksActualList.add(genreActual);
 
-        genreDao.insert(genreActual);
-        List<Genre> booksExpectedList = genreDao.getAll();
+        genreRepository.insert(genreActual);
+        List<Genre> booksExpectedList = genreRepository.getAll();
         assertEquals(booksExpectedList, booksActualList);
     }
 
@@ -101,30 +101,30 @@ public class GenreDaoTest {
     @DisplayName("Получение одной записи")
     @Test
     void getByIdTest() {
-        Genre genreActual = new Genre(1, "Test record");
-        genreDao.insert(genreActual);
+        Genre genreActual = new Genre(1L, "Test record");
+        int rowInsertCount = genreRepository.insert(genreActual);
 
-        Genre genreExpected = genreDao.getGenreById(genreActual.getId());
-        assertEquals(genreExpected, genreActual);
+        assertEquals(rowInsertCount, 1);
 
+        Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
         assertEquals(genreExpected, genreActual);
     }
 
     @DisplayName("Количество")
     @Test
     void countTest() {
-        long beginRecordCount = genreDao.count();
-        Genre genre = new Genre(1, "Test record");
-        genreDao.insert(genre);
-        assertTrue(genreDao.count() >= 1 && beginRecordCount < genreDao.count());
+        long beginRecordCount = genreRepository.count();
+        Genre genre = new Genre(1L, "Test record");
+        genreRepository.insert(genre);
+        assertTrue(genreRepository.count() >= 1 && beginRecordCount < genreRepository.count());
     }
 
     @DisplayName("Генерация ID")
     @Test
     void generateIdTest() {
-        long beginRecordCount = genreDao.count();
-        genreDao.generateId();
-        assertEquals(genreDao.generateId(), beginRecordCount + 1);
+        long beginRecordCount = genreRepository.count();
+        genreRepository.generateId();
+        assertEquals(genreRepository.generateId(), beginRecordCount + 1);
     }
 
 }

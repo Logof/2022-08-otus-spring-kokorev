@@ -1,30 +1,35 @@
-package ru.otus.homework.shell.command;
+package ru.otus.homework.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.otus.homework.service.AuthorService;
 
 @ShellComponent
 public class AuthorCommands {
 
+    //TODO сделать метод по добавлению автора к книге
     private final CommonShell commonShell;
 
-    protected AuthorCommands(CommonShell commonShell) {
+    private final AuthorService authorService;
+
+    protected AuthorCommands(CommonShell commonShell, AuthorService authorService) {
         this.commonShell = commonShell;
+        this.authorService = authorService;
     }
 
     @ShellMethod(value = "Output all authors", key = "print-authors")
     public void outputAllAuthors() {
-        commonShell.getEventsPublisher().outputAllAuthors();
+        authorService.outputAll();
     }
 
     @ShellMethod(value = "Add an author. Accepts full name", key = "add-author")
     public void addAuthor(@ShellOption String fullName) {
-        commonShell.getEventsPublisher().addAuthor(fullName);
+        authorService.add(fullName);
     }
 
     @ShellMethod(value = "Delete a author by ID", key = "delete-author-id")
     public void deleteAuthorById(@ShellOption long authorId) {
-        commonShell.getEventsPublisher().deleteAuthorById(authorId);
+        authorService.delete(authorId);
     }
 }

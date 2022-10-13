@@ -4,7 +4,7 @@ import ru.otus.homework.entity.Author;
 
 import java.util.List;
 
-public interface AuthorDao {
+public interface AuthorRepository {
     long count();
 
     Author getAuthorById(long id);

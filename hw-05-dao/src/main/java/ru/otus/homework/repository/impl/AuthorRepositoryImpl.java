@@ -1,18 +1,19 @@
 package ru.otus.homework.repository.impl;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.repository.AuthorDao;
+import ru.otus.homework.repository.AuthorRepository;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public class AuthorDaoImpl implements AuthorDao {
+public class AuthorRepositoryImpl implements AuthorRepository {
     private final NamedParameterJdbcOperations jdbc;
 
-    public AuthorDaoImpl(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public AuthorRepositoryImpl(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.jdbc = namedParameterJdbcOperations;
     }
 
@@ -25,7 +26,7 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public Author getAuthorById(long id) {
         return jdbc.queryForObject("SELECT id, full_name FROM authors WHERE id = :id",
-                Map.of("id", id), Author.class);
+                Map.of("id", id), new BeanPropertyRowMapper<>(Author.class));
     }
 
 
@@ -37,20 +38,20 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public List<Author> getAll() {
-        return jdbc.queryForList("SELECT id, full_name FROM authors", Map.of(), Author.class);
+        return jdbc.query("SELECT id, full_name FROM authors", Map.of(), new BeanPropertyRowMapper<>(Author.class));
     }
 
     @Override
     public List<Author> getAuthorsByIsbn(String isbn) {
-        return jdbc.queryForList("SELECT a.id, a.full_name FROM authors a, assoc as" +
-                        " WHERE as.external_id = a.id and as.external_class = :externalClass and as.isbn = :isbn",
+        return jdbc.queryForList("SELECT a.id, a.full_name FROM authors a, assoc s" +
+                        " WHERE s.external_id = a.id and s.external_class = :externalClass and s.isbn = :isbn",
                 Map.of("isbn", isbn, "externalClass", Author.class.getSimpleName()), Author.class);
     }
 
     @Override
     public boolean isAttachedToBook(long id) {
-        long countRow = jdbc.queryForObject("SELECT count(1) FROM authors a, assoc as" +
-                        " WHERE as.external_id = a.id and as.external_class = :externalClass and a.id = :id",
+        long countRow = jdbc.queryForObject("SELECT count(1) FROM authors a, assoc s" +
+                        " WHERE s.external_id = a.id and s.external_class = :externalClass and a.id = :id",
                 Map.of("id", id, "externalClass", Author.class.getSimpleName()), Long.class);
         return countRow > 0;
     }

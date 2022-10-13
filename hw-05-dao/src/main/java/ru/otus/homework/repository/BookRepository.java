@@ -4,7 +4,7 @@ import ru.otus.homework.entity.Book;
 
 import java.util.List;
 
-public interface BookDao {
+public interface BookRepository {
     long count();
 
     Book getBookById(String isbn);

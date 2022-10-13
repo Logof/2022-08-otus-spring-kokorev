@@ -4,10 +4,10 @@ import ru.otus.homework.entity.Genre;
 
 import java.util.List;
 
-public interface GenreDao {
+public interface GenreRepository {
     long count();
 
-    int delete(long id);
+    int deleteById(long id);
 
     List<Genre> getAll();
 

@@ -1,16 +1,14 @@
-package ru.otr.homework.dao;
+package ru.otr.homework.repository.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.repository.AuthorDao;
-import ru.otus.homework.service.impl.OutputServiceStreams;
+import ru.otus.homework.repository.AuthorRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест AuthorDao")
 @SpringBootTest(classes = Application.class)
-public class AuthorDaoImplTest {
-
-    @MockBean
-    OutputServiceStreams outputServiceStreams;
+public class AuthorRepositoryImplTest {
 
     @Autowired
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
 
     @Autowired
     private NamedParameterJdbcOperations jdbc;
@@ -39,41 +34,41 @@ public class AuthorDaoImplTest {
     @DisplayName("Добавление")
     @Test
     void insertTest() {
-        Author authorActual = new Author(1, "Test record");
-        int countInsertRow = authorDao.insert(authorActual);
+        Author authorActual = new Author(1L, "Test record");
+        int countInsertRow = authorRepository.insert(authorActual);
         assertEquals(countInsertRow, 1);
 
-        Author authorExpected = authorDao.getAuthorById(authorActual.getId());
+        Author authorExpected = authorRepository.getAuthorById(authorActual.getId());
         assertEquals(authorExpected, authorActual);
     }
 
     @DisplayName("Обновление")
     @Test
     void updateTest() {
-        Author authorActual = new Author(1, "Test record");
-        authorDao.insert(authorActual);
+        Author authorActual = new Author(1L, "Test record");
+        authorRepository.insert(authorActual);
         authorActual.setFullName("Test Title");
-        Integer countUpdateRow = authorDao.update(authorActual);
+        Integer countUpdateRow = authorRepository.update(authorActual);
         assertEquals(countUpdateRow, 1);
 
-        Author authorExpected = authorDao.getAuthorById(authorActual.getId());
+        Author authorExpected = authorRepository.getAuthorById(authorActual.getId());
         assertEquals(authorExpected, authorActual);
     }
 
     @DisplayName("Удаление")
     @Test
     void deleteTest() {
-        Author authorActual = new Author(1, "Test1");
-        Author authorExpected = new Author(2, "Test2");
-        authorDao.insert(authorActual);
-        authorDao.insert(authorExpected);
+        Author authorActual = new Author(1L, "Test1");
+        Author authorExpected = new Author(2L, "Test2");
+        authorRepository.insert(authorActual);
+        authorRepository.insert(authorExpected);
 
-        authorDao.delete(authorActual.getId());
+        authorRepository.delete(authorActual.getId());
 
         boolean authorActualRecordFound = false;
         boolean authorExpectedRecordFound = false;
 
-        for (Author author : authorDao.getAll()) {
+        for (Author author : authorRepository.getAll()) {
             if (author.getFullName().equals(authorActual.getFullName())) {
                 authorActualRecordFound = true;
             }
@@ -89,11 +84,11 @@ public class AuthorDaoImplTest {
     @Test
     void getAllTest() {
         List<Author> authorsActualList = new ArrayList<>();
-        Author authorActual = new Author(1, "Test record");
+        Author authorActual = new Author(1L, "Test record");
         authorsActualList.add(authorActual);
 
-        authorDao.insert(authorActual);
-        List<Author> authorsExpectedList = authorDao.getAll();
+        authorRepository.insert(authorActual);
+        List<Author> authorsExpectedList = authorRepository.getAll();
         assertEquals(authorsExpectedList, authorsActualList);
     }
 
@@ -101,10 +96,10 @@ public class AuthorDaoImplTest {
     @DisplayName("Получение одной записи")
     @Test
     void getByIdTest() {
-        Author authorActual = new Author(1, "Test record");
-        authorDao.insert(authorActual);
+        Author authorActual = new Author(1L, "Test record");
+        authorRepository.insert(authorActual);
 
-        Author authorExpected = authorDao.getAuthorById(authorActual.getId());
+        Author authorExpected = authorRepository.getAuthorById(authorActual.getId());
         assertEquals(authorExpected, authorActual);
 
         assertEquals(authorExpected, authorActual);
@@ -113,9 +108,9 @@ public class AuthorDaoImplTest {
     @DisplayName("Количество")
     @Test
     void countTest() {
-        long beginRecordCount = authorDao.count();
-        Author author = new Author(1, "Test record");
-        authorDao.insert(author);
-        assertTrue(authorDao.count() >= 1 && beginRecordCount < authorDao.count());
+        long beginRecordCount = authorRepository.count();
+        Author author = new Author(1L, "Test record");
+        authorRepository.insert(author);
+        assertTrue(authorRepository.count() >= 1 && beginRecordCount < authorRepository.count());
     }
 }
