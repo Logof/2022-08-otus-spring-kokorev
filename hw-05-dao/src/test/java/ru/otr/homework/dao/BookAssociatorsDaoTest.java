@@ -8,9 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
-import ru.otus.homework.dao.BookAssociationDao;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.entity.BookAssociation;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 

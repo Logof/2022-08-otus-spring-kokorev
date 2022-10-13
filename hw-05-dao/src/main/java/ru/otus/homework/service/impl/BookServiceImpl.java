@@ -1,9 +1,9 @@
 package ru.otus.homework.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.exception.DataNotFountException;
+import ru.otus.homework.repository.BookDao;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.PrintService;
 

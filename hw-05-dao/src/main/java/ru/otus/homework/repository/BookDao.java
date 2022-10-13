@@ -1,4 +1,4 @@
-package ru.otus.homework.dao;
+package ru.otus.homework.repository;
 
 import ru.otus.homework.entity.Book;
 

@@ -1,11 +1,9 @@
-package ru.otus.homework.dao.impl;
+package ru.otus.homework.repository.impl;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
-import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.exception.DataNotFountException;
-import ru.otus.homework.mapper.AuthorMapper;
+import ru.otus.homework.repository.AuthorDao;
 
 import java.util.List;
 import java.util.Map;
@@ -20,31 +18,42 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public long count() {
-        Long count = jdbc.queryForObject("SELECT count(1) FROM authors",
+        return jdbc.queryForObject("SELECT count(1) FROM authors",
                 Map.of(), Long.class);
-        return count == null ? 0 : count;
     }
 
     @Override
-    public Author getAuthorById(Long id) {
-        List<Author> authors = jdbc.query("SELECT id, full_name FROM authors WHERE id = :id",
-                Map.of("id", id), new AuthorMapper());
-        if (authors.size() != 1) {
-            throw new DataNotFountException("Not found or too many values found");
-        }
-        return authors.get(0);
+    public Author getAuthorById(long id) {
+        return jdbc.queryForObject("SELECT id, full_name FROM authors WHERE id = :id",
+                Map.of("id", id), Author.class);
     }
+
 
     @Override
     public void delete(long id) {
         jdbc.update("DELETE authors WHERE id = :id", Map.of("id", id));
     }
 
+
     @Override
     public List<Author> getAll() {
-        return jdbc.query("SELECT id, full_name FROM authors", new AuthorMapper());
+        return jdbc.queryForList("SELECT id, full_name FROM authors", Map.of(), Author.class);
     }
 
+    @Override
+    public List<Author> getAuthorsByIsbn(String isbn) {
+        return jdbc.queryForList("SELECT a.id, a.full_name FROM authors a, assoc as" +
+                        " WHERE as.external_id = a.id and as.external_class = :externalClass and as.isbn = :isbn",
+                Map.of("isbn", isbn, "externalClass", Author.class.getSimpleName()), Author.class);
+    }
+
+    @Override
+    public boolean isAttachedToBook(long id) {
+        long countRow = jdbc.queryForObject("SELECT count(1) FROM authors a, assoc as" +
+                        " WHERE as.external_id = a.id and as.external_class = :externalClass and a.id = :id",
+                Map.of("id", id, "externalClass", Author.class.getSimpleName()), Long.class);
+        return countRow > 0;
+    }
 
     @Override
     public int insert(Author object) {
@@ -62,7 +71,6 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public long generateId() {
-        Long id = count() + 1;
-        return id != null ? id : 0;
+        return count() + 1;
     }
 }

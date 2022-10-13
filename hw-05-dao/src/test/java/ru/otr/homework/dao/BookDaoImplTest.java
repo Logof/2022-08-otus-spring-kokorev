@@ -8,8 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
-import ru.otus.homework.dao.BookDao;
 import ru.otus.homework.entity.Book;
+import ru.otus.homework.repository.BookDao;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;

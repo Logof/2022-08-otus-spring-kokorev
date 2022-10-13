@@ -1,11 +1,11 @@
-package ru.otus.homework.dao.impl;
+package ru.otus.homework.repository.impl;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
-import ru.otus.homework.dao.GenreDao;
+import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.exception.DataNotFountException;
-import ru.otus.homework.mapper.GenreMapper;
+import ru.otus.homework.repository.GenreDao;
 
 import java.util.List;
 import java.util.Map;
@@ -31,17 +31,32 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public List<Genre> getAll() {
-        return jdbc.query("SELECT id, genre_name FROM genres", Map.of(), new GenreMapper());
+        return jdbc.queryForList("SELECT id, genre_name FROM genres", Map.of(), Genre.class);
+    }
+
+    @Override
+    public List<Genre> getGenresByIsbn(String isbn) {
+        return jdbc.queryForList("SELECT g.id, g.genre_name FROM genres g, assoc a" +
+                        " WHERE a.external_id = g.id and a.external_class = :externalClass and a.isbn = :isbn",
+                Map.of("isbn", isbn, "externalClass", Genre.class.getSimpleName()), Genre.class);
     }
 
     @Override
     public Genre getGenreById(Long id) {
-        List<Genre> genres = jdbc.query("SELECT id, genre_name FROM genres WHERE id = :id",
-                Map.of("id", id), new GenreMapper());
-        if (genres.size() != 1) {
+        Genre genre = jdbc.queryForObject("SELECT id, genre_name FROM genres WHERE id = :id",
+                Map.of("id", id), Genre.class);
+        if (genre == null) {
             throw new DataNotFountException("Not found or too many values found");
         }
-        return genres.get(0);
+        return genre;
+    }
+
+    @Override
+    public boolean isAttachedToBook(long id) {
+        long countRow = jdbc.queryForObject("SELECT count(1) FROM genres g, assoc as" +
+                        " WHERE as.external_id = g.id and as.external_class = :externalClass and g.id = :id",
+                Map.of("id", id, "externalClass", Author.class.getSimpleName()), Long.class);
+        return countRow > 0 ? true : false;
     }
 
     @Override

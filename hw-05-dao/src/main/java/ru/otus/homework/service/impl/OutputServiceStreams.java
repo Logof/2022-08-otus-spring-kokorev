@@ -3,7 +3,6 @@ package ru.otus.homework.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.service.OutputService;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 @Service

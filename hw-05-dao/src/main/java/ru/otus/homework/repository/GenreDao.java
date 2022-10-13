@@ -1,4 +1,4 @@
-package ru.otus.homework.dao;
+package ru.otus.homework.repository;
 
 import ru.otus.homework.entity.Genre;
 
@@ -11,7 +11,11 @@ public interface GenreDao {
 
     List<Genre> getAll();
 
+    List<Genre> getGenresByIsbn(String isbn);
+
     Genre getGenreById(Long id);
+
+    boolean isAttachedToBook(long id);
 
     int insert(Genre object);
 
