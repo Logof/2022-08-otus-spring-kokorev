@@ -1,7 +1,9 @@
 package ru.otus.homework.repository.impl;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.repository.AuthorRepository;
@@ -12,6 +14,8 @@ import java.util.Map;
 @Repository
 public class AuthorRepositoryImpl implements AuthorRepository {
     private final NamedParameterJdbcOperations jdbc;
+
+    private final GeneratedKeyHolder holder = new GeneratedKeyHolder();
 
     public AuthorRepositoryImpl(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.jdbc = namedParameterJdbcOperations;
@@ -29,6 +33,13 @@ public class AuthorRepositoryImpl implements AuthorRepository {
                 Map.of("id", id), new BeanPropertyRowMapper<>(Author.class));
     }
 
+    @Override
+    public Author getByFullName(String fullName) {
+        List<Author> author = jdbc.query("SELECT id, full_name FROM authors WHERE full_name = :fullName",
+                Map.of("fullName", fullName), new BeanPropertyRowMapper<>(Author.class));
+        return author.size() != 1  ? null : author.get(0);
+    }
+
 
     @Override
     public void delete(long id) {
@@ -43,9 +54,10 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public List<Author> getAuthorsByIsbn(String isbn) {
-        return jdbc.queryForList("SELECT a.id, a.full_name FROM authors a, assoc s" +
+        return jdbc.query("SELECT a.id, a.full_name FROM authors a, assoc s" +
                         " WHERE s.external_id = a.id and s.external_class = :externalClass and s.isbn = :isbn",
-                Map.of("isbn", isbn, "externalClass", Author.class.getSimpleName()), Author.class);
+                Map.of("isbn", isbn, "externalClass", Author.class.getSimpleName()),
+                new BeanPropertyRowMapper<>(Author.class));
     }
 
     @Override
@@ -57,14 +69,23 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public int insert(Author object) {
-        return jdbc.update("INSERT INTO authors (id, full_name) VALUES (:id, :full_name)",
-                Map.of("id", object.getId(),
-                        "full_name", object.getFullName()));
+    public Author insert(Author object) {
+        if (object == null || object.getFullName() == null || object.getFullName().isBlank()) {
+            return null;
+        }
+
+        jdbc.update("INSERT INTO authors (full_name) VALUES (:fullName)",
+                new MapSqlParameterSource("fullName", object.getFullName()),
+                holder);
+        object.setId(holder.getKey().longValue());
+        return object;
     }
 
     @Override
     public int update(Author object) {
+        if (object == null) {
+            return 0;
+        }
         return jdbc.update("UPDATE authors set full_name = :full_name WHERE id = :id",
                 Map.of("id", object.getId(),
                         "full_name", object.getFullName()));
@@ -72,6 +93,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public long generateId() {
-        return count() + 1;
+        return jdbc.queryForObject("select AUTHORS_SEQUENCE.nextval from dual", Map.of(), Long.class);
     }
 }

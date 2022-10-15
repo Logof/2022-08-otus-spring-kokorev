@@ -32,4 +32,5 @@ public class GenreCommands {
     public void deleteGenre(@ShellOption long genreId) {
         genreService.delete(genreId);
     }
+
 }

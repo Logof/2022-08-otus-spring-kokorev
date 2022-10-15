@@ -2,11 +2,15 @@ package ru.otus.homework.service;
 
 import ru.otus.homework.entity.Book;
 
+import java.util.List;
+
 public interface BookService {
 
-    void update(Book book);
+    void updateTitle(Book book);
 
     void add(Book book);
+
+    void add(Book book, List<String> authors, List<String> genres);
 
     void deleteById(String isbn);
 

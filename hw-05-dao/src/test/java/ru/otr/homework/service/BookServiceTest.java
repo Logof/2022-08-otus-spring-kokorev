@@ -42,13 +42,13 @@ public class BookServiceTest {
     @Test
     public void updateTest() {
         jdbc.update("insert into BOOKS(isbn, title) values ('XXX-X-XXX-XXXXX-0', 'test title 0')", Map.of());
-        bookService.update(new Book("XXX-X-XXX-XXXXX-0", "New title 0"));
+        bookService.updateTitle(new Book("XXX-X-XXX-XXXXX-0", "New title 0"));
         verify(outputServiceStreams).outString("Updated 1 book(s)");
         reset(outputServiceStreams);
-        bookService.update(new Book("XXX-X-XXX-XXXXX-0", null));
+        bookService.updateTitle(new Book("XXX-X-XXX-XXXXX-0", null));
         verify(outputServiceStreams).outString("Updated 0 book(s)");
         reset(outputServiceStreams);
-        bookService.update(new Book("XXX-X-XXX-XXXXX-0", ""));
+        bookService.updateTitle(new Book("XXX-X-XXX-XXXXX-0", ""));
         verify(outputServiceStreams).outString("Updated 0 book(s)");
         reset(outputServiceStreams);
     }

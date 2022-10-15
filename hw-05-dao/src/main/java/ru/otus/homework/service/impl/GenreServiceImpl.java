@@ -2,7 +2,6 @@ package ru.otus.homework.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.GenreService;
@@ -38,9 +37,13 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public void add(String genreName) {
-        long id = genreRepository.generateId();
-        genreRepository.insert(new Genre(id, genreName));
-        ioService.outString(String.format("Genre added. ID: %d", id));
+        Genre genre = genreRepository.insert(new Genre(null, genreName));
+        ioService.outString(String.format("Genre added. ID: %d", genre.getId()));
+    }
+
+    @Override
+    public Genre findByGenreName(String genreName) {
+        return genreRepository.getGenreByName(genreName);
     }
 
     @Override
@@ -49,13 +52,4 @@ public class GenreServiceImpl implements GenreService {
         ioService.outString(printService.objectsToPrint(genres));
     }
 
-    @Override
-    public void setDescription(long genreId, String description) {
-        Genre genre = genreRepository.getGenreById(genreId);
-        if (genre == null) {
-            throw new DataNotFountException(String.format("Genre with ID = %d not found", genreId));
-        }
-        genreRepository.update(genre);
-        ioService.outString(String.format("Genre description is set. ID: %d Description: %s", genreId, description));
-    }
 }

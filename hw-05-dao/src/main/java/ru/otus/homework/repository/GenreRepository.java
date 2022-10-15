@@ -15,9 +15,11 @@ public interface GenreRepository {
 
     Genre getGenreById(Long id);
 
+    Genre getGenreByName(String genreName);
+
     boolean isAttachedToBook(long id);
 
-    int insert(Genre object);
+    Genre insert(Genre object);
 
     int update(Genre object);
 

@@ -34,10 +34,14 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public Author findByAuthorFullName(String fullName) {
+        return authorRepository.getByFullName(fullName);
+    }
+
+    @Override
     public void add(String fullName) {
-        long id = authorRepository.generateId();
-        authorRepository.insert(new Author(id, fullName));
-        ioService.outString(String.format("Author added. ID: %d", id));
+        Author author = authorRepository.insert(new Author(null, fullName));
+        ioService.outString(String.format("Author added. ID: %d", author.getId()));
     }
 
     @Override

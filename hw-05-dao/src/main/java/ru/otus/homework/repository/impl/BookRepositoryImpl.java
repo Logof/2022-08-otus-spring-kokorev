@@ -13,6 +13,7 @@ import ru.otus.homework.repository.GenreRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
@@ -32,8 +33,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public long count() {
-        return jdbc.queryForObject("SELECT count(1) FROM books",
-                Map.of(), Long.class);
+        return jdbc.queryForObject("SELECT count(1) FROM books", Map.of(), Long.class);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     private void insertAssoc(String isbn, long externalId, String externalClass) {
-        jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :externalId, externalClass)",
+        jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :externalId, :externalClass)",
                 Map.of("isbn", isbn,
                         "externalId", externalId,
                         "externalClass", externalClass));
@@ -86,14 +86,18 @@ public class BookRepositoryImpl implements BookRepository {
 
         if (book.getAuthors() != null) {
             for (Author author : book.getAuthors()) {
-                authorRepository.insert(author);
+                if (Objects.equals(author.getId(), null)) {
+                    authorRepository.insert(author);
+                }
                 insertAssoc(book.getIsbn(), author.getId(), Author.class.getSimpleName());
             }
         }
 
         if (book.getGenres() != null) {
             for (Genre genre : book.getGenres()) {
-                genreRepository.insert(genre);
+                if (Objects.equals(genre.getId(), null)) {
+                    genreRepository.insert(genre);
+                }
                 insertAssoc(book.getIsbn(), genre.getId(), Genre.class.getSimpleName());
             }
         }

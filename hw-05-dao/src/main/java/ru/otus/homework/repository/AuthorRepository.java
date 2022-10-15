@@ -9,6 +9,8 @@ public interface AuthorRepository {
 
     Author getAuthorById(long id);
 
+    Author getByFullName(String fullName);
+
     void delete(long id);
 
     List<Author> getAll();
@@ -17,7 +19,7 @@ public interface AuthorRepository {
 
     boolean isAttachedToBook(long id);
 
-    int insert(Author object);
+    Author insert(Author object);
 
     int update(Author object);
 
