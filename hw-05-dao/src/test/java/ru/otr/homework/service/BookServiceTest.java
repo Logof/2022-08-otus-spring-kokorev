@@ -9,10 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
+import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
+import ru.otus.homework.entity.Genre;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.Mockito.reset;
@@ -55,7 +59,13 @@ public class BookServiceTest {
 
     @Test
     public void addTest() {
-        Book book = new Book("XXX-X-XXX-XXXXX-0", "New title 0");
+        List<Author> authorList = new ArrayList<>();
+        authorList.add(new Author(null, "Автор Тест"));
+        authorList.add(new Author(null, "Автор Тест 2"));
+        List<Genre> genreList = new ArrayList<>();
+        genreList.add(new Genre(null, "Жанр"));
+
+        Book book = new Book("XXX-X-XXX-XXXXX-0", "New title 0", authorList, genreList);
         bookService.add(book);
         verify(outputServiceStreams).outString(String.format("Book added. ISBN: %s", book.getIsbn()));
     }

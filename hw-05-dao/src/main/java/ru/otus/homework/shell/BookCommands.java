@@ -31,19 +31,30 @@ public class BookCommands {
         bookService.getAll();
     }
 
+    @ShellMethod(value = "Output all books", key = "print-books-by-author")
+    public void outputAllBooksByAuthors(@ShellOption(help = "Author full name ") String authorFullName) {
+        bookService.getAllByAuthor(authorFullName);
+    }
+
+    @ShellMethod(value = "Output all books", key = "print-books-by-genre")
+    public void outputAllBooksByGenre(@ShellOption(help = "Genre name ") String genreName) {
+        bookService.getAllByGenre(genreName);
+    }
+
     @ShellMethod(value = "Output the selected book", key = "print-book")
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void outputTheSelectedBook() {
         bookService.getById(commonShell.getCurrBook());
     }
 
-    @ShellMethod(value = "Add a book. Usage ISBN TITLE [{AUTHORS}] [{GENRES}]", key = "add-book")
+    @ShellMethod(value = "Add a book. Usage ISBN TITLE [--authors {AUTHORS}] [--genres {GENRES}]", key = "add-book")
     public void addBook(@ShellOption(help = "ISBN") String isbn,
                         @ShellOption(help = "Book title") String title,
                         @ShellOption(help = "Authors(s)",defaultValue = "") String[] authors,
                         @ShellOption(help = "Genre(s)", defaultValue = "") String[] genres) {
         bookService.add(new Book(isbn, title), Arrays.asList(authors), Arrays.asList(genres));
     }
+
 
     @ShellMethod(value = "Update the title of the selected book by ISBN", key = "update-book-title")
     @ShellMethodAvailability(value = "isEmptyIsbn")

@@ -119,4 +119,43 @@ public class BookRepositoryImpl implements BookRepository {
                 Map.of("isbn", book.getIsbn(), "new_title", book.getTitle()));
     }
 
+    @Override
+    public List<Book> getAllByAuthor(String fullName) {
+        List<Book> books = jdbc.query(
+                "SELECT b.isbn, b.title " +
+                    "  FROM books b, assoc a, authors au " +
+                    " WHERE b.isbn = a.isbn AND a.external_id = au.id AND a.external_class = :externalClass" +
+                    "   AND au.full_name like :fullName",
+                Map.of("externalClass", Author.class.getSimpleName(),
+                        "fullName", "%"+fullName+"%"),
+                new BeanPropertyRowMapper<>(Book.class));
+        if (books.size() == 0) {
+            return books;
+        }
+
+        for (Book book : books) {
+            book.setAuthors(authorRepository.getAuthorsByIsbn(book.getIsbn()));
+            book.setGenres(genreRepository.getGenresByIsbn(book.getIsbn()));
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getAllByGenre(String genreName) {
+        List<Book> books = jdbc.query("SELECT b.isbn, b.title FROM books b, assoc a, genres g " +
+                        "WHERE b.isbn = a.isbn AND a.external_id = g.id AND a.external_class = :externalClass" +
+                        "  AND g.genre_name like :genreName", Map.of("externalClass", Genre.class.getSimpleName(),
+                        "genreName", "%"+genreName+"%"),
+                new BeanPropertyRowMapper<>(Book.class));
+        if (books.size() == 0) {
+            return books;
+        }
+
+        for (Book book : books) {
+            book.setAuthors(authorRepository.getAuthorsByIsbn(book.getIsbn()));
+            book.setGenres(genreRepository.getGenresByIsbn(book.getIsbn()));
+        }
+        return books;
+    }
+
 }

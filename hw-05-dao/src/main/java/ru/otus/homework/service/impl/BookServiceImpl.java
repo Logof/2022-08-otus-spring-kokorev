@@ -93,4 +93,14 @@ public class BookServiceImpl implements BookService {
         ioService.outString(printService.objectToPrint(bookRepository.getBookById(isbn)));
     }
 
+    @Override
+    public void getAllByAuthor(String fullName) {
+        ioService.outString(printService.objectsToPrint(bookRepository.getAllByAuthor(fullName)));
+    }
+
+    @Override
+    public void getAllByGenre(String genreName) {
+        ioService.outString(printService.objectsToPrint(bookRepository.getAllByGenre(genreName)));
+    }
+
 }

@@ -35,10 +35,7 @@ public class AuthorRepositoryImplTest {
     @Test
     void insertTest() {
         Author authorActual = new Author(1L, "Test record");
-        int countInsertRow = authorRepository.insert(authorActual);
-        assertEquals(countInsertRow, 1);
-
-        Author authorExpected = authorRepository.getAuthorById(authorActual.getId());
+        Author authorExpected = authorRepository.insert(authorActual);
         assertEquals(authorExpected, authorActual);
     }
 

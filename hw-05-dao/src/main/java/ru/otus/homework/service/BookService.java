@@ -18,4 +18,7 @@ public interface BookService {
 
     void getById(String isbn);
 
+    void getAllByAuthor(String fullName);
+
+    void getAllByGenre(String genreName);
 }

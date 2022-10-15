@@ -17,4 +17,7 @@ public interface BookRepository {
 
     int update(Book book);
 
+    List<Book> getAllByAuthor(String fullName);
+
+    List<Book> getAllByGenre(String genreName);
 }

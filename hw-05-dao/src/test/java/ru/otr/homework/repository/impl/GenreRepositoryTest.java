@@ -5,12 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.Application;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.GenreRepository;
-import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Тест GenreDao")
 @SpringBootTest(classes = Application.class)
 public class GenreRepositoryTest {
-
-    @MockBean
-    OutputServiceStreams outputServiceStreams;
 
     @Autowired
     private GenreRepository genreRepository;
@@ -40,10 +35,7 @@ public class GenreRepositoryTest {
     @Test
     void insertTest() {
         Genre genreActual = new Genre(1L, "Test record");
-        int countInsertRow = genreRepository.insert(genreActual);
-        assertEquals(countInsertRow, 1);
-
-        Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
+        Genre genreExpected = genreRepository.insert(genreActual);
         assertEquals(genreExpected, genreActual);
     }
 
@@ -102,11 +94,7 @@ public class GenreRepositoryTest {
     @Test
     void getByIdTest() {
         Genre genreActual = new Genre(1L, "Test record");
-        int rowInsertCount = genreRepository.insert(genreActual);
-
-        assertEquals(rowInsertCount, 1);
-
-        Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
+        Genre genreExpected = genreRepository.insert(genreActual);
         assertEquals(genreExpected, genreActual);
     }
 
