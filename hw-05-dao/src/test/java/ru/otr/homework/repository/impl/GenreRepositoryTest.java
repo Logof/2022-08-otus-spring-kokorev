@@ -106,13 +106,4 @@ public class GenreRepositoryTest {
         genreRepository.insert(genre);
         assertTrue(genreRepository.count() >= 1 && beginRecordCount < genreRepository.count());
     }
-
-    @DisplayName("Генерация ID")
-    @Test
-    void generateIdTest() {
-        long beginRecordCount = genreRepository.count();
-        genreRepository.generateId();
-        assertEquals(genreRepository.generateId(), beginRecordCount + 1);
-    }
-
 }

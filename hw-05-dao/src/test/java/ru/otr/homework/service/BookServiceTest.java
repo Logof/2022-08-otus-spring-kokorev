@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 public class BookServiceTest {
 
     @MockBean
-    OutputServiceStreams outputServiceStreams;
+    private OutputServiceStreams outputServiceStreams;
 
     @Autowired
     private BookService bookService;

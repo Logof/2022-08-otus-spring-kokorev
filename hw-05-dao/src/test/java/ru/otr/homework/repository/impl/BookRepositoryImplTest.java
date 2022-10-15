@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BookRepositoryImplTest {
 
     @MockBean
-    OutputServiceStreams outputServiceStreams;
+    private OutputServiceStreams outputServiceStreams;
 
     @Autowired
     private BookRepository bookRepository;

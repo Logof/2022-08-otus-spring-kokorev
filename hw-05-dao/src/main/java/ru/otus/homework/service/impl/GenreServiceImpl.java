@@ -36,9 +36,10 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void add(String genreName) {
+    public Genre add(String genreName) {
         Genre genre = genreRepository.insert(new Genre(null, genreName));
         ioService.outString(String.format("Genre added. ID: %d", genre.getId()));
+        return genre;
     }
 
     @Override
@@ -50,6 +51,17 @@ public class GenreServiceImpl implements GenreService {
     public void outputAll() {
         List<Genre> genres = genreRepository.getAll();
         ioService.outString(printService.objectsToPrint(genres));
+    }
+
+    @Override
+    public void addToBook(String isbn, String genreName) {
+        Genre genre = findByGenreName(genreName);
+        if (genre == null) {
+            genre = add(genreName);
+        }
+        if (!genreRepository.isAttachedToBook(genre.getId())) {
+            genreRepository.createLinkToBook(isbn, genre.getId());
+        }
     }
 
 }

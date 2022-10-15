@@ -92,7 +92,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public long generateId() {
-        return jdbc.queryForObject("select AUTHORS_SEQUENCE.nextval from dual", Map.of(), Long.class);
+    public void createLinkToBook(String isbn, long authorId) {
+        jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :externalId, :externalClass)",
+                Map.of("isbn", isbn,
+                        "externalId", authorId,
+                        "externalClass", Author.class.getSimpleName()));
     }
+
 }

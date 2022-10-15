@@ -7,7 +7,7 @@ import java.util.List;
 public interface GenreRepository {
     long count();
 
-    int deleteById(long id);
+    void deleteById(long id);
 
     List<Genre> getAll();
 
@@ -23,5 +23,5 @@ public interface GenreRepository {
 
     int update(Genre object);
 
-    long generateId();
+    void createLinkToBook(String isbn, Long id);
 }

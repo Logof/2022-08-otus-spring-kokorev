@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
-import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.repository.GenreRepository;
@@ -32,8 +31,8 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public int deleteById(long id) {
-        return jdbc.update("DELETE genres WHERE id = :id", Map.of("id", id));
+    public void deleteById(long id) {
+        jdbc.update("DELETE genres WHERE id = :id", Map.of("id", id));
     }
 
     @Override
@@ -63,15 +62,14 @@ public class GenreRepositoryImpl implements GenreRepository {
     public Genre getGenreByName(String genreName) {
         List<Genre> genre =  jdbc.query("SELECT id, genre_name FROM genres WHERE genre_name = :genreName",
                 Map.of("genreName", genreName), new BeanPropertyRowMapper<>(Genre.class));
-        log.info("{}, {}", genre.get(0), genre.size());
         return genre.size() != 1 ? null : genre.get(0);
     }
 
     @Override
     public boolean isAttachedToBook(long id) {
-        long countRow = jdbc.queryForObject("SELECT count(1) FROM genres g, assoc as" +
-                        " WHERE as.external_id = g.id and as.external_class = :externalClass and g.id = :id",
-                Map.of("id", id, "externalClass", Author.class.getSimpleName()), Long.class);
+        long countRow = jdbc.queryForObject("SELECT count(1) FROM genres g, assoc s" +
+                        " WHERE s.external_id = g.id and s.external_class = :externalClass and g.id = :id",
+                Map.of("id", id, "externalClass", Genre.class.getSimpleName()), Long.class);
         return countRow > 0;
     }
 
@@ -95,7 +93,10 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public long generateId() {
-        return jdbc.queryForObject("select GENRES_SEQUENCE.nextval from dual", Map.of(), Long.class);
+    public void createLinkToBook(String isbn, Long id) {
+        jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :externalId, :externalClass)",
+                Map.of("isbn", isbn,
+                        "externalId", id,
+                        "externalClass", Genre.class.getSimpleName()));
     }
 }

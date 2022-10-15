@@ -4,7 +4,9 @@ import ru.otus.homework.entity.Author;
 
 public interface AuthorService {
 
-    void add(String fullName);
+    Author add(String fullName);
+
+    void addToBook(String isbn, String fullName);
 
     void delete(long authorId);
 

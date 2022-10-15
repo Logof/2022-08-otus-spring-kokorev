@@ -23,5 +23,5 @@ public interface AuthorRepository {
 
     int update(Author object);
 
-    long generateId();
+    void createLinkToBook(String isbn, long authorId);
 }

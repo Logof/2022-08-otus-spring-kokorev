@@ -72,37 +72,29 @@ public class BookRepositoryImpl implements BookRepository {
         return books;
     }
 
-    private void insertAssoc(String isbn, long externalId, String externalClass) {
-        jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :externalId, :externalClass)",
-                Map.of("isbn", isbn,
-                        "externalId", externalId,
-                        "externalClass", externalClass));
-    }
-
     @Override
     public int insert(Book book) {
-        jdbc.update("INSERT INTO books (isbn, title) VALUES (:isbn, :title)",
+        int result = jdbc.update("INSERT INTO books (isbn, title) VALUES (:isbn, :title)",
                 Map.of("isbn", book.getIsbn(), "title", book.getTitle()));
 
         if (book.getAuthors() != null) {
             for (Author author : book.getAuthors()) {
                 if (Objects.equals(author.getId(), null)) {
-                    authorRepository.insert(author);
+                    author.setId(authorRepository.insert(author).getId());
                 }
-                insertAssoc(book.getIsbn(), author.getId(), Author.class.getSimpleName());
+                authorRepository.createLinkToBook(book.getIsbn(), author.getId());
             }
         }
 
         if (book.getGenres() != null) {
             for (Genre genre : book.getGenres()) {
                 if (Objects.equals(genre.getId(), null)) {
-                    genreRepository.insert(genre);
+                    genre.setId(genreRepository.insert(genre).getId());
                 }
-                insertAssoc(book.getIsbn(), genre.getId(), Genre.class.getSimpleName());
+                genreRepository.createLinkToBook(book.getIsbn(), genre.getId());
             }
         }
-        //TODO а надо ли?
-        return 1;
+        return result;
     }
 
     @Override

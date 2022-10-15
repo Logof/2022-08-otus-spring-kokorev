@@ -21,7 +21,7 @@ public class BookPrintServiceTest {
     private PrintService<Genre> genrePrintService;
 
     @Mock
-    PrintService<Author> authorPrintService;
+    private PrintService<Author> authorPrintService;
 
     private final BookPrintService bookPrintService = new BookPrintService(genrePrintService, authorPrintService);
 
