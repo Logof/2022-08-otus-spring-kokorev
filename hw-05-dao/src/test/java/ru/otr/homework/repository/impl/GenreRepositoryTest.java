@@ -34,16 +34,16 @@ public class GenreRepositoryTest {
     @DisplayName("Добавление")
     @Test
     void insertTest() {
-        Genre genreActual = new Genre(1L, "Test record");
-        Genre genreExpected = genreRepository.insert(genreActual);
-        assertEquals(genreExpected, genreActual);
+        Genre genreActual = new Genre(null, "Test record");
+        genreActual = genreRepository.insert(genreActual);
+        assertNotNull(genreActual.getId());
     }
 
     @DisplayName("Обновление")
     @Test
     void updateTest() {
-        Genre genreActual = new Genre(1L, "Test record");
-        genreRepository.insert(genreActual);
+        Genre genreActual = new Genre(null, "Test record");
+        genreActual = genreRepository.insert(genreActual);
         genreActual.setGenreName("Test Title");
         int countUpdateRow = genreRepository.update(genreActual);
         assertEquals(countUpdateRow, 1);
@@ -81,10 +81,12 @@ public class GenreRepositoryTest {
     @Test
     void getAllTest() {
         List<Genre> booksActualList = new ArrayList<>();
-        Genre genreActual = new Genre(1L, "Test record");
-        booksActualList.add(genreActual);
+        booksActualList.add(new Genre(null, "Test record"));
 
-        genreRepository.insert(genreActual);
+        for (Genre genre : booksActualList) {
+            genreRepository.insert(genre);
+        }
+
         List<Genre> booksExpectedList = genreRepository.getAll();
         assertEquals(booksExpectedList, booksActualList);
     }
@@ -93,8 +95,9 @@ public class GenreRepositoryTest {
     @DisplayName("Получение одной записи")
     @Test
     void getByIdTest() {
-        Genre genreActual = new Genre(1L, "Test record");
-        Genre genreExpected = genreRepository.insert(genreActual);
+        Genre genreActual = new Genre(null, "Test record");
+        genreActual= genreRepository.insert(genreActual);
+        Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
         assertEquals(genreExpected, genreActual);
     }
 
@@ -102,8 +105,57 @@ public class GenreRepositoryTest {
     @Test
     void countTest() {
         long beginRecordCount = genreRepository.count();
-        Genre genre = new Genre(1L, "Test record");
+        Genre genre = new Genre(null, "Test record");
         genreRepository.insert(genre);
         assertTrue(genreRepository.count() >= 1 && beginRecordCount < genreRepository.count());
+    }
+
+    @DisplayName("Проверка, что жанр ассоциирован с книгой")
+    @Test
+    void isAttachedToBookTest() {
+        Genre genreActual = new Genre(null, "Test record");
+        genreActual = genreRepository.insert(genreActual);
+
+        assertFalse(genreRepository.isAttachedToBook(genreActual.getId()));
+
+        genreRepository.createLinkToBook("TEST_BOOK", genreActual.getId());
+        assertTrue(genreRepository.isAttachedToBook(genreActual.getId()));
+    }
+
+    @DisplayName("Получение записи по имени")
+    @Test
+    void getByFullNameTest() {
+        Genre genreActual = new Genre(null, "Test record");
+        genreActual = genreRepository.insert(genreActual);
+
+        Genre genreExpected = genreRepository.getGenreByName(genreActual.getGenreName());
+        assertEquals(genreExpected, genreActual);
+    }
+
+    @DisplayName("Получение записи по ID")
+    @Test
+    void getAuthorByIdTest() {
+        Genre genreActual = new Genre(null, "Test record");
+        genreActual = genreRepository.insert(genreActual);
+
+        Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
+        assertEquals(genreExpected, genreActual);
+    }
+
+    @DisplayName("Получение списка авторов по ISBN книги")
+    @Test
+    void getGenresByIsbnTest() {
+        List<Genre> genreActualList = new ArrayList<>();
+        genreActualList.add(new Genre(null, "Test record"));
+
+        for (Genre genre : genreActualList) {
+            genre = genreRepository.insert(genre);
+            genreRepository.createLinkToBook("TEST_BOOK_ASSOC", genre.getId());
+        }
+
+        List<Genre> authorExpected = genreRepository.getGenresByIsbn("TEST_BOOK_ASSOC");
+        assertFalse(authorExpected.isEmpty());
+        assertEquals(authorExpected.size(), genreActualList.size());
+        assertEquals(authorExpected, genreActualList);
     }
 }

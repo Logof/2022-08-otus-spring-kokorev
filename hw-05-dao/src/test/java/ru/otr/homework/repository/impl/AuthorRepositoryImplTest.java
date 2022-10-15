@@ -34,16 +34,17 @@ public class AuthorRepositoryImplTest {
     @DisplayName("Добавление")
     @Test
     void insertTest() {
-        Author authorActual = new Author(1L, "Test record");
-        Author authorExpected = authorRepository.insert(authorActual);
-        assertEquals(authorExpected, authorActual);
+        Author authorActual = new Author(null, "Test record");
+        authorActual = authorRepository.insert(authorActual);
+        assertNotNull(authorActual.getId());
     }
 
     @DisplayName("Обновление")
     @Test
     void updateTest() {
-        Author authorActual = new Author(1L, "Test record");
-        authorRepository.insert(authorActual);
+        Author authorActual = new Author(null, "Test record");
+        authorActual = authorRepository.insert(authorActual);
+
         authorActual.setFullName("Test Title");
         Integer countUpdateRow = authorRepository.update(authorActual);
         assertEquals(countUpdateRow, 1);
@@ -90,16 +91,54 @@ public class AuthorRepositoryImplTest {
     }
 
 
-    @DisplayName("Получение одной записи")
+    @DisplayName("Получение записи по ID")
     @Test
-    void getByIdTest() {
-        Author authorActual = new Author(1L, "Test record");
-        authorRepository.insert(authorActual);
+    void getAuthorByIdTest() {
+        Author authorActual = new Author(null, "Test record");
+        authorActual = authorRepository.insert(authorActual);
 
         Author authorExpected = authorRepository.getAuthorById(authorActual.getId());
         assertEquals(authorExpected, authorActual);
+    }
 
+    @DisplayName("Получение записи по имени")
+    @Test
+    void getByFullNameTest() {
+        Author authorActual = new Author(null, "Test record");
+        authorActual = authorRepository.insert(authorActual);
+
+        Author authorExpected = authorRepository.getByFullName(authorActual.getFullName());
         assertEquals(authorExpected, authorActual);
+
+    }
+
+    @DisplayName("Проверка, что автор ассоциирован с книгой")
+    @Test
+    void isAttachedToBookTest() {
+        Author authorActual = new Author(null, "Test record");
+        authorActual = authorRepository.insert(authorActual);
+
+        assertFalse(authorRepository.isAttachedToBook(authorActual.getId()));
+
+        authorRepository.createLinkToBook("TEST_BOOK", authorActual.getId());
+        assertTrue(authorRepository.isAttachedToBook(authorActual.getId()));
+    }
+
+    @DisplayName("Получение списка авторов по ISBN книги")
+    @Test
+    void getAuthorsByIsbnTest() {
+        List<Author> authorActualList = new ArrayList<>();
+        authorActualList.add(new Author(null, "Test record"));
+
+        for (Author author : authorActualList) {
+            author = authorRepository.insert(author);
+            authorRepository.createLinkToBook("TEST_BOOK_ASSOC", author.getId());
+        }
+
+        List<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK_ASSOC");
+        assertFalse(authorExpected.isEmpty());
+        assertEquals(authorExpected.size(), authorActualList.size());
+        assertEquals(authorExpected, authorActualList);
     }
 
     @DisplayName("Количество")

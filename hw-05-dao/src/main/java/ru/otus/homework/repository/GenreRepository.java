@@ -5,11 +5,11 @@ import ru.otus.homework.entity.Genre;
 import java.util.List;
 
 public interface GenreRepository {
-    long count();
+    long count(); 
 
-    void deleteById(long id);
+    void deleteById(long id); 
 
-    List<Genre> getAll();
+    List<Genre> getAll(); 
 
     List<Genre> getGenresByIsbn(String isbn);
 
@@ -17,7 +17,7 @@ public interface GenreRepository {
 
     Genre getGenreByName(String genreName);
 
-    boolean isAttachedToBook(long id);
+    boolean isAttachedToBook(long id); 
 
     Genre insert(Genre object);
 

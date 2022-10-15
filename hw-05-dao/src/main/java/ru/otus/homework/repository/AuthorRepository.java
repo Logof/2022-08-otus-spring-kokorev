@@ -9,7 +9,7 @@ public interface AuthorRepository {
 
     Author getAuthorById(long id);
 
-    Author getByFullName(String fullName);
+    Author getByFullName(String fullName); 
 
     void delete(long id);
 
@@ -23,5 +23,5 @@ public interface AuthorRepository {
 
     int update(Author object);
 
-    void createLinkToBook(String isbn, long authorId);
+    void createLinkToBook(String isbn, long authorId); 
 }
