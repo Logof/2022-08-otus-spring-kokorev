@@ -1,4 +1,4 @@
-package ru.otr.homework.repository.impl;
+package ru.otus.homework.repository.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

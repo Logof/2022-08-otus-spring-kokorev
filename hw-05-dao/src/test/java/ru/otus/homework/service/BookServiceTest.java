@@ -1,4 +1,4 @@
-package ru.otr.homework.service;
+package ru.otus.homework.service;
 
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,6 @@ import ru.otus.homework.Application;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
