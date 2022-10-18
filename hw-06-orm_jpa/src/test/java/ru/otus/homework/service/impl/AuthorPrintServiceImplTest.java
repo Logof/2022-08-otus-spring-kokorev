@@ -3,6 +3,7 @@ package ru.otus.homework.service.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.homework.entity.Author;
+import ru.otus.homework.service.print.AuthorPrintService;
 
 import java.util.ArrayList;
 import java.util.List;

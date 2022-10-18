@@ -7,7 +7,8 @@ import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.PrintService;
+import ru.otus.homework.service.print.BookPrintService;
+import ru.otus.homework.service.print.PrintService;
 
 import java.util.ArrayList;
 import java.util.List;

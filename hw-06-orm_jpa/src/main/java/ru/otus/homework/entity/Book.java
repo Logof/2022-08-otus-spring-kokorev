@@ -1,16 +1,16 @@
 package ru.otus.homework.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.WhereJoinTable;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity // Указывает, что данный класс является сущностью
@@ -22,40 +22,33 @@ import java.util.List;
                 @NamedAttributeNode("comments"),
         })
 public class Book {
-    @Id // Позволяет указать какое поле является идентификатором
+    @Id
+    @Column(name = "isbn", nullable = false, updatable = false)
     private String isbn;
 
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Fetch(FetchMode.SELECT)
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "assoc", joinColumns = {
-            @JoinColumn(name = "isbn", referencedColumnName = "isbn")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "external_id", referencedColumnName = "id")
-            })
-    @WhereJoinTable(clause = "external_class = 'Genre'")
-    private List<Genre> genres;
+    public Book (String isbn, String title) {
+        this(isbn, title, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
 
-    @Fetch(FetchMode.SELECT)
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "assoc", joinColumns = {
-            @JoinColumn(name = "isbn", referencedColumnName = "isbn")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "external_id", referencedColumnName = "id")
-            })
-    @WhereJoinTable(clause = "external_class = 'Author'")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_isbn"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
-    @Fetch(FetchMode.SELECT)
-    @OneToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "assoc", joinColumns = {
-            @JoinColumn(name = "isbn", referencedColumnName = "isbn")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "external_id", referencedColumnName = "id")
-            })
-    @WhereJoinTable(clause = "external_class = 'Comment'")
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "books_genres",
+            joinColumns = @JoinColumn(name = "book_isbn"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genres;
+
+    //TODO настроить связь
+    @OneToMany(targetEntity = Comment.class)
+    @JoinColumn(name = "isbn")
     private List<Comment> comments;
 
 }

@@ -1,14 +1,11 @@
 package ru.otus.homework.service;
 
-import ru.otus.homework.entity.Book;
-import ru.otus.homework.entity.Comment;
-
 public interface CommentService {
-    void deleteCommentFromBook(Book book, long commentId);
 
-    void deleteComment(long commentId);
 
-    void addCommentToBook(Book book, Comment comment);
+    void getAllByIsbn(String isbn);
 
-    void outputAll(String isbn);
+    void add(String isbn, String commentText);
+
+    void delete(long commentId);
 }

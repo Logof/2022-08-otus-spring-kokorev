@@ -1,50 +1,40 @@
 package ru.otus.homework.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
-import ru.otus.homework.repositories.CommentRepository;
+import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.service.CommentService;
-
-import java.util.Optional;
+import ru.otus.homework.service.OutputService;
+import ru.otus.homework.service.print.PrintService;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentRepository repository;
+    private final CommentRepository commentRepository;
+    private final PrintService<Comment> printService;
 
-    public CommentServiceImpl(CommentRepository repository) {
-        this.repository = repository;
+    private final OutputService ioService;
+
+    public CommentServiceImpl(CommentRepository commentRepository, PrintService<Comment> printService, OutputService ioService) {
+        this.commentRepository = commentRepository;
+        this.printService = printService;
+        this.ioService = ioService;
     }
 
     @Override
-    public void deleteCommentFromBook(Book book, long commentId) {
-        Optional<Comment> comment = repository.findById(commentId);
-        if (comment.isPresent()) {
-            book.getComments().remove(comment.get());
-        }
+    public void getAllByIsbn(String isbn) {
+        ioService.outString(printService.objectsToPrint(commentRepository.getAllByIsbn(isbn)));
     }
 
     @Override
-    public void deleteComment(long commentId) {
-        repository.deleteById(commentId);
+    public void add(String isbn, String commentText) {
+        Comment comment = commentRepository.save(new Comment(commentText));
+        ioService.outString(String.format("Comment added. ID: %d", comment.getId()));
     }
 
     @Override
-    public void addCommentToBook(Book book, Comment comment) {
-        if (comment.getId() == null) {
-            comment = repository.save(comment);
-        } else {
-            Optional<Comment> foundComment = repository.findById(comment.getId());
-            if (foundComment.isEmpty()) {
-                comment = repository.save(comment);
-            }
-        }
-        book.getComments().add(comment);
-    }
-
-    @Override
-    public void outputAll(String isbn) {
-        repository.findAll();
+    public void delete(long commentId) {
+        commentRepository.deleteById(commentId);
+        ioService.outString("Entry deleted");
     }
 }

@@ -4,6 +4,7 @@ package ru.otus.homework.service.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.homework.entity.Comment;
+import ru.otus.homework.service.print.CommentPrintService;
 
 import java.util.ArrayList;
 import java.util.List;
