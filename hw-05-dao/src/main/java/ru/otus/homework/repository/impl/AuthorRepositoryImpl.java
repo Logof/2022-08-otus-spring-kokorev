@@ -22,12 +22,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public long count() {
-        return jdbc.queryForObject("SELECT count(1) FROM authors",
-                Map.of(), Long.class);
-    }
-
-    @Override
     public Author getAuthorById(long id) {
         return jdbc.queryForObject("SELECT id, full_name FROM authors WHERE id = :id",
                 Map.of("id", id), new BeanPropertyRowMapper<>(Author.class));
@@ -54,17 +48,18 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public List<Author> getAuthorsByIsbn(String isbn) {
-        return jdbc.query("SELECT a.id, a.full_name FROM authors a, assoc s" +
-                        " WHERE s.external_id = a.id and s.external_class = :externalClass and s.isbn = :isbn",
-                Map.of("isbn", isbn, "externalClass", Author.class.getSimpleName()),
+        return jdbc.query("" +
+                        "SELECT a.id, a.full_name " +
+                        "  FROM authors a, book_authors s" +
+                        " WHERE s.author_id = a.id and s.isbn = :isbn",
+                Map.of("isbn", isbn),
                 new BeanPropertyRowMapper<>(Author.class));
     }
 
     @Override
     public boolean isAttachedToBook(long id) {
-        long countRow = jdbc.queryForObject("SELECT count(1) FROM authors a, assoc s" +
-                        " WHERE s.external_id = a.id and s.external_class = :externalClass and a.id = :id",
-                Map.of("id", id, "externalClass", Author.class.getSimpleName()), Long.class);
+        long countRow = jdbc.queryForObject("SELECT count(1) FROM book_authors s WHERE s.author_id = :id",
+                Map.of("id", id), Long.class);
         return countRow > 0;
     }
 
@@ -73,7 +68,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         if (object == null || object.getFullName() == null || object.getFullName().isBlank()) {
             return null;
         }
-
         jdbc.update("INSERT INTO authors (full_name) VALUES (:fullName)",
                 new MapSqlParameterSource("fullName", object.getFullName()),
                 holder);
@@ -91,12 +85,5 @@ public class AuthorRepositoryImpl implements AuthorRepository {
                         "full_name", object.getFullName()));
     }
 
-    @Override
-    public void createLinkToBook(String isbn, long authorId) {
-        jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :externalId, :externalClass)",
-                Map.of("isbn", isbn,
-                        "externalId", authorId,
-                        "externalClass", Author.class.getSimpleName()));
-    }
 
 }

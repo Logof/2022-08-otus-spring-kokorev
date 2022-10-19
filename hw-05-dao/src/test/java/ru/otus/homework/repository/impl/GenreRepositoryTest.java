@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import ru.otus.homework.Application;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.GenreRepository;
 
@@ -17,7 +17,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест GenreDao")
-@SpringBootTest(classes = Application.class)
+@JdbcTest
+@ComponentScan(value = "ru.otus.homework")
 public class GenreRepositoryTest {
 
     @Autowired
@@ -101,15 +102,6 @@ public class GenreRepositoryTest {
         assertEquals(genreExpected, genreActual);
     }
 
-    @DisplayName("Количество")
-    @Test
-    void countTest() {
-        long beginRecordCount = genreRepository.count();
-        Genre genre = new Genre(null, "Test record");
-        genreRepository.insert(genre);
-        assertTrue(genreRepository.count() >= 1 && beginRecordCount < genreRepository.count());
-    }
-
     @DisplayName("Проверка, что жанр ассоциирован с книгой")
     @Test
     void isAttachedToBookTest() {
@@ -118,7 +110,9 @@ public class GenreRepositoryTest {
 
         assertFalse(genreRepository.isAttachedToBook(genreActual.getId()));
 
-        genreRepository.createLinkToBook("TEST_BOOK", genreActual.getId());
+        jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
+        jdbc.update("INSERT INTO book_genres (ISBN, GENRE_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", genreActual.getId()));
+
         assertTrue(genreRepository.isAttachedToBook(genreActual.getId()));
     }
 
@@ -146,16 +140,17 @@ public class GenreRepositoryTest {
     @Test
     void getGenresByIsbnTest() {
         List<Genre> genreActualList = new ArrayList<>();
-        genreActualList.add(new Genre(null, "Test record"));
+        Genre genre1 = genreRepository.insert(new Genre("Test record"));
+        genreActualList.add(genre1);
 
         for (Genre genre : genreActualList) {
-            genre = genreRepository.insert(genre);
-            genreRepository.createLinkToBook("TEST_BOOK_ASSOC", genre.getId());
+            jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
+            jdbc.update("INSERT INTO book_genres (ISBN, GENRE_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", genre.getId()));
         }
+        List<Genre> authorExpected = genreRepository.getGenresByIsbn("TEST_BOOK");
 
-        List<Genre> authorExpected = genreRepository.getGenresByIsbn("TEST_BOOK_ASSOC");
         assertFalse(authorExpected.isEmpty());
         assertEquals(authorExpected.size(), genreActualList.size());
-        assertEquals(authorExpected, genreActualList);
+        assertTrue(authorExpected.equals(genreActualList));
     }
 }

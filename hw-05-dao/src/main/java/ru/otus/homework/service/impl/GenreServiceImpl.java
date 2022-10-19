@@ -53,15 +53,4 @@ public class GenreServiceImpl implements GenreService {
         ioService.outString(printService.objectsToPrint(genres));
     }
 
-    @Override
-    public void addToBook(String isbn, String genreName) {
-        Genre genre = findByGenreName(genreName);
-        if (genre == null) {
-            genre = add(genreName);
-        }
-        if (!genreRepository.isAttachedToBook(genre.getId())) {
-            genreRepository.createLinkToBook(isbn, genre.getId());
-        }
-    }
-
 }

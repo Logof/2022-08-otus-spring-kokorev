@@ -39,7 +39,6 @@ public class BookServiceTest {
         jdbc.update("DELETE books", Map.of());
         jdbc.update("DELETE authors", Map.of());
         jdbc.update("DELETE genres", Map.of());
-        jdbc.update("DELETE assoc", Map.of());
     }
 
     @Test

@@ -20,4 +20,8 @@ public interface BookRepository {
     List<Book> getAllByAuthor(String fullName);
 
     List<Book> getAllByGenre(String genreName);
+
+    void addAuthorToBook(String isbn, long authorId);
+
+    void addGenreToBook(String isbn, long id);
 }

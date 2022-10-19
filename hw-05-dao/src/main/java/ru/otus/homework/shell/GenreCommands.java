@@ -2,19 +2,16 @@ package ru.otus.homework.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.service.GenreService;
 
 @ShellComponent
-public class GenreCommands {
+public class GenreCommands extends CommonShell {
 
-    private final CommonShell commonShell;
 
     private final GenreService genreService;
 
-    public GenreCommands(CommonShell commonShell, GenreService genreService) {
-        this.commonShell = commonShell;
+    public GenreCommands(GenreService genreService) {
         this.genreService = genreService;
     }
 
@@ -28,11 +25,6 @@ public class GenreCommands {
         genreService.add(genreName);
     }
 
-    @ShellMethod(value = "Add an genre to selected book. Accepts genre name", key = "add-genre-book")
-    @ShellMethodAvailability(value = "isEmptyIsbn")
-    public void addAuthorToBook(@ShellOption String genreName) {
-        genreService.addToBook(commonShell.getCurrBook(), genreName);
-    }
 
     @ShellMethod(value = "Delete a genre by ID", key = "delete-genre")
     public void deleteGenre(@ShellOption long genreId) {

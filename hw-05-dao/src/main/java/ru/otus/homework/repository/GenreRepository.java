@@ -5,7 +5,6 @@ import ru.otus.homework.entity.Genre;
 import java.util.List;
 
 public interface GenreRepository {
-    long count(); 
 
     void deleteById(long id); 
 
@@ -22,6 +21,4 @@ public interface GenreRepository {
     Genre insert(Genre object);
 
     int update(Genre object);
-
-    void createLinkToBook(String isbn, Long id);
 }

@@ -4,11 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import ru.otus.homework.Application;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.repository.AuthorRepository;
+import ru.otus.homework.repository.BookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест AuthorDao")
-@SpringBootTest(classes = Application.class)
+@JdbcTest
+@ComponentScan(value = "ru.otus.homework")
 public class AuthorRepositoryImplTest {
 
     @Autowired
@@ -25,6 +28,9 @@ public class AuthorRepositoryImplTest {
 
     @Autowired
     private NamedParameterJdbcOperations jdbc;
+
+    @MockBean
+    private BookRepository bookRepository;
 
     @BeforeEach
     public void clearData() {
@@ -117,36 +123,30 @@ public class AuthorRepositoryImplTest {
     void isAttachedToBookTest() {
         Author authorActual = new Author(null, "Test record");
         authorActual = authorRepository.insert(authorActual);
-
         assertFalse(authorRepository.isAttachedToBook(authorActual.getId()));
 
-        authorRepository.createLinkToBook("TEST_BOOK", authorActual.getId());
+        jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
+        jdbc.update("INSERT INTO book_authors (ISBN, AUTHOR_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", authorActual.getId()));
+
         assertTrue(authorRepository.isAttachedToBook(authorActual.getId()));
     }
 
     @DisplayName("Получение списка авторов по ISBN книги")
     @Test
     void getAuthorsByIsbnTest() {
+        Author author1 = authorRepository.insert(new Author("Test record"));
         List<Author> authorActualList = new ArrayList<>();
-        authorActualList.add(new Author(null, "Test record"));
+        authorActualList.add(author1);
+
+        jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
 
         for (Author author : authorActualList) {
-            author = authorRepository.insert(author);
-            authorRepository.createLinkToBook("TEST_BOOK_ASSOC", author.getId());
+            jdbc.update("INSERT INTO book_authors (ISBN, AUTHOR_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", author.getId()));
         }
 
-        List<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK_ASSOC");
+        List<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK");
         assertFalse(authorExpected.isEmpty());
         assertEquals(authorExpected.size(), authorActualList.size());
         assertEquals(authorExpected, authorActualList);
-    }
-
-    @DisplayName("Количество")
-    @Test
-    void countTest() {
-        long beginRecordCount = authorRepository.count();
-        Author author = new Author(1L, "Test record");
-        authorRepository.insert(author);
-        assertTrue(authorRepository.count() >= 1 && beginRecordCount < authorRepository.count());
     }
 }

@@ -5,7 +5,6 @@ import ru.otus.homework.entity.Author;
 import java.util.List;
 
 public interface AuthorRepository {
-    long count();
 
     Author getAuthorById(long id);
 
@@ -22,6 +21,4 @@ public interface AuthorRepository {
     Author insert(Author object);
 
     int update(Author object);
-
-    void createLinkToBook(String isbn, long authorId); 
 }

@@ -46,17 +46,6 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void addToBook(String isbn, String fullName) {
-        Author author = findByAuthorFullName(fullName);
-        if (author == null) {
-            author = add(fullName);
-        }
-        if (!authorRepository.isAttachedToBook(author.getId())) {
-            authorRepository.createLinkToBook(isbn, author.getId());
-        }
-    }
-
-    @Override
     public void outputAll() {
         List<Author> authors = authorRepository.getAll();
         ioService.outString(printService.objectsToPrint(authors));

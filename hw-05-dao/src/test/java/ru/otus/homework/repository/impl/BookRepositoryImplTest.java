@@ -4,10 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import ru.otus.homework.Application;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
@@ -22,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Тест BookDao")
-@SpringBootTest(classes = Application.class)
+@JdbcTest
+@ComponentScan(value = "ru.otus.homework")
 public class BookRepositoryImplTest {
 
     @MockBean
@@ -37,6 +38,8 @@ public class BookRepositoryImplTest {
     @BeforeEach
     public void clearData() {
         jdbc.update("DELETE books", Map.of());
+        jdbc.update("DELETE authors", Map.of());
+        jdbc.update("DELETE genres", Map.of());
     }
 
     @DisplayName("Добавление")
@@ -109,8 +112,6 @@ public class BookRepositoryImplTest {
 
         Book bookExpected = bookRepository.getBookById(bookActual.getIsbn());
         assertEquals(bookExpected, bookActual);
-
-        assertEquals(bookExpected, bookActual);
     }
 
     @DisplayName("Количество")
@@ -124,14 +125,14 @@ public class BookRepositoryImplTest {
 
     @DisplayName("Получение книг по автору")
     @Test
-    void getAllByAuthorTest(){
+    void getAllByAuthorTest() {
         List<Author> authorList1 = new ArrayList<>();
-        authorList1.add(new Author(null, "Author 1"));
-        authorList1.add(new Author(null, "Author 2"));
+        authorList1.add(new Author("Author 1"));
+        authorList1.add(new Author("Author 2"));
 
         List<Author> authorList2 = new ArrayList<>();
-        authorList2.add(new Author(null, "Author 2"));
-        authorList2.add(new Author(null, "Author 3"));
+        authorList2.add(new Author("Author 2"));
+        authorList2.add(new Author("Author 3"));
 
         List<Book> bookList = new ArrayList<>();
         bookList.add(new Book("XXXXXX1", "Title 1", authorList1, new ArrayList<>()));
@@ -159,16 +160,17 @@ public class BookRepositoryImplTest {
         assertEquals(booksExpected2, booksActual2);
         assertEquals(booksExpected3, booksActual3);
     }
+
     @DisplayName("Получение книг по жанру")
     @Test
-    void getAllByGenre(){
+    void getAllByGenre() {
         List<Genre> genreList1 = new ArrayList<>();
-        genreList1.add(new Genre(null, "Genre 1"));
-        genreList1.add(new Genre(null, "Genre 2"));
+        genreList1.add(new Genre("Genre 1"));
+        genreList1.add(new Genre("Genre 2"));
 
         List<Genre> genreList2 = new ArrayList<>();
-        genreList2.add(new Genre(null, "Genre 2"));
-        genreList2.add(new Genre(null, "Genre 3"));
+        genreList2.add(new Genre("Genre 2"));
+        genreList2.add(new Genre("Genre 3"));
 
         List<Book> bookList = new ArrayList<>();
         bookList.add(new Book("XXXXXX1", "Title 1", new ArrayList<>(), genreList1));

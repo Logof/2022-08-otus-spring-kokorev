@@ -25,12 +25,6 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public long count() {
-        Long count = jdbc.queryForObject("SELECT count(1) FROM genres", Map.of(), Long.class);
-        return count == null ? 0 : count;
-    }
-
-    @Override
     public void deleteById(long id) {
         jdbc.update("DELETE genres WHERE id = :id", Map.of("id", id));
     }
@@ -42,9 +36,9 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public List<Genre> getGenresByIsbn(String isbn) {
-        return jdbc.query("SELECT g.id, g.genre_name FROM genres g, assoc a" +
-                        " WHERE a.external_id = g.id and a.external_class = :externalClass and a.isbn = :isbn",
-                Map.of("isbn", isbn, "externalClass", Genre.class.getSimpleName()),
+        return jdbc.query("SELECT g.id, g.genre_name FROM genres g, book_genres a" +
+                        " WHERE a.genre_id = g.id and a.isbn = :isbn",
+                Map.of("isbn", isbn),
                 new BeanPropertyRowMapper<>(Genre.class));
     }
 
@@ -66,10 +60,9 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public boolean isAttachedToBook(long id) {
-        long countRow = jdbc.queryForObject("SELECT count(1) FROM genres g, assoc s" +
-                        " WHERE s.external_id = g.id and s.external_class = :externalClass and g.id = :id",
-                Map.of("id", id, "externalClass", Genre.class.getSimpleName()), Long.class);
+    public boolean isAttachedToBook(long genreId) {
+        long countRow = jdbc.queryForObject("SELECT count(1) FROM book_genres g WHERE g.genre_id = :genreId",
+                Map.of("genreId", genreId), Long.class);
         return countRow > 0;
     }
 
@@ -92,11 +85,5 @@ public class GenreRepositoryImpl implements GenreRepository {
                 Map.of("id", object.getId(), "genre_name", object.getGenreName()));
     }
 
-    @Override
-    public void createLinkToBook(String isbn, Long id) {
-        jdbc.update("INSERT INTO assoc (isbn, external_id, external_class) VALUES (:isbn, :externalId, :externalClass)",
-                Map.of("isbn", isbn,
-                        "externalId", id,
-                        "externalClass", Genre.class.getSimpleName()));
-    }
+
 }

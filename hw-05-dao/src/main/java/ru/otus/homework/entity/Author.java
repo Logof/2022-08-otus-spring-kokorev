@@ -10,4 +10,8 @@ import lombok.NoArgsConstructor;
 public class Author {
     private Long id;
     private String fullName;
+
+    public Author(String fullName) {
+        this(null, fullName);
+    }
 }
