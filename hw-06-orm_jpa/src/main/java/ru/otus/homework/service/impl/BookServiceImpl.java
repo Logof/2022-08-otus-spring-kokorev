@@ -7,6 +7,8 @@ import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.exception.DataNotFountException;
+import ru.otus.homework.exception.FieldRequiredException;
+import ru.otus.homework.exception.ObjectExistsException;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.repository.GenreRepository;
@@ -46,19 +48,16 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void updateTitle(Book book) {
         if (book == null || book.getIsbn() == null || book.getIsbn().isBlank() || book.getTitle() == null || book.getTitle().isBlank()) {
-            //todo Заменить на thorw
-            ioService.outString("Updated 0 book(s)");
-        } else {
-            ioService.outString(String.format("Updated %s book", bookRepository.update(book).getIsbn()));
+            throw new DataNotFountException("Updated 0 book(s)");
         }
+        ioService.outString(String.format("Updated %s book", bookRepository.update(book).getIsbn()));
     }
 
     @Override
     @Transactional
     public void add(Book book) {
         if (book == null || book.getIsbn() == null || book.getIsbn().isBlank() || book.getTitle() == null || book.getTitle().isBlank()) {
-            //todo Заменить на thorw
-            ioService.outString("");
+            throw new FieldRequiredException("isbn", "title");
         }
         bookRepository.insert(book);
         ioService.outString(String.format("Book added. ISBN: %s", book.getIsbn()));
@@ -111,8 +110,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     public void getByIsbn(String isbn) {
         if (isbn == null || isbn.isBlank()) {
-            //TODO Написать сообщение
-            throw new DataNotFountException("");
+            throw new FieldRequiredException("ISBN");
         }
         ioService.outString(printService.objectToPrint(bookRepository.getBookByIsbn(isbn)));
     }
@@ -140,7 +138,7 @@ public class BookServiceImpl implements BookService {
             }
 
             if (book.getGenres().contains(genre)) {
-                //TODO выкинуть ошибку
+                throw new ObjectExistsException("The book already has an added genre");
             } else {
                 book.getGenres().add(genre);
                 bookRepository.update(book);
@@ -159,7 +157,7 @@ public class BookServiceImpl implements BookService {
             }
 
             if (book.getGenres().contains(author)) {
-                //TODO выкинуть ошибку
+                throw new ObjectExistsException("The book already has an added author");
             } else {
                 book.getAuthors().add(author);
             }

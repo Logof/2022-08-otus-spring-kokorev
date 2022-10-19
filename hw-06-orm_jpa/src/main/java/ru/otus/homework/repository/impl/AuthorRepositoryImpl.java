@@ -80,8 +80,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         } else {
             entityManager.merge(object);
         }
-        //TODO попробовать без него
-        entityManager.flush();
         return object;
     }
 }

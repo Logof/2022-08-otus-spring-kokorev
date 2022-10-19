@@ -8,7 +8,9 @@ import ru.otus.homework.repository.BookRepository;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Repository
@@ -30,8 +32,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book getBookByIsbn(final String isbn) {
-        //TODO много запросов
-        Book book = entityManager.find(Book.class, isbn);
+        Map hints = new HashMap();
+        hints.put("javax.persistence.fetchgraph", entityManager.getEntityGraph("bookWithAll"));
+
+        Book book = entityManager.find(Book.class, isbn, hints);
         if (book == null) {
             throw new DataNotFountException("Not found or too many values found");
         }
