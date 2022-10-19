@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void updateTitle(Book book) {
         if (book == null || book.getIsbn() == null || book.getIsbn().isBlank() || book.getTitle() == null || book.getTitle().isBlank()) {
-            throw new DataNotFountException("Updated 0 book(s)");
+            throw new FieldRequiredException("isbn", "title");
         }
         ioService.outString(String.format("Updated %s book", bookRepository.update(book).getIsbn()));
     }
@@ -156,7 +156,7 @@ public class BookServiceImpl implements BookService {
                 author = authorRepository.save(new Author(fullName));
             }
 
-            if (book.getGenres().contains(author)) {
+            if (book.getAuthors().contains(author)) {
                 throw new ObjectExistsException("The book already has an added author");
             } else {
                 book.getAuthors().add(author);

@@ -11,12 +11,15 @@ import org.springframework.context.annotation.ComponentScan;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
+import ru.otus.homework.exception.FieldRequiredException;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
@@ -43,7 +46,7 @@ public class BookServiceTest {
     @Test
     @Transactional
     public void updateTest() {
-        Book book = new Book("XXX-X-XXX-XXXXX-0", "test title 0", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Book book = new Book("XXX-X-XXX-XXXXX-0", "test title 0", new HashSet<>(), new HashSet<>(), new HashSet<>());
         bookService.add(book);
         reset(outputServiceStreams);
         book.setTitle("New title 0");
@@ -51,24 +54,35 @@ public class BookServiceTest {
         verify(outputServiceStreams).outString("Updated XXX-X-XXX-XXXXX-0 book");
         reset(outputServiceStreams);
         book.setTitle(null);
-        bookService.updateTitle(book);
-        verify(outputServiceStreams).outString("Updated 0 book(s)");
+
+        Exception exceptionNull = assertThrows(FieldRequiredException.class, () -> {
+            bookService.updateTitle(book);
+        });
+        String expectedMessage = "Required field(s): isbn, title";
+        String actualMessageNull = exceptionNull.getMessage();
+        assertTrue(actualMessageNull.contains(expectedMessage));
+
+
         reset(outputServiceStreams);
+
         book.setTitle("");
-        bookService.updateTitle(book);
-        verify(outputServiceStreams).outString("Updated 0 book(s)");
+        Exception exceptionEmpty = assertThrows(FieldRequiredException.class, () -> {
+            bookService.updateTitle(book);
+        });
+        String actualMessageEmpty = exceptionEmpty.getMessage();
+        assertTrue(actualMessageEmpty.contains(expectedMessage));
         reset(outputServiceStreams);
     }
 
     @Test
     public void addTest() {
-        List<Author> authorList = new ArrayList<>();
+        Set<Author> authorList = new HashSet<>();
         authorList.add(new Author(null, "Автор Тест"));
         authorList.add(new Author(null, "Автор Тест 2"));
-        List<Genre> genreList = new ArrayList<>();
+        Set<Genre> genreList = new HashSet<>();
         genreList.add(new Genre(null, "Жанр"));
 
-        Book book = new Book("XXX-X-XXX-XXXXX-0", "New title 0",  authorList,  new ArrayList<>(), new ArrayList<>());
+        Book book = new Book("XXX-X-XXX-XXXXX-0", "New title 0", authorList, new HashSet<>(), new HashSet<>());
         bookService.add(book);
         verify(outputServiceStreams).outString(String.format("Book added. ISBN: %s", book.getIsbn()));
     }
@@ -87,7 +101,7 @@ public class BookServiceTest {
         bookService.getAll();
         verify(outputServiceStreams).outString("Total books: 0\n");
 
-        List<Book> books = new ArrayList<>();
+        Set<Book> books = new HashSet<>();
         books.add(new Book("XXX-X-XXX-XXXXX-0", "test title 0"));
         books.add(new Book("XXX-X-XXX-XXXXX-1", "test title 1"));
         books.add(new Book("XXX-X-XXX-XXXXX-2", "test title 2"));

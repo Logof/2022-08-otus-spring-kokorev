@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.service.print.GenrePrintService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +17,7 @@ public class GenrePrintServiceImplTest {
     @DisplayName("Подготовка к печати списка жанров")
     @Test
     public void verificationPreparingPrintAuthorsList() {
-        List<Genre> genreList = new ArrayList<>();
+        Set<Genre> genreList = new HashSet<>();
         genreList.add(new Genre(1L, "Genre 1"));
         genreList.add(new Genre(2L, "Genre 2"));
         genreList.add(new Genre(3L, "Genre 3"));

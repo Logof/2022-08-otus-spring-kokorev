@@ -16,9 +16,9 @@ import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,7 +95,7 @@ public class BookRepositoryImplTest {
         Book bookActual = new Book("XXX-X-XXX-XXXXX-X", "Test title");
         bookRepository.insert(bookActual);
 
-        List<Book> booksExpectedList = bookRepository.getAll();
+        Set<Book> booksExpectedList = bookRepository.getAll();
 
         assertThat(booksExpectedList, IsIterableContainingInOrder.contains(Collections.singletonList(bookActual).toArray()));
     }
@@ -117,21 +117,21 @@ public class BookRepositoryImplTest {
         Author author1 = entityManager.persist(new Author("Author 1"));
         Author author2 = entityManager.persist(new Author("Author 2"));
 
-        List<Author> authorList1 = new ArrayList<>();
+        Set<Author> authorList1 = new HashSet<>();
         authorList1.add(author1);
         authorList1.add(author2);
 
-        Book book1 = new Book("XXX-XXX-1", "Title 1", authorList1, new ArrayList<>(), new ArrayList<>());
+        Book book1 = new Book("XXX-XXX-1", "Title 1", authorList1, new HashSet<>(), new HashSet<>());
         bookRepository.insert(book1);
 
-        List<Book> booksActual1 = new ArrayList<>();
+        Set<Book> booksActual1 = new HashSet<>();
         booksActual1.add(book1);
 
-        List<Book> booksExpected1 = bookRepository.getAllByAuthor("Author 1");
-        List<Book> booksExpected2 = bookRepository.getAllByAuthor("Author 3");
+        Set<Book> booksExpected1 = bookRepository.getAllByAuthor("Author 1");
+        Set<Book> booksExpected2 = bookRepository.getAllByAuthor("Author 3");
 
         assertEquals(booksExpected1, booksActual1);
-        assertEquals(booksExpected2, new ArrayList<>());
+        assertEquals(booksExpected2, new HashSet<>());
     }
 
     @DisplayName("Получение книг по жанру")
@@ -140,20 +140,20 @@ public class BookRepositoryImplTest {
         Genre genre1 = entityManager.persist(new Genre("Genre 1"));
         Genre genre2 = entityManager.persist(new Genre("Genre 2"));
 
-        List<Genre> genres = new ArrayList<>();
+        Set<Genre> genres = new HashSet<>();
         genres.add(genre1);
         genres.add(genre2);
 
-        Book book = new Book("XXX-XXX-1", "Title 1", new ArrayList<>(), genres, new ArrayList<>());
+        Book book = new Book("XXX-XXX-1", "Title 1", new HashSet<>(), genres, new HashSet<>());
         bookRepository.insert(book);
 
-        List<Book> booksActual = new ArrayList<>();
+        Set<Book> booksActual = new HashSet<>();
         booksActual.add(book);
 
-        List<Book> booksExpected1 = bookRepository.getAllByGenre("Genre 1");
-        List<Book> booksExpected2 = bookRepository.getAllByGenre("Genre 3");
+        Set<Book> booksExpected1 = bookRepository.getAllByGenre("Genre 1");
+        Set<Book> booksExpected2 = bookRepository.getAllByGenre("Genre 3");
 
         assertEquals(booksExpected1, booksActual);
-        assertEquals(booksExpected2, new ArrayList<>());
+        assertEquals(booksExpected2, new HashSet<>());
     }
 }

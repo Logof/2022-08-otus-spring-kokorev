@@ -1,6 +1,5 @@
 package ru.otus.homework.repository.impl;
 
-import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +11,10 @@ import ru.otus.homework.entity.Book;
 import ru.otus.homework.repository.AuthorRepository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест AuthorDao")
@@ -83,14 +81,14 @@ public class AuthorRepositoryImplTest {
     @Test
     @Transactional
     void getAllTest() {
-        List<Author> booksActualList = new ArrayList<>();
+        Set<Author> booksActualList = new HashSet<>();
         booksActualList.add(new Author("Test record"));
 
         for (Author genre : booksActualList) {
             authorRepository.save(genre);
         }
 
-        List<Author> authorExpectedList = authorRepository.getAll();
+        Set<Author> authorExpectedList = authorRepository.getAll();
         assertEquals(authorExpectedList, booksActualList);
     }
 
@@ -125,7 +123,7 @@ public class AuthorRepositoryImplTest {
         assertFalse(authorRepository.isAttachedToBook(authorActual.getId()));
 
         Book book = new Book("TEST-ISBN", "Test title",
-                Collections.singletonList(authorActual), new ArrayList<>(), new ArrayList<>());
+                new HashSet<>(Collections.singletonList(authorActual)), new HashSet<>(), new HashSet<>());
         entityManager.persist(book);
 
         assertTrue(authorRepository.isAttachedToBook(authorActual.getId()));
@@ -135,15 +133,16 @@ public class AuthorRepositoryImplTest {
     @Test
     @Transactional
     void getAuthorsByIsbnTest() {
-        List<Author> authorActualList = new ArrayList<>();
+        Set<Author> authorActualList = new HashSet<>();
         authorActualList.add(new Author(null, "Test record"));
 
         Book book = new Book("TEST_BOOK_ASSOC", "TEST TITLE",
-                authorActualList, new ArrayList<>(), new ArrayList<>());
+                new HashSet<>(authorActualList), new HashSet<>(), new HashSet<>());
         entityManager.persist(book);
 
-        List<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK_ASSOC");
+        Set<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK_ASSOC");
         assertFalse(authorExpected.isEmpty());
-        assertThat(authorExpected, IsIterableContainingInOrder.contains(authorActualList.toArray()));
+        ///*IsIterableContainingInOrder.contains(*/
+        assertEquals(authorExpected, authorActualList);
     }
 }
