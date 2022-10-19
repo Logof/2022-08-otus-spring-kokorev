@@ -78,4 +78,10 @@ public class BookCommands extends CommonShell {
         bookService.addAuthorToBook(getCurrBook(), fullName);
     }
 
+    @ShellMethod(value = "Add an author to selected book. Accepts full name", key = "add-comment")
+    @ShellMethodAvailability(value = "isEmptyIsbn")
+    public void addCommentToBook(@ShellOption String commentText) {
+        bookService.addCommentToBook(getCurrBook(), commentText);
+    }
+
 }

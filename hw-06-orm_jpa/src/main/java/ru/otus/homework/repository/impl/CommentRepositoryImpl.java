@@ -6,7 +6,8 @@ import ru.otus.homework.repository.CommentRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Repository
 public class CommentRepositoryImpl implements CommentRepository {
@@ -39,9 +40,9 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> getAllByIsbn(String isbn) {
-        return entityManager
+    public Set<Comment> getAllByIsbn(String isbn) {
+        return new HashSet<>(entityManager
                 .createQuery("select c from Book b JOIN FETCH b.comments c where b.isbn = :isbn", Comment.class)
-                .setParameter("isbn", isbn).getResultList();
+                .setParameter("isbn", isbn).getResultList());
     }
 }

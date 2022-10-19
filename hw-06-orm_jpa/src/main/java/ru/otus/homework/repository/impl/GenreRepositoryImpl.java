@@ -9,8 +9,9 @@ import ru.otus.homework.repository.GenreRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Repository
 @Slf4j
@@ -30,12 +31,12 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public List<Genre> getAll() {
-        return entityManager.createQuery("SELECT g FROM Genre g", Genre.class).getResultList();
+    public Set<Genre> getAll() {
+        return new HashSet<>(entityManager.createQuery("SELECT g FROM Genre g", Genre.class).getResultList());
     }
 
     @Override
-    public List<Genre> getGenresByIsbn(String isbn) {
+    public Set<Genre> getGenresByIsbn(String isbn) {
         Book book = entityManager.find(Book.class, isbn);
         if (book == null) {
             return null;

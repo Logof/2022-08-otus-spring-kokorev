@@ -8,8 +8,9 @@ import ru.otus.homework.repository.AuthorRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Repository
 public class AuthorRepositoryImpl implements AuthorRepository {
@@ -45,12 +46,12 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
 
     @Override
-    public List<Author> getAll() {
-        return entityManager.createQuery("SELECT a FROM Author a", Author.class).getResultList();
+    public Set<Author> getAll() {
+        return new HashSet<>(entityManager.createQuery("SELECT a FROM Author a", Author.class).getResultList());
     }
 
     @Override
-    public List<Author> getAuthorsByIsbn(String isbn) {
+    public Set<Author> getAuthorsByIsbn(String isbn) {
         Book book = entityManager.find(Book.class, isbn);
         if (book == null) {
             return null;

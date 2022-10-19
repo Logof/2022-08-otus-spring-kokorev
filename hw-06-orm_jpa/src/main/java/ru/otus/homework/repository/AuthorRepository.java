@@ -2,7 +2,7 @@ package ru.otus.homework.repository;
 
 import ru.otus.homework.entity.Author;
 
-import java.util.List;
+import java.util.Set;
 
 public interface AuthorRepository {
     Author getAuthorById(long id);
@@ -11,9 +11,9 @@ public interface AuthorRepository {
 
     void delete(long id);
 
-    List<Author> getAll();
+    Set<Author> getAll();
 
-    List<Author> getAuthorsByIsbn(String isbn);
+    Set<Author> getAuthorsByIsbn(String isbn);
 
     boolean isAttachedToBook(long id);
 

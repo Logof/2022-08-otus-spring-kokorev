@@ -5,9 +5,11 @@ import ru.otus.homework.entity.Book;
 import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.repository.BookRepository;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
@@ -20,14 +22,15 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> getAll() {
-        return entityManager.createQuery("select b " +
-                "from Book b join fetch b.authors a" +
-                "            ", Book.class).getResultList();
+    public Set<Book> getAll() {
+        EntityGraph entityGraph = entityManager.getEntityGraph("bookWithAll");
+        return new HashSet<>(entityManager.createQuery("select b " +
+                "from Book b", Book.class).setHint("javax.persistence.fetchgraph", entityGraph).getResultList());
     }
 
     @Override
     public Book getBookByIsbn(final String isbn) {
+        //TODO много запросов
         Book book = entityManager.find(Book.class, isbn);
         if (book == null) {
             throw new DataNotFountException("Not found or too many values found");
@@ -54,19 +57,19 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> getAllByAuthor(String fullName) {
-        return entityManager
+    public Set<Book> getAllByAuthor(String fullName) {
+        return new HashSet<>(entityManager
                 .createQuery("select b from Book b JOIN FETCH b.authors a where a.fullName like :fullName", Book.class)
                 .setParameter("fullName", "%" + fullName + "%")
-                .getResultList();
+                .getResultList());
     }
 
     @Override
-    public List<Book> getAllByGenre(String genreName) {
-        return entityManager
+    public Set<Book> getAllByGenre(String genreName) {
+        return new HashSet<>(entityManager
                 .createQuery("select b from Book b JOIN FETCH b.genres g where g.genreName = :genreName", Book.class)
                 .setParameter("genreName", genreName)
-                .getResultList();
+                .getResultList());
     }
 
 }

@@ -1,10 +1,10 @@
 package ru.otus.homework.service.print;
 
-import java.util.List;
+import java.util.Set;
 
 public interface PrintService<T> {
 
-    String objectsToPrint(List<T> objects);
+    String objectsToPrint(Set<T> objects);
 
     String objectToPrint(T object);
 }

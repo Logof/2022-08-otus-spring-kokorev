@@ -8,7 +8,7 @@ import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.print.PrintService;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -45,7 +45,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional(readOnly = true)
     public void outputAll() {
-        List<Author> authors = authorRepository.getAll();
+        Set<Author> authors = authorRepository.getAll();
         ioService.outString(printService.objectsToPrint(authors));
     }
 }

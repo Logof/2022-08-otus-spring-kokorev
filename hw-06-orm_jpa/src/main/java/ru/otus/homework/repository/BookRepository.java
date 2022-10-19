@@ -2,20 +2,20 @@ package ru.otus.homework.repository;
 
 import ru.otus.homework.entity.Book;
 
-import java.util.List;
+import java.util.Set;
 
 public interface BookRepository {
     Book getBookByIsbn(String isbn);
 
     void deleteByIsbn(String isbn);
 
-    List<Book> getAll();
+    Set<Book> getAll();
 
     Book update(Book book);
 
     void insert(Book book);
 
-    List<Book> getAllByAuthor(String fullName);
+    Set<Book> getAllByAuthor(String fullName);
 
-    List<Book> getAllByGenre(String genreName);
+    Set<Book> getAllByGenre(String genreName);
 }

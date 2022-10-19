@@ -2,7 +2,7 @@ package ru.otus.homework.repository;
 
 import ru.otus.homework.entity.Comment;
 
-import java.util.List;
+import java.util.Set;
 
 public interface CommentRepository {
 
@@ -10,5 +10,5 @@ public interface CommentRepository {
 
     void deleteById(long id);
 
-    List<Comment> getAllByIsbn(String isbn);
+    Set<Comment> getAllByIsbn(String isbn);
 }

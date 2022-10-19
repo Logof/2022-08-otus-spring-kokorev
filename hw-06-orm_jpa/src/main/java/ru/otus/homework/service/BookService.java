@@ -27,4 +27,6 @@ public interface BookService {
     void addGenreToBook(String isbn, String genreName);
 
     void addAuthorToBook(String isbn, String fullName);
+
+    void addCommentToBook(String isbn, String commentText);
 }

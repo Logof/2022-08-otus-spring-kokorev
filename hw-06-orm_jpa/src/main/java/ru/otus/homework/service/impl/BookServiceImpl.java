@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
+import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.repository.AuthorRepository;
@@ -12,8 +13,9 @@ import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.print.PrintService;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -65,8 +67,8 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void add(Book book, List<String> authors, List<String> genres) {
-        List<Author> authorList = new ArrayList<>();
-        List<Genre> genreList = new ArrayList<>();
+        Set<Author> authorList = new HashSet<>();
+        Set<Genre> genreList = new HashSet<>();
 
         if (authors != null && authors.size() > 0) {
             for (String nameAuthor : authors) {
@@ -137,15 +139,17 @@ public class BookServiceImpl implements BookService {
                 genre = genreRepository.save(new Genre(genreName));
             }
 
-            if (book.getGenres().indexOf(genre) != 0) {
+            if (book.getGenres().contains(genre)) {
                 //TODO выкинуть ошибку
             } else {
                 book.getGenres().add(genre);
+                bookRepository.update(book);
             }
         }
     }
 
     @Override
+    @Transactional
     public void addAuthorToBook(String isbn, String fullName) {
         Book book = bookRepository.getBookByIsbn(isbn);
         if (book != null) {
@@ -154,11 +158,22 @@ public class BookServiceImpl implements BookService {
                 author = authorRepository.save(new Author(fullName));
             }
 
-            if (book.getGenres().indexOf(author) != 0) {
+            if (book.getGenres().contains(author)) {
                 //TODO выкинуть ошибку
             } else {
                 book.getAuthors().add(author);
             }
+            bookRepository.update(book);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void addCommentToBook(String isbn, String commentText) {
+        Book book = bookRepository.getBookByIsbn(isbn);
+        if (book != null) {
+            book.getComments().add(new Comment(commentText));
+            bookRepository.update(book);
         }
     }
 }

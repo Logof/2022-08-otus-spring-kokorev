@@ -6,7 +6,7 @@ import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.Genre;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +28,7 @@ public class BookPrintService implements PrintService<Book> {
 
 
     @Override
-    public String objectsToPrint(List<Book> objects) {
+    public String objectsToPrint(Set<Book> objects) {
         return String.format("Total books: %d%s%s", objects.size(), System.lineSeparator(),
                 objects.stream().map(book -> objectToPrint(book))
                         .collect(Collectors.joining(System.lineSeparator(), "", "")));

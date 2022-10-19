@@ -1,6 +1,7 @@
 package ru.otus.homework.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.service.CommentService;
@@ -22,17 +23,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void getAllByIsbn(String isbn) {
         ioService.outString(printService.objectsToPrint(commentRepository.getAllByIsbn(isbn)));
     }
 
     @Override
-    public void add(String isbn, String commentText) {
-        Comment comment = commentRepository.save(new Comment(commentText));
-        ioService.outString(String.format("Comment added. ID: %d", comment.getId()));
-    }
-
-    @Override
+    @Transactional
     public void delete(long commentId) {
         commentRepository.deleteById(commentId);
         ioService.outString("Entry deleted");

@@ -2,15 +2,15 @@ package ru.otus.homework.repository;
 
 import ru.otus.homework.entity.Genre;
 
-import java.util.List;
+import java.util.Set;
 
 public interface GenreRepository {
 
     void deleteById(long id);
 
-    List<Genre> getAll(); 
+    Set<Genre> getAll();
 
-    List<Genre> getGenresByIsbn(String isbn);
+    Set<Genre> getGenresByIsbn(String isbn);
 
     Genre getGenreById(Long id);
 
