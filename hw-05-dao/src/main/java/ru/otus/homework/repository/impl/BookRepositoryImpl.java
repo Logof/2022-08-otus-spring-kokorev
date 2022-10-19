@@ -43,7 +43,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book getBookById(final String isbn) {
         Book book = jdbc.query("" +
-                        "SELECT b.isbn, b.title," +
+                        "SELECT distinct b.isbn, b.title," +
                         "       bg.id as `genres.id`, bg.genre_name as `genres.genreName`," +
                         "       ba.id as `authors.id`, ba.full_name as `authors.fullName`" +
                         "  FROM books b left join (SELECT a.id, a.full_name, ba.ISBN" +
@@ -73,7 +73,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> getAll() {
         List<Book> books = jdbc.query("" +
-                        "SELECT b.isbn, b.title," +
+                        "SELECT distinct b.isbn, b.title," +
                         "       bg.id as `genres.id`, bg.genre_name as `genres.genreName`," +
                         "       ba.id as `authors.id`, ba.full_name as `authors.fullName`" +
                         "  FROM books b left join (SELECT a.id, a.full_name, ba.ISBN" +
@@ -169,7 +169,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> getAllByAuthor(String fullName) {
         return jdbc.query("" +
-                        "SELECT b.isbn, b.title," +
+                        "SELECT distinct b.isbn, b.title," +
                         "       bg.id as `genres.id`, bg.genre_name as `genres.genreName`," +
                         "       ba.id as `authors.id`, ba.full_name as `authors.fullName`" +
                         "  FROM books b left join (SELECT a.id, a.full_name, ba.ISBN" +
@@ -189,7 +189,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> getAllByGenre(String genreName) {
         return jdbc.query("" +
-                        "SELECT b.isbn, b.title," +
+                        "SELECT distinct b.isbn, b.title," +
                         "       bg.id as `genres.id`, bg.genre_name as `genres.genreName`," +
                         "       ba.id as `authors.id`, ba.full_name as `authors.fullName`" +
                         "  FROM books b left join (SELECT a.id, a.full_name, ba.ISBN" +
