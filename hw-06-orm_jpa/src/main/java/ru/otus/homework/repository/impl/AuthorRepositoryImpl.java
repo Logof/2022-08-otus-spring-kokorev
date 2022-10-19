@@ -62,7 +62,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     public boolean isAttachedToBook(long id) {
         try {
             return Objects.nonNull(entityManager
-                    .createQuery("select b from Book b join b.authors a where a.id = :id", Book.class)
+                    .createQuery("select b from Book b JOIN FETCH b.authors a where a.id = :id", Book.class)
                     .setParameter("id", id).getSingleResult());
         } catch (NoResultException e) {
             return false;

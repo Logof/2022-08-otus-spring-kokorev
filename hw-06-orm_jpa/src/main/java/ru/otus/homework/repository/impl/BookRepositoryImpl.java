@@ -21,7 +21,9 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> getAll() {
-        return entityManager.createQuery("select b from Book b", Book.class).getResultList();
+        return entityManager.createQuery("select b " +
+                "from Book b join fetch b.authors a" +
+                "            ", Book.class).getResultList();
     }
 
     @Override
@@ -54,7 +56,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> getAllByAuthor(String fullName) {
         return entityManager
-                .createQuery("select b from Book b join b.authors a where a.fullName like :fullName", Book.class)
+                .createQuery("select b from Book b JOIN FETCH b.authors a where a.fullName like :fullName", Book.class)
                 .setParameter("fullName", "%" + fullName + "%")
                 .getResultList();
     }
@@ -62,7 +64,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> getAllByGenre(String genreName) {
         return entityManager
-                .createQuery("select b from Book b join b.genres g where g.genreName = :genreName", Book.class)
+                .createQuery("select b from Book b JOIN FETCH b.genres g where g.genreName = :genreName", Book.class)
                 .setParameter("genreName", genreName)
                 .getResultList();
     }

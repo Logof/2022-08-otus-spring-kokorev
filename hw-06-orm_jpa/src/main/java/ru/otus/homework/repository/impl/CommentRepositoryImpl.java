@@ -41,7 +41,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     public List<Comment> getAllByIsbn(String isbn) {
         return entityManager
-                .createQuery("select c from Book b join b.comments c where b.isbn = :isbn", Comment.class)
+                .createQuery("select c from Book b JOIN FETCH b.comments c where b.isbn = :isbn", Comment.class)
                 .setParameter("isbn", isbn).getResultList();
     }
 }

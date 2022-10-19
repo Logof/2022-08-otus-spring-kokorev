@@ -61,7 +61,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     public boolean isAttachedToBook(long id) {
         try {
             return Objects.nonNull(entityManager
-                    .createQuery("select b from Book b join b.genres g where g.id = :id", Book.class)
+                    .createQuery("select b from Book b JOIN FETCH b.genres g where g.id = :id", Book.class)
                     .setParameter("id", id).getSingleResult());
         } catch (NoResultException e) {
             return false;

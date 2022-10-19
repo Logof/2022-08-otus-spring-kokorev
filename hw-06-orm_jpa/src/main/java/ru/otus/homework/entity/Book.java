@@ -14,13 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "books")
+@Table(name = "books")/*
 @NamedEntityGraph(
         attributeNodes = {
                 @NamedAttributeNode("genres"),
                 @NamedAttributeNode("authors"),
                 @NamedAttributeNode("comments"),
-        })
+        })*/
 public class Book {
     @Id
     @Column(name = "isbn", nullable = false, updatable = false)
@@ -33,14 +33,15 @@ public class Book {
         this(isbn, title, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
+
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_isbn"),
+    @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "books_genres", joinColumns = @JoinColumn(name = "book_isbn"),
+    @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 

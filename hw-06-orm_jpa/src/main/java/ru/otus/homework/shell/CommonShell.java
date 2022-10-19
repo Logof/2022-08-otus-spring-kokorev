@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public abstract class CommonShell {
-
     @Setter
     @Getter
     private String currBook;
