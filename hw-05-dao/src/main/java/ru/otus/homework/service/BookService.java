@@ -21,4 +21,8 @@ public interface BookService {
     void getAllByAuthor(String fullName);
 
     void getAllByGenre(String genreName);
+
+    void addGenreToBook(String isbn, String genreName);
+
+    void addAuthorToBook(String isbn, String fullName);
 }

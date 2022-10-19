@@ -5,10 +5,10 @@ import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.exception.DataNotFountException;
+import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.service.AuthorService;
+import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.BookService;
-import ru.otus.homework.service.GenreService;
 import ru.otus.homework.service.PrintService;
 
 import java.util.ArrayList;
@@ -19,20 +19,23 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
+    private final AuthorRepository authorRepository;
+
+    private final GenreRepository genreRepository;
+
     private final PrintService<Book> printService;
 
-    private final AuthorService authorService;
-    private final GenreService genreService;
     private final OutputServiceStreams ioService;
 
     public BookServiceImpl(BookRepository bookRepository,
+                           AuthorRepository authorRepository,
+                           GenreRepository genreRepository,
                            PrintService<Book> printService,
-                           AuthorService authorService,
-                           GenreService genreService, OutputServiceStreams ioService) {
+                           OutputServiceStreams ioService) {
         this.bookRepository = bookRepository;
         this.printService = printService;
-        this.authorService = authorService;
-        this.genreService = genreService;
+        this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
         this.ioService = ioService;
     }
 
@@ -55,14 +58,14 @@ public class BookServiceImpl implements BookService {
 
         if (authors != null && authors.size() > 0) {
             for (String nameAuthor : authors) {
-                Author author = authorService.findByAuthorFullName(nameAuthor);
+                Author author = authorRepository.getByFullName(nameAuthor);
                 authorList.add(author != null ? author : new Author(null, nameAuthor));
             }
         }
 
         if (genres != null && genres.size() > 0) {
             for (String nameGenre : genres) {
-                Genre genre = genreService.findByGenreName(nameGenre);
+                Genre genre = genreRepository.getGenreByName(nameGenre);
                 genreList.add( genre != null ? genre : new Genre(null, nameGenre));
             }
         }
@@ -101,6 +104,29 @@ public class BookServiceImpl implements BookService {
     @Override
     public void getAllByGenre(String genreName) {
         ioService.outString(printService.objectsToPrint(bookRepository.getAllByGenre(genreName)));
+    }
+
+    @Override
+    public void addGenreToBook(String isbn, String genreName) {
+        Genre genre = genreRepository.getGenreByName(genreName);
+        if (genre == null) {
+            genre = genreRepository.insert(new Genre(genreName));
+        }
+
+        if (!genreRepository.isAttachedToBook(genre.getId())) {
+            bookRepository.addGenreToBook(isbn, genre.getId());
+        }
+    }
+
+    @Override
+    public void addAuthorToBook(String isbn, String fullName) {
+        Author author = authorRepository.getByFullName(fullName);
+        if (author == null) {
+            author = authorRepository.insert(new Author(fullName));
+        }
+        if (!authorRepository.isAttachedToBook(author.getId())) {
+            bookRepository.addAuthorToBook(isbn, author.getId());
+        }
     }
 
 }

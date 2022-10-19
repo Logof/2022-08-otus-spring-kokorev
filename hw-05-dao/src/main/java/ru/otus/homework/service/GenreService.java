@@ -10,6 +10,4 @@ public interface GenreService {
     Genre findByGenreName(String genreName);
 
     void outputAll();
-
-    void addToBook(String isbn, String genreName);
 }
