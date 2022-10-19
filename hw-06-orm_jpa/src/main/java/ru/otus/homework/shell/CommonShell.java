@@ -5,11 +5,11 @@ import lombok.Setter;
 import org.springframework.shell.Availability;
 import org.springframework.stereotype.Component;
 
-@Getter
 @Component
-public class CommonShell {
+public abstract class CommonShell {
 
     @Setter
+    @Getter
     private String currBook;
 
     public Availability isEmptyIsbn() {

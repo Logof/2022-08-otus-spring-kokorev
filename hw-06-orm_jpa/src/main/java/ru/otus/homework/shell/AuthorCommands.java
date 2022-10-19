@@ -6,14 +6,11 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.service.AuthorService;
 
 @ShellComponent
-public class AuthorCommands {
-
-    private final CommonShell commonShell;
+public class AuthorCommands extends CommonShell {
 
     private final AuthorService authorService;
 
-    protected AuthorCommands(CommonShell commonShell, AuthorService authorService) {
-        this.commonShell = commonShell;
+    protected AuthorCommands(AuthorService authorService) {
         this.authorService = authorService;
     }
 

@@ -13,9 +13,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity // Указывает, что данный класс является сущностью
-@Table(name = "books") // Задает имя таблицы, на которую будет отображаться сущность
-@NamedEntityGraph(name = "assoc-entity-graph",
+@Entity
+@Table(name = "books")
+@NamedEntityGraph(
         attributeNodes = {
                 @NamedAttributeNode("genres"),
                 @NamedAttributeNode("authors"),
@@ -29,25 +29,22 @@ public class Book {
     @Column(name = "title", nullable = false)
     private String title;
 
-    public Book (String isbn, String title) {
+    public Book(String isbn, String title) {
         this(isbn, title, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "book_authors",
-            joinColumns = @JoinColumn(name = "book_isbn"),
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_isbn"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "books_genres",
-            joinColumns = @JoinColumn(name = "book_isbn"),
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "books_genres", joinColumns = @JoinColumn(name = "book_isbn"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 
-    //TODO настроить связь
-    @OneToMany(targetEntity = Comment.class)
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "isbn")
     private List<Comment> comments;
 

@@ -7,26 +7,23 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.service.CommentService;
 
 @ShellComponent
-public class CommentShell {
-
-    private final CommonShell commonShell;
+public class CommentShell extends CommonShell {
 
     private final CommentService commentService;
 
-    public CommentShell(CommonShell commonShell, CommentService commentService) {
-        this.commonShell = commonShell;
+    public CommentShell(CommentService commentService) {
         this.commentService = commentService;
     }
 
     @ShellMethod(value = "Output all comments for selected book", key = "print-comment")
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void outputCommentsForSelectedBook() {
-        commentService.getAllByIsbn(commonShell.getCurrBook());
+        commentService.getAllByIsbn(getCurrBook());
     }
 
     @ShellMethod(value = "Add comment for selected book", key = "add-comment")
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void addCommentToSelectedBook(@ShellOption(help = "comment text") String commentText) {
-        commentService.add(commonShell.getCurrBook(), commentText);
+        commentService.add(getCurrBook(), commentText);
     }
 }

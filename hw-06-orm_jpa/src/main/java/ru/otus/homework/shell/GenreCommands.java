@@ -6,14 +6,11 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.service.GenreService;
 
 @ShellComponent
-public class GenreCommands {
-
-    private final CommonShell commonShell;
+public class GenreCommands extends CommonShell {
 
     private final GenreService genreService;
 
-    public GenreCommands(CommonShell commonShell, GenreService genreService) {
-        this.commonShell = commonShell;
+    public GenreCommands(GenreService genreService) {
         this.genreService = genreService;
     }
 
