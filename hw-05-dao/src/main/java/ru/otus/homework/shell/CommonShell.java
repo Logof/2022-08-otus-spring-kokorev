@@ -10,7 +10,7 @@ public abstract class CommonShell {
 
     @Setter
     @Getter
-    private String currBook;
+    private static String currBook;
 
     public Availability isEmptyIsbn() {
         return Objects.isNull(currBook)
