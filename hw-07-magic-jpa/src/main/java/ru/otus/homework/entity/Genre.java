@@ -1,6 +1,8 @@
 package ru.otus.homework.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,6 +10,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "genres")
 public class Genre {
     @Id
@@ -17,18 +21,10 @@ public class Genre {
     @Column(name = "GENRE_NAME", nullable = false, unique = true)
     private String genreName;
 
-    public Genre() {
-        this(null, null);
-    }
-
     public Genre(String genreName) {
         this(null, genreName);
     }
 
-    public Genre(Long id, String genreName) {
-        this.id = id;
-        this.genreName = genreName;
-    }
 
 
 }

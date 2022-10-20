@@ -8,6 +8,8 @@ import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.GenreService;
 import ru.otus.homework.service.print.PrintService;
 
+import java.util.HashSet;
+
 @Service
 public class GenreServiceImpl implements GenreService {
 
@@ -38,14 +40,14 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     public void add(String genreName) {
-        Genre genre = genreRepository.save(new Genre(genreName));
+        Genre genre = genreRepository.saveAndFlush(new Genre(genreName));
         ioService.outString(String.format("Genre added. ID: %d", genre.getId()));
     }
 
     @Override
     @Transactional(readOnly = true)
     public void outputAll() {
-        ioService.outString(printService.objectsToPrint(genreRepository.getAll()));
+        ioService.outString(printService.objectsToPrint(new HashSet<>(genreRepository.findAll())));
     }
 
 }

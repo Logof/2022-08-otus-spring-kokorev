@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.service.print.CommentPrintService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,7 +19,7 @@ public class CommentPrintServiceImplTest {
     @DisplayName("Подготовка к печати списка комментариев")
     @Test
     public void verificationPreparingPrintAuthorsList() {
-        List<Comment> authorList = new ArrayList<>();
+        Set<Comment> authorList = new HashSet<>();
         authorList.add(new Comment(1L, "Comment 1"));
         authorList.add(new Comment(2L, "Comment 2"));
         authorList.add(new Comment(3L, "Comment 3"));

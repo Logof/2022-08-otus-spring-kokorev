@@ -8,6 +8,7 @@ import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.print.PrintService;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -30,14 +31,14 @@ public class AuthorServiceImpl implements AuthorService {
         if (authorRepository.isAttachedToBook(authorId)) {
             throw new DeleteDataException("It' i's not possible to delete an entry while it has the possibility of an association");
         }
-        authorRepository.delete(authorId);
+        authorRepository.deleteById(authorId);
         ioService.outString("Entry deleted");
     }
 
     @Override
     @Transactional
     public Author add(String fullName) {
-        Author author = authorRepository.save(new Author(fullName));
+        Author author = authorRepository.saveAndFlush(new Author(fullName));
         ioService.outString(String.format("Author added. ID: %d", author.getId()));
         return author;
     }
@@ -45,7 +46,8 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional(readOnly = true)
     public void outputAll() {
-        Set<Author> authors = authorRepository.getAll();
+        //TODO
+        Set<Author> authors = new HashSet<>(authorRepository.findAll());
         ioService.outString(printService.objectsToPrint(authors));
     }
 }

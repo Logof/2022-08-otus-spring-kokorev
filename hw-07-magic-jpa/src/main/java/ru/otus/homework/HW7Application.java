@@ -12,5 +12,4 @@ public class HW7Application {
         Console.main();
         SpringApplication.run(HW7Application.class, args);
     }
-
 }

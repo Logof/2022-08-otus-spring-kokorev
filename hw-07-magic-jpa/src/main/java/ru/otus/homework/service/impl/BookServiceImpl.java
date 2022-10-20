@@ -48,9 +48,9 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void updateTitle(Book book) {
         if (book == null || book.getIsbn() == null || book.getIsbn().isBlank() || book.getTitle() == null || book.getTitle().isBlank()) {
-            throw new DataNotFountException("Updated 0 book(s)");
+            throw new FieldRequiredException("isbn", "title");
         }
-        ioService.outString(String.format("Updated %s book", bookRepository.update(book).getIsbn()));
+        ioService.outString(String.format("Updated %s book", bookRepository.saveAndFlush(book).getIsbn()));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BookServiceImpl implements BookService {
         if (book == null || book.getIsbn() == null || book.getIsbn().isBlank() || book.getTitle() == null || book.getTitle().isBlank()) {
             throw new FieldRequiredException("isbn", "title");
         }
-        bookRepository.insert(book);
+        bookRepository.saveAndFlush(book);
         ioService.outString(String.format("Book added. ISBN: %s", book.getIsbn()));
     }
 
@@ -85,14 +85,14 @@ public class BookServiceImpl implements BookService {
         book.setAuthors(authorList);
         book.setGenres(genreList);
 
-        bookRepository.insert(book);
+        bookRepository.saveAndFlush(book);
     }
 
 
     @Override
     @Transactional
     public void deleteByIsbn(String isbn) {
-        Book book = bookRepository.getBookByIsbn(isbn);
+        Book book = bookRepository.getReferenceById(isbn);
         if (book == null) {
             throw new DataNotFountException(String.format("Book with ISBN %s not found", isbn));
         }
@@ -103,7 +103,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public void getAll() {
-        ioService.outString(printService.objectsToPrint(bookRepository.getAll()));
+        ioService.outString(printService.objectsToPrint(new HashSet<>(bookRepository.findAll())));
     }
 
     @Override
@@ -112,7 +112,7 @@ public class BookServiceImpl implements BookService {
         if (isbn == null || isbn.isBlank()) {
             throw new FieldRequiredException("ISBN");
         }
-        ioService.outString(printService.objectToPrint(bookRepository.getBookByIsbn(isbn)));
+        ioService.outString(printService.objectToPrint(bookRepository.getReferenceById(isbn)));
     }
 
     @Override
@@ -130,18 +130,18 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void addGenreToBook(String isbn, String genreName) {
-        Book book = bookRepository.getBookByIsbn(isbn);
+        Book book = bookRepository.getReferenceById(isbn);
         if (book != null) {
             Genre genre = genreRepository.getGenreByName(genreName);
             if (genre == null) {
-                genre = genreRepository.save(new Genre(genreName));
+                genre = genreRepository.saveAndFlush(new Genre(genreName));
             }
 
             if (book.getGenres().contains(genre)) {
                 throw new ObjectExistsException("The book already has an added genre");
             } else {
                 book.getGenres().add(genre);
-                bookRepository.update(book);
+                bookRepository.saveAndFlush(book);
             }
         }
     }
@@ -149,11 +149,11 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void addAuthorToBook(String isbn, String fullName) {
-        Book book = bookRepository.getBookByIsbn(isbn);
+        Book book = bookRepository.getReferenceById(isbn);
         if (book != null) {
             Author author = authorRepository.getByFullName(fullName);
             if (author == null) {
-                author = authorRepository.save(new Author(fullName));
+                author = authorRepository.saveAndFlush(new Author(fullName));
             }
 
             if (book.getGenres().contains(author)) {
@@ -161,17 +161,17 @@ public class BookServiceImpl implements BookService {
             } else {
                 book.getAuthors().add(author);
             }
-            bookRepository.update(book);
+            bookRepository.saveAndFlush(book);
         }
     }
 
     @Override
     @Transactional
     public void addCommentToBook(String isbn, String commentText) {
-        Book book = bookRepository.getBookByIsbn(isbn);
+        Book book = bookRepository.getReferenceById(isbn);
         if (book != null) {
             book.getComments().add(new Comment(commentText));
-            bookRepository.update(book);
+            bookRepository.saveAndFlush(book);
         }
     }
 }

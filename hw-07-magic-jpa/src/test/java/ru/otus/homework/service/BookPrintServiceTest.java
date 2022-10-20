@@ -10,8 +10,8 @@ import ru.otus.homework.entity.Genre;
 import ru.otus.homework.service.print.BookPrintService;
 import ru.otus.homework.service.print.PrintService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,10 +33,10 @@ public class BookPrintServiceTest {
     @DisplayName("Подготовка к печати списка книг")
     @Test
     public void verificationPreparingPrintBooksList() {
-        List<Book> bookList = new ArrayList<>();
-        bookList.add(new Book("ISBN1", "Book 1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        bookList.add(new Book("ISBN2", "Book 2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        bookList.add(new Book("ISBN3", "Book 3", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        Set<Book> bookList = new HashSet<>();
+        bookList.add(new Book("ISBN1", "Book 1", new HashSet<>(), new HashSet<>(), new HashSet<>()));
+        bookList.add(new Book("ISBN2", "Book 2", new HashSet<>(), new HashSet<>(), new HashSet<>()));
+        bookList.add(new Book("ISBN3", "Book 3", new HashSet<>(), new HashSet<>(), new HashSet<>()));
 
         String stringExpect = bookPrintService.objectsToPrint(bookList);
         String stringActual = "Total books: 3" + System.lineSeparator() +
@@ -62,7 +62,7 @@ public class BookPrintServiceTest {
     @DisplayName("Подготовка к печати книги")
     @Test
     public void verificationPreparingPrintBook() {
-        Book book = new Book("ISBN1", "Book 1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Book book = new Book("ISBN1", "Book 1", new HashSet<>(), new HashSet<>(), new HashSet<>());
         String stringExpect = bookPrintService.objectToPrint(book);
         String stringActual = "Title: Book 1 (ISBN: ISBN1)" + System.lineSeparator() +
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +

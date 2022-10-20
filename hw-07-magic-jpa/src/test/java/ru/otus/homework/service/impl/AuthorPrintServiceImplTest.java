@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.service.print.AuthorPrintService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +17,7 @@ public class AuthorPrintServiceImplTest {
     @DisplayName("Подготовка к печати списка авторов")
     @Test
     public void verificationPreparingPrintAuthorsList() {
-        List<Author> authorList = new ArrayList<>();
+        Set<Author> authorList = new HashSet<>();
         authorList.add(new Author(1L, "Author 1"));
         authorList.add(new Author(2L, "Author 2"));
         authorList.add(new Author(3L, "Author 3"));

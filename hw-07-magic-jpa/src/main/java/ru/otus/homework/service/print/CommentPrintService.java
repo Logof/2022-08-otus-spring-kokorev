@@ -3,6 +3,7 @@ package ru.otus.homework.service.print;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.entity.Comment;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,8 +12,9 @@ public class CommentPrintService implements PrintService<Comment> {
     @Override
     public String objectsToPrint(Set<Comment> objects) {
         return String.format("Total comments: %d%s%s", objects.size(), System.lineSeparator(),
-                objects.stream().map(comment -> String.format("%s (id=%d)", comment.getCommentText(), comment.getId()))
-                        .collect(Collectors.joining(System.lineSeparator() + "\t", "\t", "")));
+                objects.stream().sorted(Comparator.comparing(Comment::getId)).collect(Collectors.toList())
+                        .stream().map(book -> objectToPrint(book))
+                        .collect(Collectors.joining(System.lineSeparator(), "", "")));
     }
 
     @Override
