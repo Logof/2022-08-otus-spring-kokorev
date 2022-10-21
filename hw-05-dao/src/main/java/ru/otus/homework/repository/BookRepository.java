@@ -5,7 +5,6 @@ import ru.otus.homework.entity.Book;
 import java.util.List;
 
 public interface BookRepository {
-    long count();
 
     Book getBookById(String isbn);
 
@@ -24,4 +23,8 @@ public interface BookRepository {
     void addAuthorToBook(String isbn, long authorId);
 
     void addGenreToBook(String isbn, long id);
+
+    //List<Author> getBooksAuthors(String isbn);
+
+    //List<Genre> getBookGenres(String isbn);
 }

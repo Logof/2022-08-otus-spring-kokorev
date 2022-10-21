@@ -10,13 +10,11 @@ public interface GenreRepository {
 
     List<Genre> getAll(); 
 
-    List<Genre> getGenresByIsbn(String isbn);
-
     Genre getGenreById(Long id);
 
     Genre getGenreByName(String genreName);
 
-    boolean isAttachedToBook(long id); 
+    boolean genreHasBooks(long id);
 
     Genre insert(Genre object);
 

@@ -14,9 +14,7 @@ public interface AuthorRepository {
 
     List<Author> getAll();
 
-    List<Author> getAuthorsByIsbn(String isbn);
-
-    boolean isAttachedToBook(long id);
+    boolean authorHasBooks(long id);
 
     Author insert(Author object);
 

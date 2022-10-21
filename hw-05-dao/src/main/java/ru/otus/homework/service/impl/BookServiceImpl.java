@@ -11,7 +11,6 @@ import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.PrintService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,31 +51,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void add(Book book, List<String> authors, List<String> genres) {
-        List<Author> authorList = new ArrayList<>();
-        List<Genre> genreList = new ArrayList<>();
-
-        if (authors != null && authors.size() > 0) {
-            for (String nameAuthor : authors) {
-                Author author = authorRepository.getByFullName(nameAuthor);
-                authorList.add(author != null ? author : new Author(null, nameAuthor));
-            }
-        }
-
-        if (genres != null && genres.size() > 0) {
-            for (String nameGenre : genres) {
-                Genre genre = genreRepository.getGenreByName(nameGenre);
-                genreList.add( genre != null ? genre : new Genre(null, nameGenre));
-            }
-        }
-        book.setAuthors(authorList);
-        book.setGenres(genreList);
-
-        bookRepository.insert(book);
-    }
-
-
-    @Override
     public void deleteById(String isbn) {
         if (bookRepository.getBookById(isbn) == null) {
             throw new DataNotFountException(String.format("Book with ISBN %s not found", isbn));
@@ -113,7 +87,7 @@ public class BookServiceImpl implements BookService {
             genre = genreRepository.insert(new Genre(genreName));
         }
 
-        if (!genreRepository.isAttachedToBook(genre.getId())) {
+        if (!genreRepository.genreHasBooks(genre.getId())) {
             bookRepository.addGenreToBook(isbn, genre.getId());
         }
     }
@@ -124,7 +98,7 @@ public class BookServiceImpl implements BookService {
         if (author == null) {
             author = authorRepository.insert(new Author(fullName));
         }
-        if (!authorRepository.isAttachedToBook(author.getId())) {
+        if (!authorRepository.authorHasBooks(author.getId())) {
             bookRepository.addAuthorToBook(isbn, author.getId());
         }
     }

@@ -34,13 +34,7 @@ public class GenreRepositoryImpl implements GenreRepository {
         return jdbc.query("SELECT id, genre_name FROM genres", new BeanPropertyRowMapper<>(Genre.class));
     }
 
-    @Override
-    public List<Genre> getGenresByIsbn(String isbn) {
-        return jdbc.query("SELECT g.id, g.genre_name FROM genres g, book_genres a" +
-                        " WHERE a.genre_id = g.id and a.isbn = :isbn",
-                Map.of("isbn", isbn),
-                new BeanPropertyRowMapper<>(Genre.class));
-    }
+
 
     @Override
     public Genre getGenreById(Long id) {
@@ -60,7 +54,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public boolean isAttachedToBook(long genreId) {
+    public boolean genreHasBooks(long genreId) {
         long countRow = jdbc.queryForObject("SELECT count(1) FROM book_genres g WHERE g.genre_id = :genreId",
                 Map.of("genreId", genreId), Long.class);
         return countRow > 0;
@@ -68,10 +62,6 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public Genre insert(Genre object) {
-        if (object == null || object.getGenreName() == null || object.getGenreName().isBlank()) {
-            return null;
-        }
-
         jdbc.update("INSERT INTO genres (genre_name) VALUES (:genreName)",
                 new MapSqlParameterSource("genreName", object.getGenreName()),
                 holder);

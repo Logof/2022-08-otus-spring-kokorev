@@ -1,60 +1,35 @@
 package ru.otus.homework.mapper;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
-public class BookMapper {
+public class BookMapper implements ResultSetExtractor<Map<String, Book>> {
 
-    public static final ResultSetExtractor<Book> bookWithAuthorsAndGenresResultExtractor = (resultSet) -> {
-        Book book = null;
-        while (resultSet.next()) {
-            if (resultSet.isFirst()) {
-                book = new Book(resultSet.getString("isbn"), resultSet.getString("title"));
-            }
-            String authorFullName = resultSet.getString("authors.fullName");
-            if (authorFullName != null && !authorFullName.isBlank()) {
-                book.getAuthors().add(new Author(resultSet.getLong("authors.id"), resultSet.getString("authors.fullName")));
-            }
+    @Override
+    public Map<String, Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
 
-            String genreName = resultSet.getString("genres.genreName");
-            if (genreName != null && !genreName.isBlank()) {
-                book.getGenres().add(new Genre(resultSet.getLong("genres.id"), resultSet.getString("genres.genreName")));
-            }
-        }
-        return book;
-    };
-
-
-    public static final ResultSetExtractor<List<Book>> booksWithAuthorsAndGenresResultExtractor = (resultSet) -> {
-
-        Book currBook = null;
-        List<Book> bookList = new ArrayList<>();
-        while (resultSet.next()) {
-            if (resultSet.isFirst()) {
-                currBook = new Book(resultSet.getString("isbn"), resultSet.getString("title"));
-                bookList.add(currBook);
-            } else {
-                if (!resultSet.getString("isbn").equalsIgnoreCase(currBook.getIsbn())) {
-                    currBook = new Book(resultSet.getString("isbn"), resultSet.getString("title"));
-                    bookList.add(currBook);
-                }
+        Map<String, Book> books = new HashMap<>();
+        while (rs.next()) {
+            String isbn = rs.getString("isbn");
+            Book book = books.get(isbn);
+            if (book == null) {
+                book = new Book(isbn, rs.getString("title"), new ArrayList<>(), new ArrayList<>());
+                books.put(book.getIsbn(), book);
             }
 
-            String authorFullName = resultSet.getString("authors.fullName");
-            if (authorFullName != null && !authorFullName.isBlank()) {
-                currBook.getAuthors().add(new Author(resultSet.getLong("authors.id"), resultSet.getString("authors.fullName")));
-            }
-
-            String genreName = resultSet.getString("genres.genreName");
-            if (genreName != null && !genreName.isBlank()) {
-                currBook.getGenres().add(new Genre(resultSet.getLong("genres.id"), resultSet.getString("genres.genreName")));
+            if (Objects.nonNull(rs.getString("genre.genreName")) && !rs.getString("genre.genreName").isBlank()) {
+                book.getGenres().add(new Genre(rs.getLong("genre.id"), rs.getString("genre.genreName")));
             }
         }
-        return bookList;
-    };
+        return books;
+    }
 }

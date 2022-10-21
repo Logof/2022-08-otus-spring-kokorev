@@ -7,7 +7,5 @@ public interface GenreService {
 
     Genre add(String genreName);
 
-    Genre findByGenreName(String genreName);
-
     void outputAll();
 }

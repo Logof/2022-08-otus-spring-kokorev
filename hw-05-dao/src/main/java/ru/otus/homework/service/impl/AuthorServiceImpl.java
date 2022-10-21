@@ -7,8 +7,6 @@ import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.PrintService;
 
-import java.util.List;
-
 @Service
 public class AuthorServiceImpl implements AuthorService {
     private final PrintService<Author> printService;
@@ -26,17 +24,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void delete(long authorId) {
-        if (authorRepository.isAttachedToBook(authorId)) {
+        if (authorRepository.authorHasBooks(authorId)) {
             throw new DeleteDataException("It' i's not possible to delete an entry while it has the possibility of an association");
         }
         authorRepository.delete(authorId);
         ioService.outString("Entry deleted");
     }
 
-    @Override
-    public Author findByAuthorFullName(String fullName) {
-        return authorRepository.getByFullName(fullName);
-    }
 
     @Override
     public Author add(String fullName) {
@@ -47,7 +41,6 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void outputAll() {
-        List<Author> authors = authorRepository.getAll();
-        ioService.outString(printService.objectsToPrint(authors));
+        ioService.outString(printService.objectsToPrint(authorRepository.getAll()));
     }
 }

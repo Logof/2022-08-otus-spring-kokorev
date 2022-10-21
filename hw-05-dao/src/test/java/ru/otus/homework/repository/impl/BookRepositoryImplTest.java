@@ -114,15 +114,6 @@ public class BookRepositoryImplTest {
         assertEquals(bookExpected, bookActual);
     }
 
-    @DisplayName("Количество")
-    @Test
-    void countTest() {
-        long beginRecordCount = bookRepository.count();
-        Book book = new Book("XXX-X-XXX-XXXXX-X", "Test title");
-        bookRepository.insert(book);
-        assertTrue(bookRepository.count() >= 1 && beginRecordCount < bookRepository.count());
-    }
-
     @DisplayName("Получение книг по автору")
     @Test
     void getAllByAuthorTest() {
@@ -198,4 +189,41 @@ public class BookRepositoryImplTest {
         assertEquals(booksExpected2, booksActual2);
         assertEquals(booksExpected3, booksActual3);
     }
+
+    /*
+    @DisplayName("Получение списка авторов по ISBN книги")
+    @Test
+    void getAuthorsByIsbnTest() {
+        List<Author> authorActualList = new ArrayList<>();
+        authorActualList.add(new Author("Test record"));
+
+        jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
+
+        for (Author author : authorActualList) {
+            jdbc.update("INSERT INTO book_authors (ISBN, AUTHOR_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", author.getId()));
+        }
+
+        List<Author> authorExpected = bookRepository.getBooksAuthors("TEST_BOOK");
+        assertFalse(authorExpected.isEmpty());
+        assertEquals(authorExpected.size(), authorActualList.size());
+        assertEquals(authorExpected, authorActualList);
+    }*/
+
+    /*@DisplayName("Получение списка авторов по ISBN книги")
+    @Test
+    void getGenresByIsbnTest() {
+        List<Genre> genreActualList = new ArrayList<>();
+        Genre genre1 = new Genre("Test record");
+        genreActualList.add(genre1);
+
+        for (Genre genre : genreActualList) {
+            jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
+            jdbc.update("INSERT INTO book_genres (ISBN, GENRE_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", genre.getId()));
+        }
+        List<Genre> authorExpected = bookRepository.getBookGenres("TEST_BOOK");
+
+        assertFalse(authorExpected.isEmpty());
+        assertEquals(authorExpected.size(), genreActualList.size());
+        assertTrue(authorExpected.equals(genreActualList));
+    }*/
 }

@@ -123,30 +123,13 @@ public class AuthorRepositoryImplTest {
     void isAttachedToBookTest() {
         Author authorActual = new Author(null, "Test record");
         authorActual = authorRepository.insert(authorActual);
-        assertFalse(authorRepository.isAttachedToBook(authorActual.getId()));
+        assertFalse(authorRepository.authorHasBooks(authorActual.getId()));
 
         jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
         jdbc.update("INSERT INTO book_authors (ISBN, AUTHOR_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", authorActual.getId()));
 
-        assertTrue(authorRepository.isAttachedToBook(authorActual.getId()));
+        assertTrue(authorRepository.authorHasBooks(authorActual.getId()));
     }
 
-    @DisplayName("Получение списка авторов по ISBN книги")
-    @Test
-    void getAuthorsByIsbnTest() {
-        Author author1 = authorRepository.insert(new Author("Test record"));
-        List<Author> authorActualList = new ArrayList<>();
-        authorActualList.add(author1);
 
-        jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
-
-        for (Author author : authorActualList) {
-            jdbc.update("INSERT INTO book_authors (ISBN, AUTHOR_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", author.getId()));
-        }
-
-        List<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK");
-        assertFalse(authorExpected.isEmpty());
-        assertEquals(authorExpected.size(), authorActualList.size());
-        assertEquals(authorExpected, authorActualList);
-    }
 }

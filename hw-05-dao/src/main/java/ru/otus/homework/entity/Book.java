@@ -2,12 +2,14 @@ package ru.otus.homework.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Book {
 
     private String isbn;
@@ -22,7 +24,4 @@ public class Book {
         this(isbn, title, new ArrayList<>(), new ArrayList<>());
     }
 
-    public Book() {
-        this(null, null, new ArrayList<>(), new ArrayList<>());
-    }
 }

@@ -108,12 +108,12 @@ public class GenreRepositoryTest {
         Genre genreActual = new Genre(null, "Test record");
         genreActual = genreRepository.insert(genreActual);
 
-        assertFalse(genreRepository.isAttachedToBook(genreActual.getId()));
+        assertFalse(genreRepository.genreHasBooks(genreActual.getId()));
 
         jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
         jdbc.update("INSERT INTO book_genres (ISBN, GENRE_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", genreActual.getId()));
 
-        assertTrue(genreRepository.isAttachedToBook(genreActual.getId()));
+        assertTrue(genreRepository.genreHasBooks(genreActual.getId()));
     }
 
     @DisplayName("Получение записи по имени")
@@ -136,21 +136,5 @@ public class GenreRepositoryTest {
         assertEquals(genreExpected, genreActual);
     }
 
-    @DisplayName("Получение списка авторов по ISBN книги")
-    @Test
-    void getGenresByIsbnTest() {
-        List<Genre> genreActualList = new ArrayList<>();
-        Genre genre1 = genreRepository.insert(new Genre("Test record"));
-        genreActualList.add(genre1);
 
-        for (Genre genre : genreActualList) {
-            jdbc.update("INSERT INTO books (ISBN, Title) VALUES ('TEST_BOOK', 'Title')", Map.of());
-            jdbc.update("INSERT INTO book_genres (ISBN, GENRE_ID) VALUES ('TEST_BOOK', :id)", Map.of("id", genre.getId()));
-        }
-        List<Genre> authorExpected = genreRepository.getGenresByIsbn("TEST_BOOK");
-
-        assertFalse(authorExpected.isEmpty());
-        assertEquals(authorExpected.size(), genreActualList.size());
-        assertTrue(authorExpected.equals(genreActualList));
-    }
 }

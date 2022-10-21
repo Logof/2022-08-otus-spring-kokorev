@@ -47,17 +47,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public List<Author> getAuthorsByIsbn(String isbn) {
-        return jdbc.query("" +
-                        "SELECT a.id, a.full_name " +
-                        "  FROM authors a, book_authors s" +
-                        " WHERE s.author_id = a.id and s.isbn = :isbn",
-                Map.of("isbn", isbn),
-                new BeanPropertyRowMapper<>(Author.class));
-    }
-
-    @Override
-    public boolean isAttachedToBook(long id) {
+    public boolean authorHasBooks(long id) {
         long countRow = jdbc.queryForObject("SELECT count(1) FROM book_authors s WHERE s.author_id = :id",
                 Map.of("id", id), Long.class);
         return countRow > 0;
@@ -65,9 +55,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public Author insert(Author object) {
-        if (object == null || object.getFullName() == null || object.getFullName().isBlank()) {
-            return null;
-        }
         jdbc.update("INSERT INTO authors (full_name) VALUES (:fullName)",
                 new MapSqlParameterSource("fullName", object.getFullName()),
                 holder);
@@ -77,9 +64,6 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public int update(Author object) {
-        if (object == null) {
-            return 0;
-        }
         return jdbc.update("UPDATE authors set full_name = :full_name WHERE id = :id",
                 Map.of("id", object.getId(),
                         "full_name", object.getFullName()));

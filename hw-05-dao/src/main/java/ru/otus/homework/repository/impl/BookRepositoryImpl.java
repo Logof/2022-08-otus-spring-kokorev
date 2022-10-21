@@ -1,22 +1,25 @@
 package ru.otus.homework.repository.impl;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.exception.DataNotFountException;
+import ru.otus.homework.mapper.BookMapper;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.repository.GenreRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static ru.otus.homework.mapper.BookMapper.bookWithAuthorsAndGenresResultExtractor;
-import static ru.otus.homework.mapper.BookMapper.booksWithAuthorsAndGenresResultExtractor;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Repository
 @Slf4j
@@ -36,34 +39,44 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public long count() {
-        return jdbc.queryForObject("SELECT count(1) FROM books", Map.of(), Long.class);
-    }
-
-    @Override
     public Book getBookById(final String isbn) {
-        Book book = jdbc.query("" +
-                        "SELECT distinct b.isbn, b.title," +
-                        "       bg.id as `genres.id`, bg.genre_name as `genres.genreName`," +
-                        "       ba.id as `authors.id`, ba.full_name as `authors.fullName`" +
-                        "  FROM books b left join (SELECT a.id, a.full_name, ba.ISBN" +
-                        "                            from book_authors ba " +
-                        "                               , authors a " +
-                        "                           WHERE ba.AUTHOR_ID = a.ID) ba on b.isbn = ba.isbn" +
-                        "               left join (SELECT g.id, g.genre_name, bg.ISBN" +
-                        "                            FROM book_genres  bg " +
-                        "                               , genres g " +
-                        "                           WHERE bg.GENRE_ID = g.ID) bg on b.isbn = bg.isbn" +
+        Map<String, Book> bookMap = jdbc.query("" +
+                        "SELECT b.isbn, b.title," +
+                        "       g.id as `genre.id`, g.genre_name as `genre.genreName`" +
+                        "  FROM books b left join book_genres  bg on b.isbn = bg.isbn" +
+                        "               left join genres       g  on g.ID   = bg.GENRE_ID" +
                         " WHERE b.isbn = :isbn",
                 Map.of("isbn", isbn),
-                bookWithAuthorsAndGenresResultExtractor
+                new BookMapper()
         );
+        List<Author> authorList = getBooksAuthors(new ArrayList<>(Objects.requireNonNull(bookMap).keySet()));
+        List<BookAuthorRelation> relations = getRelationsByIsbns(new ArrayList<>(Objects.requireNonNull(bookMap).keySet()));
 
-        if (book == null) {
-            throw new DataNotFountException("Not found or too many values found");
-        }
-        return book;
+        mergeAuthorsInfo(bookMap, authorList, relations);
+        return bookMap.get(isbn);
     }
+
+    private List<BookAuthorRelation> getAllRelations() {
+        return jdbc.query("select isbn, author_id from book_authors ba order by isbn, author_id",
+                (rs, i) -> new BookAuthorRelation(rs.getString(1), rs.getLong(2)));
+    }
+
+    private List<BookAuthorRelation> getRelationsByIsbns(List<String> isbns) {
+        return jdbc.query("select distinct isbn, author_id from book_authors ba where isbn in (:isbns) order by isbn, author_id",
+                Map.of("isbns", isbns),
+                (rs, i) -> new BookAuthorRelation(rs.getString(1), rs.getLong(2)));
+    }
+
+    private void mergeAuthorsInfo(Map<String, Book> books, List<Author> authors,
+                                  List<BookAuthorRelation> relations) {
+        Map<Long, Author> authorsMap = authors.stream().collect(Collectors.toMap(Author::getId, Function.identity()));
+        relations.forEach(r -> {
+            if (books.containsKey(r.getIsbn()) && authorsMap.containsKey(r.getAuthorId())) {
+                books.get(r.getIsbn()).getAuthors().add(authorsMap.get(r.getAuthorId()));
+            }
+        });
+    }
+
 
     @Override
     public void delete(String isbn) {
@@ -72,29 +85,17 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> getAll() {
-        List<Book> books = jdbc.query("" +
+        List<Author> authorList = authorRepository.getAll();
+        List<BookAuthorRelation> relations = getAllRelations();
+        Map<String, Book> bookMap = jdbc.query("" +
                         "SELECT distinct b.isbn, b.title," +
-                        "       bg.id as `genres.id`, bg.genre_name as `genres.genreName`," +
-                        "       ba.id as `authors.id`, ba.full_name as `authors.fullName`" +
-                        "  FROM books b left join (SELECT a.id, a.full_name, ba.ISBN" +
-                        "                            from book_authors ba " +
-                        "                               , authors a " +
-                        "                           WHERE ba.AUTHOR_ID = a.ID) ba on b.isbn = ba.isbn" +
-                        "               left join (SELECT g.id, g.genre_name, bg.ISBN" +
-                        "                            FROM book_genres  bg " +
-                        "                               , genres g " +
-                        "                           WHERE bg.GENRE_ID = g.ID) bg on b.isbn = bg.isbn",
+                        "       g.id as `genre.id`, g.genre_name as `genre.genreName`" +
+                        "  FROM books b left join book_genres  bg on b.isbn = bg.isbn" +
+                        "               left join genres       g  on g.ID   = bg.GENRE_ID",
                 Map.of(),
-                booksWithAuthorsAndGenresResultExtractor);
-        if (books.size() == 0) {
-            return books;
-        }
-
-        for (Book book : books) {
-            book.setAuthors(authorRepository.getAuthorsByIsbn(book.getIsbn()));
-            book.setGenres(genreRepository.getGenresByIsbn(book.getIsbn()));
-        }
-        return books;
+                new BookMapper());
+        mergeAuthorsInfo(bookMap, authorList, relations);
+        return new ArrayList<>(Objects.requireNonNull(bookMap).values());
     }
 
 
@@ -126,12 +127,12 @@ public class BookRepositoryImpl implements BookRepository {
                 int position = book.getGenres().indexOf(genre);
 
                 if (Objects.equals(genre.getId(), null)) {
-                    Genre findenGenre = genreRepository.getGenreByName(genre.getGenreName());
+                    Genre foundGenre = genreRepository.getGenreByName(genre.getGenreName());
 
-                    if (Objects.isNull(findenGenre)) {
+                    if (Objects.isNull(foundGenre)) {
                         genre.setId(genreRepository.insert(genre).getId());
                     } else {
-                        genre.setId(findenGenre.getId());
+                        genre.setId(foundGenre.getId());
                     }
                 }
                 addGenreToBook(book.getIsbn(), genre.getId());
@@ -166,44 +167,55 @@ public class BookRepositoryImpl implements BookRepository {
                 Map.of("isbn", book.getIsbn(), "new_title", book.getTitle()));
     }
 
+    /*
+     * Т.к. даже у писательницы Дарьи Донцовой под ее именем вышло всего 100 книг, то не вижу смысла оптимизировать запрос
+     * для сокращения кол-ва строк в результате запроса.
+     */
     @Override
     public List<Book> getAllByAuthor(String fullName) {
-        return jdbc.query("" +
+        Map<String, Book> bookMap = jdbc.query("" +
                         "SELECT distinct b.isbn, b.title," +
-                        "       bg.id as `genres.id`, bg.genre_name as `genres.genreName`," +
-                        "       ba.id as `authors.id`, ba.full_name as `authors.fullName`" +
-                        "  FROM books b left join (SELECT a.id, a.full_name, ba.ISBN" +
-                        "                            from book_authors ba " +
-                        "                               , authors a " +
-                        "                           WHERE ba.AUTHOR_ID = a.ID) ba on b.isbn = ba.isbn" +
-                        "               left join (SELECT g.id, g.genre_name, bg.ISBN" +
-                        "                            FROM book_genres  bg " +
-                        "                               , genres g " +
-                        "                           WHERE bg.GENRE_ID = g.ID) bg on b.isbn = bg.isbn" +
-                        " WHERE b.isbn IN (SELECT ISBN FROM BOOK_AUTHORS ba2, AUTHORS a2  " +
+                        "       g.id as `genre.id`, g.genre_name as `genre.genreName`," +
+                        "  FROM books b  left join book_genres  bg on b.isbn = bg.isbn" +
+                        "                left join genres       g  on g.ID   = bg.GENRE_ID" +
+                        " WHERE b.isbn IN (SELECT ISBN FROM BOOK_AUTHORS ba2 inner join AUTHORS a2  " +
                         "                   WHERE a2.FULL_NAME like :fullName AND a2.ID = ba2.AUTHOR_ID)",
                 Map.of("fullName", "%" + fullName + "%"),
-                booksWithAuthorsAndGenresResultExtractor);
+                new BookMapper());
+        List<Author> authorList = getBooksAuthors(new ArrayList<>(Objects.requireNonNull(bookMap).keySet()));
+        List<BookAuthorRelation> relations = getRelationsByIsbns(new ArrayList<>(Objects.requireNonNull(bookMap).keySet()));
+
+        mergeAuthorsInfo(bookMap, authorList, relations);
+        return new ArrayList<>(Objects.requireNonNull(bookMap).values());
     }
 
     @Override
     public List<Book> getAllByGenre(String genreName) {
-        return jdbc.query("" +
+
+        Map<String, Book> bookMap = jdbc.query("" +
                         "SELECT distinct b.isbn, b.title," +
-                        "       bg.id as `genres.id`, bg.genre_name as `genres.genreName`," +
-                        "       ba.id as `authors.id`, ba.full_name as `authors.fullName`" +
-                        "  FROM books b left join (SELECT a.id, a.full_name, ba.ISBN" +
-                        "                            from book_authors ba " +
-                        "                               , authors a " +
-                        "                           WHERE ba.AUTHOR_ID = a.ID) ba on b.isbn = ba.isbn" +
-                        "               left join (SELECT g.id, g.genre_name, bg.ISBN" +
-                        "                            FROM book_genres  bg " +
-                        "                               , genres g " +
-                        "                           WHERE bg.GENRE_ID = g.ID) bg on b.isbn = bg.isbn" +
-                        " WHERE b.isbn IN (SELECT ISBN FROM BOOK_GENRES ba2, GENRES g2  " +
-                        "                   WHERE g2.GENRE_NAME like :genreName AND g2.ID = ba2.GENRE_ID)",
+                        "       g.id as `genre.id`, g.genre_name as `genre.genreName`" +
+                        "  FROM books b inner join  book_genres  bg on b.isbn = bg.isbn" +
+                        "               inner join genres       g  on g.ID   = bg.GENRE_ID" +
+                        " WHERE b.isbn IN (SELECT ISBN FROM BOOK_GENRES bg2 inner join GENRES g2  " +
+                        "                   WHERE g2.GENRE_NAME like :genreName AND g2.ID = bg2.GENRE_ID)",
                 Map.of("genreName", "%" + genreName + "%"),
-                booksWithAuthorsAndGenresResultExtractor);
+                new BookMapper());
+
+        List<Author> authorList = getBooksAuthors(new ArrayList<>(Objects.requireNonNull(bookMap).keySet()));
+        List<BookAuthorRelation> relations = getRelationsByIsbns(new ArrayList<>(Objects.requireNonNull(bookMap).keySet()));
+        mergeAuthorsInfo(bookMap, authorList, relations);
+        return new ArrayList<>(Objects.requireNonNull(bookMap).values());
+    }
+
+
+    private List<Author> getBooksAuthors(List<String> isbnList) {
+        return jdbc.query("" +
+                        "SELECT distinct a.id, a.full_name " +
+                        "  FROM authors a, book_authors s" +
+                        " WHERE s.author_id = a.id and s.isbn in (:isbnList)",
+                Map.of("isbnList", isbnList),
+                new BeanPropertyRowMapper<>(Author.class));
     }
 
     @Override
@@ -223,4 +235,10 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
 
+    @RequiredArgsConstructor
+    @Getter
+    private static class BookAuthorRelation {
+        private final String isbn;
+        private final long authorId;
+    }
 }

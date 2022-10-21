@@ -8,7 +8,5 @@ public interface AuthorService {
 
     void delete(long authorId);
 
-    Author findByAuthorFullName(String fullName);
-
     void outputAll();
 }
