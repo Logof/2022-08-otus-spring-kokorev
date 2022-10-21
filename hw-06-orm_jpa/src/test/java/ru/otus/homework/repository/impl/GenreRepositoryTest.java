@@ -1,6 +1,5 @@
 package ru.otus.homework.repository.impl;
 
-import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест GenreDao")
@@ -99,13 +97,13 @@ public class GenreRepositoryTest {
     @Test
     void isAttachedToBookTest() {
         Genre genreActual = genreRepository.save(new Genre("Test record"));
-        assertFalse(genreRepository.isAttachedToBook(genreActual.getId()));
+        assertFalse(genreRepository.genreHasBooks(genreActual.getId()));
 
         Book book = new Book("XXX-XXX-XXXX-XX", "Test", new HashSet<>(),
                 new HashSet<>(Collections.singletonList(genreActual)), new HashSet<>());
         entityManager.persist(book);
 
-        assertTrue(genreRepository.isAttachedToBook(genreActual.getId()));
+        assertTrue(genreRepository.genreHasBooks(genreActual.getId()));
     }
 
     @DisplayName("Получение записи по имени")
@@ -128,18 +126,5 @@ public class GenreRepositoryTest {
         assertEquals(genreExpected, genreActual);
     }
 
-    @DisplayName("Получение списка авторов по ISBN книги")
-    @Test
-    void getGenresByIsbnTest() {
-        Genre actualGenre = genreRepository.save(new Genre("Test record"));
 
-        Book book = new Book("TEST_BOOK_ASSOC", "TEST TITLE", new HashSet<>(),
-                new HashSet<>(Collections.singletonList(actualGenre)), new HashSet<>());
-        entityManager.persist(book);
-
-        Set<Genre> genresExpected = genreRepository.getGenresByIsbn("TEST_BOOK_ASSOC");
-        assertFalse(genresExpected.isEmpty());
-        assertEquals(genresExpected.size(), Collections.singletonList(actualGenre).size());
-        assertThat(genresExpected, IsIterableContainingInOrder.contains(Collections.singletonList(actualGenre).toArray()));
-    }
 }

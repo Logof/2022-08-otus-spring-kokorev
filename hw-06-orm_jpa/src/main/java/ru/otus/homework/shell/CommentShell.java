@@ -14,7 +14,7 @@ public class CommentShell extends CommonShell {
         this.commentService = commentService;
     }
 
-    @ShellMethod(value = "Output all comments for selected book", key = "print-comment")
+    @ShellMethod(value = "Output all comments for selected book", key = "print-comments")
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void outputCommentsForSelectedBook() {
         commentService.getAllByIsbn(getCurrBook());

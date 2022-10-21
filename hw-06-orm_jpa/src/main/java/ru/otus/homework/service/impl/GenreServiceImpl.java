@@ -27,7 +27,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     public void delete(long genreId) throws DeleteDataException {
-        if (genreRepository.isAttachedToBook(genreId)) {
+        if (genreRepository.genreHasBooks(genreId)) {
             throw new DeleteDataException("It' i's not possible to delete an entry while it has the possibility of an association");
         }
         genreRepository.deleteById(genreId);

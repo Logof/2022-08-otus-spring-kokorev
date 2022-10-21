@@ -13,9 +13,7 @@ public interface AuthorRepository {
 
     Set<Author> getAll();
 
-    Set<Author> getAuthorsByIsbn(String isbn);
-
-    boolean isAttachedToBook(long id);
+    boolean authorHasBooks(long id);
 
     Author save(Author object);
 }

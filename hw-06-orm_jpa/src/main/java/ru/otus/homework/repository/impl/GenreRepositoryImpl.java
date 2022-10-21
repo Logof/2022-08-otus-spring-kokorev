@@ -35,15 +35,6 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public Set<Genre> getGenresByIsbn(String isbn) {
-        Book book = entityManager.find(Book.class, isbn);
-        if (book == null) {
-            return null;
-        }
-        return book.getGenres();
-    }
-
-    @Override
     public Genre getGenreById(Long id) {
         return entityManager.find(Genre.class, id);
     }
@@ -58,7 +49,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public boolean isAttachedToBook(long id) {
+    public boolean genreHasBooks(long id) {
         try {
             return Objects.nonNull(entityManager
                     .createQuery("select b from Book b JOIN FETCH b.genres g where g.id = :id", Book.class)

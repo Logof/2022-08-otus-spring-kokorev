@@ -12,6 +12,7 @@ import ru.otus.homework.service.print.PrintService;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+
     private final PrintService<Comment> printService;
 
     private final OutputService ioService;

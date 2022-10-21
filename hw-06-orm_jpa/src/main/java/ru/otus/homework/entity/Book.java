@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -15,11 +17,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(name = "bookWithAll",
+@NamedEntityGraph(name = "bookWithGenres",
         attributeNodes = {
-                @NamedAttributeNode(value = "genres", subgraph = "genresGraph"),
-                @NamedAttributeNode(value = "authors", subgraph = "authorsGraph"),
-                @NamedAttributeNode(value = "comments", subgraph = "commentsGraph"),
+                @NamedAttributeNode(value = "genres", subgraph = "genresGraph")
         },
         subgraphs = {
                 @NamedSubgraph(
@@ -27,20 +27,6 @@ import java.util.Set;
                         attributeNodes = {
                                 @NamedAttributeNode(value = "id"),
                                 @NamedAttributeNode(value = "genreName")
-                        }
-                ),
-                @NamedSubgraph(
-                        name = "authorsGraph",
-                        attributeNodes = {
-                                @NamedAttributeNode(value = "id"),
-                                @NamedAttributeNode(value = "fullName")
-                        }
-                ),
-                @NamedSubgraph(
-                        name = "commentsGraph",
-                        attributeNodes = {
-                                @NamedAttributeNode(value = "id"),
-                                @NamedAttributeNode(value = "commentText")
                         }
                 )
         })
@@ -60,6 +46,7 @@ public class Book {
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
+    @Fetch(FetchMode.SUBSELECT)
     private Set<Author> authors;
 
 
@@ -69,11 +56,7 @@ public class Book {
     private Set<Genre> genres;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "isbn", referencedColumnName = "isbn")
-
-    //@JoinTable(name = "COMMENTS", inverseJoinColumns = @JoinColumn(name = "ISBN")
-    //        inverseJoinColumns = @JoinColumn(name = "isbn")
-    //)
+    @JoinColumn(name = "isbn")
     private Set<Comment> comments;
 
 }

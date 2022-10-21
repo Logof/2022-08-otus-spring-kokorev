@@ -5,7 +5,6 @@ import ru.otus.homework.entity.Book;
 import ru.otus.homework.exception.DataNotFountException;
 import ru.otus.homework.repository.BookRepository;
 
-import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.HashMap;
@@ -25,15 +24,16 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Set<Book> getAll() {
-        EntityGraph entityGraph = entityManager.getEntityGraph("bookWithAll");
-        return new HashSet<>(entityManager.createQuery("select b " +
-                "from Book b", Book.class).setHint("javax.persistence.fetchgraph", entityGraph).getResultList());
+        return new HashSet<>(entityManager.createQuery("select distinct b " +
+                        "from Book b", Book.class)
+                .setHint("javax.persistence.fetchgraph", entityManager.getEntityGraph("bookWithGenres"))
+                .getResultList());
     }
 
     @Override
     public Book getBookByIsbn(final String isbn) {
-        Map<String, Object> hints = new HashMap();
-        hints.put("javax.persistence.fetchgraph", entityManager.getEntityGraph("bookWithAll"));
+        Map<String, Object> hints = new HashMap<>();
+        hints.put("javax.persistence.fetchgraph", entityManager.getEntityGraph("bookWithGenres"));
 
         Book book = entityManager.find(Book.class, isbn, hints);
         if (book == null) {

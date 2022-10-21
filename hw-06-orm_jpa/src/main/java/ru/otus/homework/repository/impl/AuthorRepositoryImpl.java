@@ -50,16 +50,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public Set<Author> getAuthorsByIsbn(String isbn) {
-        Book book = entityManager.find(Book.class, isbn);
-        if (book == null) {
-            return null;
-        }
-        return book.getAuthors();
-    }
-
-    @Override
-    public boolean isAttachedToBook(long id) {
+    public boolean authorHasBooks(long id) {
         try {
             return Objects.nonNull(entityManager
                     .createQuery("select b from Book b JOIN FETCH b.authors a where a.id = :id", Book.class)

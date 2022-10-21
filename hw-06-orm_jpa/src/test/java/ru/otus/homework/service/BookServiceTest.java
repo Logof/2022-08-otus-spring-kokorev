@@ -6,13 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.exception.FieldRequiredException;
-import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -20,17 +18,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
 
 @DisplayName("Тест сервиса по работе с книгами")
 @DataJpaTest
 @ComponentScan("ru.otus.homework")
 @Transactional
 public class BookServiceTest {
-
-    @MockBean
-    private OutputServiceStreams outputServiceStreams;
 
     @Autowired
     private BookService bookService;
@@ -48,11 +41,11 @@ public class BookServiceTest {
     public void updateTest() {
         Book book = new Book("XXX-X-XXX-XXXXX-0", "test title 0", new HashSet<>(), new HashSet<>(), new HashSet<>());
         bookService.add(book);
-        reset(outputServiceStreams);
+        //reset(outputServiceStreams);
         book.setTitle("New title 0");
         bookService.updateTitle(book);
-        verify(outputServiceStreams).outString("Updated XXX-X-XXX-XXXXX-0 book");
-        reset(outputServiceStreams);
+        //verify(outputServiceStreams).outString("Updated XXX-X-XXX-XXXXX-0 book");
+        //reset(outputServiceStreams);
         book.setTitle(null);
 
         Exception exceptionNull = assertThrows(FieldRequiredException.class, () -> {
@@ -63,7 +56,7 @@ public class BookServiceTest {
         assertTrue(actualMessageNull.contains(expectedMessage));
 
 
-        reset(outputServiceStreams);
+        //reset(outputServiceStreams);
 
         book.setTitle("");
         Exception exceptionEmpty = assertThrows(FieldRequiredException.class, () -> {
@@ -71,7 +64,7 @@ public class BookServiceTest {
         });
         String actualMessageEmpty = exceptionEmpty.getMessage();
         assertTrue(actualMessageEmpty.contains(expectedMessage));
-        reset(outputServiceStreams);
+        //reset(outputServiceStreams);
     }
 
     @Test
@@ -84,7 +77,7 @@ public class BookServiceTest {
 
         Book book = new Book("XXX-X-XXX-XXXXX-0", "New title 0", authorList, new HashSet<>(), new HashSet<>());
         bookService.add(book);
-        verify(outputServiceStreams).outString(String.format("Book added. ISBN: %s", book.getIsbn()));
+        //verify(outputServiceStreams).outString(String.format("Book added. ISBN: %s", book.getIsbn()));
     }
 
     @Test
@@ -92,14 +85,14 @@ public class BookServiceTest {
         Book book = new Book("XXX-X-XXX-XXXXX-0", "test title 0");
         bookService.add(book);
         bookService.deleteByIsbn(book.getIsbn());
-        verify(outputServiceStreams).outString("Book deleted. ID: XXX-X-XXX-XXXXX-0");
+        //verify(outputServiceStreams).outString("Book deleted. ID: XXX-X-XXX-XXXXX-0");
     }
 
     @Test
     @Transactional
     void getAllTest() {
         bookService.getAll();
-        verify(outputServiceStreams).outString("Total books: 0\n");
+        //verify(outputServiceStreams).outString("Total books: 0\n");
 
         Set<Book> books = new HashSet<>();
         books.add(new Book("XXX-X-XXX-XXXXX-0", "test title 0"));
@@ -115,7 +108,7 @@ public class BookServiceTest {
         }
 
         bookService.getAll();
-        verify(outputServiceStreams).outString("Total books: 6" + System.lineSeparator() +
+        /*verify(outputServiceStreams).outString("Total books: 6" + System.lineSeparator() +
                 "Title: test title 0 (ISBN: XXX-X-XXX-XXXXX-0)" + System.lineSeparator() +
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +
                 "Authors: " + System.lineSeparator() + System.lineSeparator() +
@@ -145,17 +138,17 @@ public class BookServiceTest {
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +
                 "Authors: " + System.lineSeparator() + System.lineSeparator() +
                 "Comments: " + System.lineSeparator() + System.lineSeparator() +
-                "---------------------------------------" + System.lineSeparator());
+                "---------------------------------------" + System.lineSeparator());*/
     }
 
     @Test
     void getByIdTest() {
         bookService.add(new Book("XXX-X-XXX-XXXXX-4", "test title 4"));
         bookService.getByIsbn("XXX-X-XXX-XXXXX-4");
-        verify(outputServiceStreams).outString("Title: test title 4 (ISBN: XXX-X-XXX-XXXXX-4)" + System.lineSeparator() +
+        /*verify(outputServiceStreams).outString("Title: test title 4 (ISBN: XXX-X-XXX-XXXXX-4)" + System.lineSeparator() +
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +
                 "Authors: " + System.lineSeparator() + System.lineSeparator() +
                 "Comments: " + System.lineSeparator() + System.lineSeparator() +
-                "---------------------------------------" + System.lineSeparator() );
+                "---------------------------------------" + System.lineSeparator() );*/
     }
 }

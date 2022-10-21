@@ -21,15 +21,11 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Comment save(Comment comment) {
-        if (comment == null || comment.getCommentText() == null || comment.getCommentText().isBlank()) {
-            return null;
-        }
         if (comment.getId() == null) {
             entityManager.persist(comment);
         } else {
             entityManager.merge(comment);
         }
-        entityManager.flush();
         return comment;
     }
 
@@ -41,7 +37,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     public Set<Comment> getAllByIsbn(String isbn) {
         return new HashSet<>(entityManager
-                .createQuery("select c from Book b JOIN FETCH b.comments c where b.isbn = :isbn", Comment.class)
+                .createQuery("select c from Comment c JOIN FETCH c.book b where b.isbn = :isbn", Comment.class)
                 .setParameter("isbn", isbn).getResultList());
     }
 }

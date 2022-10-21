@@ -11,6 +11,7 @@ import ru.otus.homework.exception.FieldRequiredException;
 import ru.otus.homework.exception.ObjectExistsException;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
+import ru.otus.homework.repository.CommentRepository;
 import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.print.PrintService;
@@ -27,7 +28,9 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
 
     private final GenreRepository genreRepository;
-    
+
+    private final CommentRepository commentRepository;
+
     private final PrintService<Book> printService;
 
     private final OutputServiceStreams ioService;
@@ -35,9 +38,10 @@ public class BookServiceImpl implements BookService {
     public BookServiceImpl(BookRepository bookRepository,
                            AuthorRepository authorRepository,
                            GenreRepository genreRepository,
-                           PrintService<Book> printService,
+                           CommentRepository commentRepository, PrintService<Book> printService,
                            OutputServiceStreams ioService) {
         this.bookRepository = bookRepository;
+        this.commentRepository = commentRepository;
         this.printService = printService;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
@@ -169,9 +173,8 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void addCommentToBook(String isbn, String commentText) {
         Book book = bookRepository.getBookByIsbn(isbn);
-        if (book != null) {
-            book.getComments().add(new Comment(commentText));
-            bookRepository.update(book);
+        if (book != null && commentText != null && !commentText.isEmpty()) {
+            commentRepository.save(new Comment(commentText, book));
         }
     }
 }

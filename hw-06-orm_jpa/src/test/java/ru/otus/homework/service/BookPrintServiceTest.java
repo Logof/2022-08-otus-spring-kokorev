@@ -28,7 +28,7 @@ public class BookPrintServiceTest {
     private PrintService<Comment> commentPrintService;
 
     private final BookPrintService bookPrintService =
-            new BookPrintService(genrePrintService, authorPrintService, commentPrintService);
+            new BookPrintService(genrePrintService, authorPrintService);
 
     @DisplayName("Подготовка к печати списка книг")
     @Test
@@ -43,17 +43,14 @@ public class BookPrintServiceTest {
                 "Title: Book 1 (ISBN: ISBN1)" + System.lineSeparator() +
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +
                 "Authors: " + System.lineSeparator() + System.lineSeparator() +
-                "Comments: " + System.lineSeparator() + System.lineSeparator() +
                 "---------------------------------------" + System.lineSeparator() + System.lineSeparator() +
                 "Title: Book 2 (ISBN: ISBN2)" + System.lineSeparator() +
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +
                 "Authors: " + System.lineSeparator() + System.lineSeparator() +
-                "Comments: " + System.lineSeparator() + System.lineSeparator() +
                 "---------------------------------------" + System.lineSeparator() + System.lineSeparator() +
                 "Title: Book 3 (ISBN: ISBN3)" + System.lineSeparator() +
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +
                 "Authors: " + System.lineSeparator() + System.lineSeparator() +
-                "Comments: " + System.lineSeparator() + System.lineSeparator() +
                 "---------------------------------------"+ System.lineSeparator();
         assertEquals(stringExpect, stringActual);
     }
@@ -67,7 +64,6 @@ public class BookPrintServiceTest {
         String stringActual = "Title: Book 1 (ISBN: ISBN1)" + System.lineSeparator() +
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +
                 "Authors: " + System.lineSeparator() + System.lineSeparator() +
-                "Comments: " + System.lineSeparator() + System.lineSeparator() +
                 "---------------------------------------"+ System.lineSeparator();
         assertEquals(stringExpect, stringActual);
     }

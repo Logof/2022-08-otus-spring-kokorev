@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AuthorRepositoryImplTest {
 
     @Autowired
-    TestEntityManager entityManager;
+    private TestEntityManager entityManager;
     @Autowired
     private AuthorRepository authorRepository;
 
@@ -110,28 +110,14 @@ public class AuthorRepositoryImplTest {
     @Test
     void isAttachedToBookTest() {
         Author authorActual = authorRepository.save(new Author("Test record"));
-        assertFalse(authorRepository.isAttachedToBook(authorActual.getId()));
+        assertFalse(authorRepository.authorHasBooks(authorActual.getId()));
 
         Book book = new Book("TEST-ISBN", "Test title",
                 new HashSet<>(Collections.singletonList(authorActual)), new HashSet<>(), new HashSet<>());
         entityManager.persist(book);
 
-        assertTrue(authorRepository.isAttachedToBook(authorActual.getId()));
+        assertTrue(authorRepository.authorHasBooks(authorActual.getId()));
     }
 
-    @DisplayName("Получение списка авторов по ISBN книги")
-    @Test
-    void getAuthorsByIsbnTest() {
-        Set<Author> authorActualList = new HashSet<>();
-        authorActualList.add(new Author(null, "Test record"));
 
-        Book book = new Book("TEST_BOOK_ASSOC", "TEST TITLE",
-                new HashSet<>(authorActualList), new HashSet<>(), new HashSet<>());
-        entityManager.persist(book);
-
-        Set<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK_ASSOC");
-        assertFalse(authorExpected.isEmpty());
-
-        assertEquals(authorExpected, authorActualList);
-    }
 }

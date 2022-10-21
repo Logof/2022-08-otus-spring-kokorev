@@ -7,13 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -27,9 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @ComponentScan("ru.otus.homework.repository.impl")
 public class BookRepositoryImplTest {
-
-    @MockBean
-    private OutputServiceStreams outputServiceStreams;
 
     @Autowired
     private BookRepository bookRepository;
@@ -154,4 +149,36 @@ public class BookRepositoryImplTest {
         assertEquals(booksExpected1, booksActual);
         assertEquals(booksExpected2, new HashSet<>());
     }
+
+/*
+    @DisplayName("Получение списка авторов по ISBN книги")
+    @Test
+    void getGenresByIsbnTest() {
+        Genre actualGenre = genreRepository.save(new Genre("Test record"));
+
+        Book book = new Book("TEST_BOOK_ASSOC", "TEST TITLE", new HashSet<>(),
+                new HashSet<>(Collections.singletonList(actualGenre)), new HashSet<>());
+        entityManager.persist(book);
+
+        Set<Genre> genresExpected = bookRepository.getGenresByIsbn("TEST_BOOK_ASSOC");
+        assertFalse(genresExpected.isEmpty());
+        assertEquals(genresExpected.size(), Collections.singletonList(actualGenre).size());
+        assertThat(genresExpected, IsIterableContainingInOrder.contains(Collections.singletonList(actualGenre).toArray()));
+    }
+
+    @DisplayName("Получение списка авторов по ISBN книги")
+    @Test
+    void getAuthorsByIsbnTest() {
+        Set<Author> authorActualList = new HashSet<>();
+        authorActualList.add(new Author(null, "Test record"));
+
+        Book book = new Book("TEST_BOOK_ASSOC", "TEST TITLE",
+                new HashSet<>(authorActualList), new HashSet<>(), new HashSet<>());
+        entityManager.persist(book);
+
+        Set<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK_ASSOC");
+        assertFalse(authorExpected.isEmpty());
+
+        assertEquals(authorExpected, authorActualList);
+    }*/
 }
