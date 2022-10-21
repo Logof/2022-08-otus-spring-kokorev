@@ -3,7 +3,6 @@ package ru.otus.homework.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.print.PrintService;
@@ -27,9 +26,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional
     public void delete(long authorId) {
-        if (authorRepository.isAttachedToBook(authorId)) {
-            throw new DeleteDataException("It' i's not possible to delete an entry while it has the possibility of an association");
-        }
         authorRepository.delete(authorId);
         ioService.outString("Entry deleted");
     }

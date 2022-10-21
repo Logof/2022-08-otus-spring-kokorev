@@ -10,7 +10,6 @@ import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.repository.AuthorRepository;
 
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,19 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест AuthorDao")
 @DataJpaTest
-@ComponentScan("ru.otus.homework")
-@Transactional
+@ComponentScan("ru.otus.homework.repository.impl")
 public class AuthorRepositoryImplTest {
 
     @Autowired
-    private AuthorRepository authorRepository;
-
-    @Autowired
     TestEntityManager entityManager;
+    @Autowired
+    private AuthorRepository authorRepository;
 
     @DisplayName("Добавление")
     @Test
-    @Transactional
     void insertTest() {
         Author authorActual = new Author("Test record");
         authorActual = authorRepository.save(authorActual);
@@ -40,7 +36,6 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Обновление")
     @Test
-    @Transactional
     void updateTest() {
         Author authorActual = new Author(null, "Test record");
         authorActual = authorRepository.save(authorActual);
@@ -55,9 +50,8 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Удаление")
     @Test
-    @Transactional
     void deleteTest() {
-        Author authorActual = authorRepository.save(new Author( "Test1"));
+        Author authorActual = authorRepository.save(new Author("Test1"));
         Author authorExpected = authorRepository.save(new Author("Test2"));
 
         authorRepository.delete(authorActual.getId());
@@ -79,7 +73,6 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Получение всех записей")
     @Test
-    @Transactional
     void getAllTest() {
         Set<Author> booksActualList = new HashSet<>();
         booksActualList.add(new Author("Test record"));
@@ -95,9 +88,8 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Получение записи по ID")
     @Test
-    @Transactional
     void getAuthorByIdTest() {
-        Author authorActual = new Author( "Test record");
+        Author authorActual = new Author("Test record");
         authorActual = authorRepository.save(authorActual);
 
         Author authorExpected = authorRepository.getAuthorById(authorActual.getId());
@@ -106,7 +98,6 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Получение записи по имени")
     @Test
-    @Transactional
     void getByFullNameTest() {
         Author authorActual = authorRepository.save(new Author("Test record"));
 
@@ -117,9 +108,8 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Проверка, что автор ассоциирован с книгой")
     @Test
-    @Transactional
     void isAttachedToBookTest() {
-        Author authorActual = authorRepository.save( new Author("Test record"));
+        Author authorActual = authorRepository.save(new Author("Test record"));
         assertFalse(authorRepository.isAttachedToBook(authorActual.getId()));
 
         Book book = new Book("TEST-ISBN", "Test title",
@@ -131,7 +121,6 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Получение списка авторов по ISBN книги")
     @Test
-    @Transactional
     void getAuthorsByIsbnTest() {
         Set<Author> authorActualList = new HashSet<>();
         authorActualList.add(new Author(null, "Test record"));
@@ -142,7 +131,7 @@ public class AuthorRepositoryImplTest {
 
         Set<Author> authorExpected = authorRepository.getAuthorsByIsbn("TEST_BOOK_ASSOC");
         assertFalse(authorExpected.isEmpty());
-        ///*IsIterableContainingInOrder.contains(*/
+
         assertEquals(authorExpected, authorActualList);
     }
 }

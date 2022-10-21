@@ -11,7 +11,6 @@ import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.GenreRepository;
 
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест GenreDao")
 @DataJpaTest
-@ComponentScan("ru.otus.homework")
-@Transactional
+@ComponentScan("ru.otus.homework.repository.impl")
 public class GenreRepositoryTest {
 
     @Autowired
@@ -33,7 +31,6 @@ public class GenreRepositoryTest {
 
     @DisplayName("Добавление")
     @Test
-    @Transactional
     void insertTest() {
         Genre genreActual = new Genre(null, "Test record");
         genreActual = genreRepository.save(genreActual);
@@ -42,7 +39,6 @@ public class GenreRepositoryTest {
 
     @DisplayName("Обновление")
     @Test
-    @Transactional
     void updateTest() {
         Genre genreActual = new Genre(null, "Test record");
         genreActual = genreRepository.save(genreActual);
@@ -54,10 +50,9 @@ public class GenreRepositoryTest {
 
     @DisplayName("Удаление")
     @Test
-    @Transactional
     void deleteTest() {
         Genre genreActual = genreRepository.save(new Genre("Test1"));
-        Genre genreExpected = genreRepository.save(new Genre( "Test2"));
+        Genre genreExpected = genreRepository.save(new Genre("Test2"));
 
         genreRepository.deleteById(genreActual.getId());
 
@@ -78,7 +73,6 @@ public class GenreRepositoryTest {
 
     @DisplayName("Получение всех записей")
     @Test
-    @Transactional
     void getAllTest() {
         Set<Genre> booksActualList = new HashSet<>();
         booksActualList.add(new Genre("Test record"));
@@ -94,17 +88,15 @@ public class GenreRepositoryTest {
 
     @DisplayName("Получение одной записи")
     @Test
-    @Transactional
     void getByIdTest() {
         Genre genreActual = new Genre(null, "Test record");
-        genreActual= genreRepository.save(genreActual);
+        genreActual = genreRepository.save(genreActual);
         Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
         assertEquals(genreExpected, genreActual);
     }
 
     @DisplayName("Проверка, что жанр ассоциирован с книгой")
     @Test
-    @Transactional
     void isAttachedToBookTest() {
         Genre genreActual = genreRepository.save(new Genre("Test record"));
         assertFalse(genreRepository.isAttachedToBook(genreActual.getId()));
@@ -118,7 +110,6 @@ public class GenreRepositoryTest {
 
     @DisplayName("Получение записи по имени")
     @Test
-    @Transactional
     void getByGenreNameTest() {
         Genre genreActual = new Genre(null, "Test record");
         genreActual = genreRepository.save(genreActual);
@@ -129,7 +120,6 @@ public class GenreRepositoryTest {
 
     @DisplayName("Получение записи по ID")
     @Test
-    @Transactional
     void getAuthorByIdTest() {
         Genre genreActual = new Genre(null, "Test record");
         genreActual = genreRepository.save(genreActual);
@@ -140,7 +130,6 @@ public class GenreRepositoryTest {
 
     @DisplayName("Получение списка авторов по ISBN книги")
     @Test
-    @Transactional
     void getGenresByIsbnTest() {
         Genre actualGenre = genreRepository.save(new Genre("Test record"));
 

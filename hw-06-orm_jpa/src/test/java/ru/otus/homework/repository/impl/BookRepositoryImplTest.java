@@ -15,7 +15,6 @@ import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,8 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест BookDao")
 @DataJpaTest
-@ComponentScan("ru.otus.homework")
-@Transactional
+@ComponentScan("ru.otus.homework.repository.impl")
 public class BookRepositoryImplTest {
 
     @MockBean
@@ -113,7 +111,7 @@ public class BookRepositoryImplTest {
 
     @DisplayName("Получение книг по автору")
     @Test
-    void getAllByAuthorTest(){
+    void getAllByAuthorTest() {
         Author author1 = entityManager.persist(new Author("Author 1"));
         Author author2 = entityManager.persist(new Author("Author 2"));
 
@@ -136,7 +134,7 @@ public class BookRepositoryImplTest {
 
     @DisplayName("Получение книг по жанру")
     @Test
-    void getAllByGenre(){
+    void getAllByGenre() {
         Genre genre1 = entityManager.persist(new Genre("Genre 1"));
         Genre genre2 = entityManager.persist(new Genre("Genre 2"));
 

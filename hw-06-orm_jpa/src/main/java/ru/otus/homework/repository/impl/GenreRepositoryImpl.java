@@ -26,8 +26,7 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public void deleteById(long id) {
-        Genre genre = getGenreById(id);
-        entityManager.remove(genre);
+        entityManager.remove(getGenreById(id));
     }
 
     @Override

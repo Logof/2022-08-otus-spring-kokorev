@@ -32,7 +32,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book getBookByIsbn(final String isbn) {
-        Map hints = new HashMap();
+        Map<String, Object> hints = new HashMap();
         hints.put("javax.persistence.fetchgraph", entityManager.getEntityGraph("bookWithAll"));
 
         Book book = entityManager.find(Book.class, isbn, hints);
@@ -44,9 +44,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void deleteByIsbn(String isbn) {
-        entityManager.createQuery("DELETE FROM Book b WHERE b.isbn = :isbn ")
-                .setParameter("isbn", isbn)
-                .executeUpdate();
+        entityManager.remove(getBookByIsbn(isbn));
     }
 
 

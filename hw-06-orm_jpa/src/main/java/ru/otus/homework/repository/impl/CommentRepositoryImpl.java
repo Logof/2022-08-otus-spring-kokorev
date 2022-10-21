@@ -35,8 +35,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public void deleteById(long id) {
-        Comment comment = entityManager.find(Comment.class, id);
-        entityManager.remove(comment);
+        entityManager.remove(entityManager.find(Comment.class, id));
     }
 
     @Override
