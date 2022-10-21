@@ -24,7 +24,4 @@ public interface BookRepository {
 
     void addGenreToBook(String isbn, long id);
 
-    //List<Author> getBooksAuthors(String isbn);
-
-    //List<Genre> getBookGenres(String isbn);
 }
