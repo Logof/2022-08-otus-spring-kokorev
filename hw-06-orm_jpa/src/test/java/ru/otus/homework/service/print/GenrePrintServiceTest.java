@@ -1,9 +1,8 @@
-package ru.otus.homework.service;
+package ru.otus.homework.service.print;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.print.GenrePrintService;
 
 import java.util.HashSet;
 import java.util.Set;

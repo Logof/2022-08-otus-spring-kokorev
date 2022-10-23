@@ -16,10 +16,6 @@ import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.print.PrintService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -66,32 +62,6 @@ public class BookServiceImpl implements BookService {
         bookRepository.insert(book);
         ioService.outString(String.format("Book added. ISBN: %s", book.getIsbn()));
     }
-
-    @Override
-    @Transactional
-    public void add(Book book, List<String> authors, List<String> genres) {
-        Set<Author> authorList = new HashSet<>();
-        Set<Genre> genreList = new HashSet<>();
-
-        if (authors != null && authors.size() > 0) {
-            for (String nameAuthor : authors) {
-                Author author = authorRepository.getByFullName(nameAuthor);
-                authorList.add(author != null ? author : new Author(nameAuthor));
-            }
-        }
-
-        if (genres != null && genres.size() > 0) {
-            for (String nameGenre : genres) {
-                Genre genre = genreRepository.getGenreByName(nameGenre);
-                genreList.add( genre != null ? genre : new Genre(nameGenre));
-            }
-        }
-        book.setAuthors(authorList);
-        book.setGenres(genreList);
-
-        bookRepository.insert(book);
-    }
-
 
     @Override
     @Transactional

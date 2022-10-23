@@ -4,10 +4,15 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
+import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
+import ru.otus.homework.entity.Genre;
 import ru.otus.homework.service.BookService;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ShellComponent
 public class BookCommands extends CommonShell {
@@ -49,7 +54,11 @@ public class BookCommands extends CommonShell {
                         @ShellOption(help = "Book title") String title,
                         @ShellOption(help = "Authors(s)",defaultValue = "") String[] authors,
                         @ShellOption(help = "Genre(s)", defaultValue = "") String[] genres) {
-        bookService.add(new Book(isbn, title), Arrays.asList(authors), Arrays.asList(genres));
+        Set<Author> authorList = Arrays.asList(authors).stream().map(authorFullName ->
+                new Author(authorFullName)).collect(Collectors.toSet());
+        Set<Genre> genreList = Arrays.asList(genres).stream().map(genreName ->
+                new Genre(genreName)).collect(Collectors.toSet());
+        bookService.add(new Book(isbn, title, authorList, genreList, new HashSet<>()));
     }
 
 
