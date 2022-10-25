@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.GenreRepository;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест GenreDao")
 @JdbcTest
-@ComponentScan(value = "ru.otus.homework.repository.impl")
+@Import(GenreRepositoryImpl.class)
 public class GenreRepositoryTest {
 
     @Autowired

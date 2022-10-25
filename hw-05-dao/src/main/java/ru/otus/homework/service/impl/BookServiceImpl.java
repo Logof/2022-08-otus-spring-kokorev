@@ -9,7 +9,7 @@ import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.repository.BookRepository;
 import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.BookService;
-import ru.otus.homework.service.PrintService;
+import ru.otus.homework.service.print.PrintService;
 
 import java.util.List;
 

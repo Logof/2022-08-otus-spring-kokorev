@@ -5,7 +5,7 @@ import ru.otus.homework.entity.Author;
 import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.repository.AuthorRepository;
 import ru.otus.homework.service.AuthorService;
-import ru.otus.homework.service.PrintService;
+import ru.otus.homework.service.print.PrintService;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {

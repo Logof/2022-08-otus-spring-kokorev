@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест BookDao")
 @JdbcTest
-@ComponentScan(value = "ru.otus.homework.repository.impl")
+@Import(BookRepositoryImpl.class)
 public class BookRepositoryImplTest {
 
     @MockBean

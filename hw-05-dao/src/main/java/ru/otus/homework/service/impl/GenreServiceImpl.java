@@ -5,7 +5,7 @@ import ru.otus.homework.entity.Genre;
 import ru.otus.homework.exception.DeleteDataException;
 import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.GenreService;
-import ru.otus.homework.service.PrintService;
+import ru.otus.homework.service.print.PrintService;
 
 import java.util.List;
 

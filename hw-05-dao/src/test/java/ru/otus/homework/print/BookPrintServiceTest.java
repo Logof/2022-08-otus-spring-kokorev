@@ -1,4 +1,4 @@
-package ru.otus.homework.service;
+package ru.otus.homework.print;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -6,7 +6,8 @@ import org.mockito.Mock;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.impl.BookPrintService;
+import ru.otus.homework.service.print.BookPrintService;
+import ru.otus.homework.service.print.PrintService;
 
 import java.util.ArrayList;
 import java.util.List;
