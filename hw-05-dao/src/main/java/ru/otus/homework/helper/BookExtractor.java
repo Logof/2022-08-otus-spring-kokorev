@@ -1,4 +1,4 @@
-package ru.otus.homework.mapper;
+package ru.otus.homework.helper;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class BookMapper implements ResultSetExtractor<Map<String, Book>> {
+public class BookExtractor implements ResultSetExtractor<Map<String, Book>> {
 
     @Override
     public Map<String, Book> extractData(ResultSet rs) throws SQLException, DataAccessException {

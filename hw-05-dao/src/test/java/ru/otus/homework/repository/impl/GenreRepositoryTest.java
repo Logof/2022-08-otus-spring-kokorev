@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест GenreDao")
 @JdbcTest
-@ComponentScan(value = "ru.otus.homework")
+@ComponentScan(value = "ru.otus.homework.repository.impl")
 public class GenreRepositoryTest {
 
     @Autowired

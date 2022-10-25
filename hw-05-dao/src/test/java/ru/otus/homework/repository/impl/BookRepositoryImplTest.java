@@ -1,6 +1,5 @@
 package ru.otus.homework.repository.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +15,13 @@ import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Тест BookDao")
 @JdbcTest
-@ComponentScan(value = "ru.otus.homework")
+@ComponentScan(value = "ru.otus.homework.repository.impl")
 public class BookRepositoryImplTest {
 
     @MockBean
@@ -35,12 +33,6 @@ public class BookRepositoryImplTest {
     @Autowired
     private NamedParameterJdbcOperations jdbc;
 
-    @BeforeEach
-    public void clearData() {
-        jdbc.update("DELETE books", Map.of());
-        jdbc.update("DELETE authors", Map.of());
-        jdbc.update("DELETE genres", Map.of());
-    }
 
     @DisplayName("Добавление")
     @Test

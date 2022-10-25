@@ -1,17 +1,16 @@
 package ru.otus.homework.service;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import ru.otus.homework.Application;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
+import ru.otus.homework.repository.AuthorRepository;
+import ru.otus.homework.repository.GenreRepository;
 import ru.otus.homework.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
@@ -22,24 +21,28 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Тест сервиса по работе с книгами")
-@SpringBootTest(classes = Application.class)
 public class BookServiceTest {
-
+    //TODO довести тест до работы - моки не убирать
     @MockBean
     private OutputServiceStreams outputServiceStreams;
+
+    @MockBean
+    private AuthorRepository authorRepository;
+
+    @MockBean
+    private GenreRepository genreRepository;
+
+    @MockBean
+    private PrintService<Book> printService;
+
+    @MockBean
+    private OutputServiceStreams ioService;
 
     @Autowired
     private BookService bookService;
 
     @Autowired
     private NamedParameterJdbcOperations jdbc;
-
-    @BeforeEach
-    public void prepareTestingData() {
-        jdbc.update("DELETE books", Map.of());
-        jdbc.update("DELETE authors", Map.of());
-        jdbc.update("DELETE genres", Map.of());
-    }
 
     @Test
     public void updateTest() {
