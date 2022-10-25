@@ -26,7 +26,7 @@ public class BookPrintService implements PrintService<Book> {
     @Override
     public String objectsToPrint(Set<Book> objects) {
         return String.format("Total books: %d%s%s", objects.size(), System.lineSeparator(),
-                objects.stream().sorted(Comparator.comparing(Book::getIsbn)).collect(Collectors.toList())
+                objects.stream().sorted(Comparator.comparing(Book::getTitle)).collect(Collectors.toList())
                         .stream().map(book -> objectToPrint(book))
                         .collect(Collectors.joining(System.lineSeparator(), "", "")));
     }

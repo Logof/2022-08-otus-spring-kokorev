@@ -1,6 +1,5 @@
 package ru.otus.homework.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.verify;
 @DisplayName("Тест сервиса по работе с книгами")
 @DataJpaTest
 @ComponentScan("ru.otus.homework")
-@Transactional
 public class BookServiceTest {
 
     @MockBean
@@ -37,10 +35,6 @@ public class BookServiceTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    @BeforeEach
-    public void prepareTestingData() {
-
-    }
 
     @Test
     @Transactional
@@ -69,6 +63,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @Transactional
     public void addTest() {
         Set<Author> authorList = new HashSet<>();
         authorList.add(new Author("Автор Тест"));
@@ -81,6 +76,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @Transactional
     void deleteByIdTest() {
         Book book = new Book("XXX-X-XXX-XXXXX-0", "test title 0");
         bookService.add(book);
@@ -134,6 +130,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @Transactional
     void getByIdTest() {
         entityManager.persist(new Book("XXX-X-XXX-XXXXX-4", "test title 4"));
         bookService.getByIsbn("XXX-X-XXX-XXXXX-4");
@@ -144,6 +141,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @Transactional
     void getAllByAuthorTest() {
         Author author1 = entityManager.persist(new Author("Author 1"));
         Author author2 = entityManager.persist(new Author("Author 2"));
@@ -184,6 +182,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @Transactional
     void getAllByGenreTest() {
         Genre genre1 = entityManager.persist(new Genre("Genre 1"));
         Genre genre2 = entityManager.persist(new Genre("Genre 2"));
@@ -224,6 +223,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @Transactional
     void addGenreToBook() {
         Genre genre = entityManager.persist(new Genre("Genre 1"));
         Book book = entityManager.persist(new Book("XXX-X-XXX-XXXXX-0", "Title", new HashSet<>(),
@@ -243,6 +243,7 @@ public class BookServiceTest {
     }
 
     @Test
+    @Transactional
     void addAuthorToBook() {
         Author author = entityManager.persist(new Author("Author 1"));
         Book book = entityManager.persist(new Book("XXX-X-XXX-XXXXX-0", "Title",
