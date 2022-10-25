@@ -37,17 +37,17 @@ public class ShellCommandTest {
 
     private User testUser;
 
-    @DisplayName(" Не запускается тест если не залогинился")
+    @DisplayName("Не должно запускаться тестирование если не залогинился")
     @Test
-    void test01() {
+    void shouldNotStartTestingIfNotLoggedUser() {
+        given(userService.registerNewUser()).willReturn(null);
         CommandNotCurrentlyAvailable res = (CommandNotCurrentlyAvailable) shell.evaluate(() -> COMMAND_TEST_RUN);
-
         assertThat(res.getMessage()).isEqualTo(SHELL_MESSAGE_COMMAND_ERROR +
                 messageService.getMessage("user.promt.notlogin"));
     }
 
 
-    @DisplayName(" должна запускаться регистрация нового пользователя")
+    @DisplayName("должна запускаться регистрация нового пользователя")
     @Test
     void shouldReturnExpectedGreetingAfterLoginCommandEvaluated() {
         testUser = new User();
