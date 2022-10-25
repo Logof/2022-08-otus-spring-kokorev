@@ -52,7 +52,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     public boolean authorHasBooks(long id) {
         try {
             return Objects.nonNull(entityManager
-                    .createQuery("select 1 from Book b JOIN FETCH b.authors a where a.id = :id", Integer.class)
+                    .createQuery("select true from Book b INNER JOIN b.authors a where a.id = :id", Boolean.class)
                     .setParameter("id", id).getSingleResult());
         } catch (NoResultException e) {
             return false;
