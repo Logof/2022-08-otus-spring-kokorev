@@ -2,7 +2,6 @@ package ru.otus.homework.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.entity.Book;
 import ru.otus.homework.repository.AuthorRepository;
 
 import javax.persistence.EntityManager;
@@ -53,7 +52,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     public boolean authorHasBooks(long id) {
         try {
             return Objects.nonNull(entityManager
-                    .createQuery("select b from Book b JOIN FETCH b.authors a where a.id = :id", Book.class)
+                    .createQuery("select 1 from Book b JOIN FETCH b.authors a where a.id = :id", Integer.class)
                     .setParameter("id", id).getSingleResult());
         } catch (NoResultException e) {
             return false;

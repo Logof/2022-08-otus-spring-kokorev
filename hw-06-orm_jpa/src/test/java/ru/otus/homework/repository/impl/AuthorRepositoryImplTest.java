@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.repository.AuthorRepository;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тест AuthorDao")
 @DataJpaTest
-@ComponentScan("ru.otus.homework.repository.impl")
+@Import(AuthorRepositoryImpl.class)
 public class AuthorRepositoryImplTest {
 
     @Autowired

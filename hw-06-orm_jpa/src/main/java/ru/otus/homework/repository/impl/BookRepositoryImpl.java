@@ -61,7 +61,11 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Set<Book> getAllByAuthor(String fullName) {
         return new HashSet<>(entityManager
-                .createQuery("select b from Book b JOIN FETCH b.authors a where a.fullName like :fullName", Book.class)
+                .createQuery("" +
+                        "select b from Book b " +
+                        " where exists(select 1 from Book bb inner JOIN  bb.authors a " +
+                        "               where a.fullName like :fullName" +
+                        "                 and bb.isbn = b.isbn)", Book.class)
                 .setParameter("fullName", "%" + fullName + "%")
                 .getResultList());
     }

@@ -17,19 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(name = "bookWithGenres",
-        attributeNodes = {
-                @NamedAttributeNode(value = "genres", subgraph = "genresGraph")
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "genresGraph",
-                        attributeNodes = {
-                                @NamedAttributeNode(value = "id"),
-                                @NamedAttributeNode(value = "genreName")
-                        }
-                )
-        })
+@NamedEntityGraph(name = "bookWithGenres", attributeNodes = @NamedAttributeNode(value = "genres"))
 public class Book {
     @Id
     @Column(name = "isbn", nullable = false, updatable = false)
