@@ -1,16 +1,16 @@
 package ru.otus.homework.repository.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import ru.otus.homework.entity.Book;
+import org.springframework.test.context.jdbc.Sql;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.GenreRepository;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,102 +27,101 @@ public class GenreRepositoryImplTest {
     @Autowired
     private TestEntityManager entityManager;
 
+    @BeforeEach
+    @Sql(statements = "DELETE FROM genres")
+    void prepare() {
+
+    }
+
     @DisplayName("Добавление")
     @Test
     void insertTest() {
-        Genre genreActual = new Genre(null, "Test record");
+        Genre genreActual = new Genre("Test record");
         genreActual = genreRepository.save(genreActual);
         assertNotNull(genreActual.getId());
     }
 
     @DisplayName("Обновление")
     @Test
+    @Sql(statements = "INSERT INTO GENRES(id, genre_name) values (1, 'Фантастика')")
     void updateTest() {
-        Genre genreActual = new Genre(null, "Test record");
-        genreActual = genreRepository.save(genreActual);
-        genreActual.setGenreName("Test Title");
-
+        Genre genreActual = genreRepository.getGenreById(1L);
+        genreActual.setGenreName("Мистика");
         Genre genreExpected = genreRepository.save(genreActual);
         assertEquals(genreExpected, genreActual);
     }
 
     @DisplayName("Удаление")
     @Test
+    @Sql(statements = "INSERT INTO GENRES(id, genre_name) values (1, 'Фантастика'), (2, 'Мистика')")
     void deleteTest() {
-        Genre genreActual = genreRepository.save(new Genre("Test1"));
-        Genre genreExpected = genreRepository.save(new Genre("Test2"));
+        Genre genre1 = genreRepository.getGenreById(1L);
+        Genre genre2 = genreRepository.getGenreById(2L);
 
-        genreRepository.deleteById(genreActual.getId());
+        genreRepository.deleteById(1L);
 
-        boolean genreActualRecordFound = false;
-        boolean genreExpectedRecordFound = false;
+        boolean genre1RecordFound = false;
+        boolean genre2RecordFound = false;
 
-        for (Genre book : genreRepository.getAll()) {
-            if (book.getGenreName().equals(genreActual.getGenreName())) {
-                genreActualRecordFound = true;
+        for (Genre genre : genreRepository.getAll()) {
+            if (genre.equals(genre1)) {
+                genre1RecordFound = true;
             }
-            if (book.getGenreName().equals(genreExpected.getGenreName())) {
-                genreExpectedRecordFound = true;
+            if (genre.equals(genre2)) {
+                genre2RecordFound = true;
             }
         }
-        assertFalse(genreActualRecordFound);
-        assertTrue(genreExpectedRecordFound);
+        assertFalse(genre1RecordFound);
+        assertTrue(genre2RecordFound);
     }
 
     @DisplayName("Получение всех записей")
     @Test
+    @Sql(statements = "INSERT INTO GENRES(id, genre_name) values (1, 'Фантастика'), (2, 'Мистика'), (3, 'Сказки')")
     void getAllTest() {
-        Set<Genre> booksActualList = new HashSet<>();
-        booksActualList.add(new Genre("Test record"));
+        Set<Genre> genreActualList = new HashSet<>();
+        genreActualList.add(new Genre(1L, "Фантастика"));
+        genreActualList.add(new Genre(2L, "Мистика"));
+        genreActualList.add(new Genre(3L, "Сказки"));
 
-        for (Genre genre : booksActualList) {
-            genreRepository.save(genre);
-        }
-
-        Set<Genre> booksExpectedList = genreRepository.getAll();
-        assertEquals(booksExpectedList, booksActualList);
+        assertEquals(genreRepository.getAll(), genreActualList);
     }
 
 
     @DisplayName("Получение одной записи")
     @Test
+    @Sql(statements = "INSERT INTO GENRES(id, genre_name) values (1, 'Фантастика'), (2, 'Мистика'), (3, 'Сказки')")
     void getByIdTest() {
-        Genre genreActual = new Genre(null, "Test record");
-        genreActual = genreRepository.save(genreActual);
+        Genre genreActual = new Genre(1L, "Фантастика");
         Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
         assertEquals(genreExpected, genreActual);
     }
 
     @DisplayName("Проверка, что жанр ассоциирован с книгой")
     @Test
+    @Sql(statements = {"INSERT INTO GENRES(id, genre_name) values (1, 'Фантастика'), (2, 'Мистика')",
+            "INSERT INTO BOOKS (ISBN, TITLE) values ('XXX-XXX-XXX', 'Сказки Шарля Перро')",
+            "INSERT INTO BOOK_GENRES (ISBN, GENRE_ID) values ('XXX-XXX-XXX', 1)"})
     void isAttachedToBookTest() {
-        Genre genreActual = genreRepository.save(new Genre("Test record"));
-        assertFalse(genreRepository.genreHasBooks(genreActual.getId()));
-
-        Book book = new Book("XXX-XXX-XXXX-XX", "Test", new HashSet<>(),
-                new HashSet<>(Collections.singletonList(genreActual)), new HashSet<>());
-        entityManager.persist(book);
-
-        assertTrue(genreRepository.genreHasBooks(genreActual.getId()));
+        assertTrue(genreRepository.genreHasBooks(1));
+        assertFalse(genreRepository.genreHasBooks(2));
     }
 
     @DisplayName("Получение записи по имени")
     @Test
+    @Sql(statements = {"INSERT INTO GENRES(id, genre_name) values (1, 'Фантастика'), (2, 'Мистика')"})
     void getByGenreNameTest() {
-        Genre genreActual = new Genre(null, "Test record");
-        genreActual = genreRepository.save(genreActual);
-
-        Genre genreExpected = genreRepository.getGenreByName(genreActual.getGenreName());
+        Genre genreActual = new Genre(1L, "Фантастика");
+        Genre genreExpected = genreRepository.getGenreByName("Фантастика");
         assertEquals(genreExpected, genreActual);
     }
 
     @DisplayName("Получение записи по ID")
     @Test
+    @Sql(statements = {"INSERT INTO GENRES(id, genre_name) values (1, 'Фантастика'), (2, 'Мистика')"})
     void getAuthorByIdTest() {
-        Genre genreActual = new Genre(null, "Test record");
-        genreActual = genreRepository.save(genreActual);
-
-        Genre genreExpected = genreRepository.getGenreById(genreActual.getId());
+        Genre genreActual = new Genre(1L, "Фантастика");
+        Genre genreExpected = genreRepository.getGenreById(1L);
         assertEquals(genreExpected, genreActual);
     }
 

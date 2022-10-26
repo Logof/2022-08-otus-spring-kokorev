@@ -73,7 +73,11 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Set<Book> getAllByGenre(String genreName) {
         return new HashSet<>(entityManager
-                .createQuery("select b from Book b JOIN FETCH b.genres g where g.genreName = :genreName", Book.class)
+                .createQuery("" +
+                        "select b from Book b " +
+                        " where exists(select 1 from Book bb inner JOIN  bb.genres g " +
+                        "               where g.genreName = :genreName" +
+                        "                 and bb.isbn = b.isbn)", Book.class)
                 .setParameter("genreName", genreName)
                 .getResultList());
     }

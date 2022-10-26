@@ -10,7 +10,6 @@ import ru.otus.homework.entity.Genre;
 import ru.otus.homework.service.BookService;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,7 +57,7 @@ public class BookCommands extends CommonShell {
                 new Author(authorFullName)).collect(Collectors.toSet());
         Set<Genre> genreList = Arrays.asList(genres).stream().map(genreName ->
                 new Genre(genreName)).collect(Collectors.toSet());
-        bookService.add(new Book(isbn, title, authorList, genreList, new HashSet<>()));
+        bookService.add(new Book(isbn, title, authorList, genreList));
     }
 
 

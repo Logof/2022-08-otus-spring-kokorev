@@ -1,5 +1,6 @@
 package ru.otus.homework.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "authors")
+@EqualsAndHashCode
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

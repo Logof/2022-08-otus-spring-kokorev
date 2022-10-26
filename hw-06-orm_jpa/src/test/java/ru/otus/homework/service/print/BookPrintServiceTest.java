@@ -28,9 +28,9 @@ public class BookPrintServiceTest {
     @Test
     public void verificationPreparingPrintBooksList() {
         Set<Book> bookList = new HashSet<>();
-        bookList.add(new Book("ISBN1", "Book 1", new HashSet<>(), new HashSet<>(), new HashSet<>()));
-        bookList.add(new Book("ISBN2", "Book 2", new HashSet<>(), new HashSet<>(), new HashSet<>()));
-        bookList.add(new Book("ISBN3", "Book 3", new HashSet<>(), new HashSet<>(), new HashSet<>()));
+        bookList.add(new Book("ISBN1", "Book 1"));
+        bookList.add(new Book("ISBN2", "Book 2"));
+        bookList.add(new Book("ISBN3", "Book 3"));
 
         String stringExpect = bookPrintService.objectsToPrint(bookList);
         String stringActual = "Total books: 3" + System.lineSeparator() +
@@ -53,7 +53,7 @@ public class BookPrintServiceTest {
     @DisplayName("Подготовка к печати книги")
     @Test
     public void verificationPreparingPrintBook() {
-        Book book = new Book("ISBN1", "Book 1", new HashSet<>(), new HashSet<>(), new HashSet<>());
+        Book book = new Book("ISBN1", "Book 1");
         String stringExpect = bookPrintService.objectToPrint(book);
         String stringActual = "Title: Book 1 (ISBN: ISBN1)" + System.lineSeparator() +
                 "Genre: " + System.lineSeparator() + System.lineSeparator() +

@@ -1,9 +1,6 @@
 package ru.otus.homework.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -17,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "books")
+@EqualsAndHashCode
 @NamedEntityGraph(name = "bookWithGenres", attributeNodes = @NamedAttributeNode(value = "genres"))
 public class Book {
     @Id
@@ -27,7 +25,7 @@ public class Book {
     private String title;
 
     public Book(String isbn, String title) {
-        this(isbn, title, new HashSet<>(), new HashSet<>(), new HashSet<>());
+        this(isbn, title, new HashSet<>(), new HashSet<>());
     }
 
 
@@ -42,9 +40,5 @@ public class Book {
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "isbn")
-    private Set<Comment> comments;
 
 }

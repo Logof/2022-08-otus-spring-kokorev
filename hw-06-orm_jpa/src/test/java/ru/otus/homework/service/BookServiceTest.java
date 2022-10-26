@@ -39,7 +39,7 @@ public class BookServiceTest {
     @Test
     @Transactional
     public void updateTitleTest() {
-        Book book = new Book("XXX-X-XXX-XXXXX-0", "test title 0", new HashSet<>(), new HashSet<>(), new HashSet<>());
+        Book book = new Book("XXX-X-XXX-XXXXX-0", "test title 0");
         bookService.add(book);
         book.setTitle("New title 0");
         bookService.updateTitle(book);
@@ -69,7 +69,7 @@ public class BookServiceTest {
         authorList.add(new Author("Автор Тест"));
         authorList.add(new Author("Автор Тест 2"));
 
-        Book book = new Book("XXX-X-XXX-XXXXX-0", "New title 0", authorList, new HashSet<>(), new HashSet<>());
+        Book book = new Book("XXX-X-XXX-XXXXX-0", "New title 0");
         bookService.add(book);
         Book bookExpected = entityManager.find(Book.class, "XXX-X-XXX-XXXXX-0");
         assertEquals(bookExpected, book);
@@ -154,8 +154,8 @@ public class BookServiceTest {
         authors2.add(author2);
         authors2.add(author3);
 
-        Book bookActual1 = new Book("XXX-X-XXX-XXXXX-0", "test title 0", authors1, new HashSet<>(), new HashSet<>());
-        Book bookActual2 = new Book("XXX-X-XXX-XXXXX-1", "test title 1", authors2, new HashSet<>(), new HashSet<>());
+        Book bookActual1 = new Book("XXX-X-XXX-XXXXX-0", "test title 0", authors1, new HashSet<>());
+        Book bookActual2 = new Book("XXX-X-XXX-XXXXX-1", "test title 1", authors2, new HashSet<>());
 
         entityManager.persist(bookActual1);
         entityManager.persist(bookActual2);
@@ -195,8 +195,8 @@ public class BookServiceTest {
         genres2.add(genre2);
         genres2.add(genre3);
 
-        Book bookActual1 = new Book("XXX-X-XXX-XXXXX-0", "test title 0", new HashSet<>(), genres2, new HashSet<>());
-        Book bookActual2 = new Book("XXX-X-XXX-XXXXX-1", "test title 1", new HashSet<>(), genres1, new HashSet<>());
+        Book bookActual1 = new Book("XXX-X-XXX-XXXXX-0", "test title 0", new HashSet<>(), genres2);
+        Book bookActual2 = new Book("XXX-X-XXX-XXXXX-1", "test title 1", new HashSet<>(), genres1);
 
         entityManager.persist(bookActual1);
         entityManager.persist(bookActual2);
@@ -226,8 +226,7 @@ public class BookServiceTest {
     @Transactional
     void addGenreToBook() {
         Genre genre = entityManager.persist(new Genre("Genre 1"));
-        Book book = entityManager.persist(new Book("XXX-X-XXX-XXXXX-0", "Title", new HashSet<>(),
-                new HashSet<>(), new HashSet<>()));
+        Book book = entityManager.persist(new Book("XXX-X-XXX-XXXXX-0", "Title"));
 
         bookService.addGenreToBook("XXX-X-XXX-XXXXX-0", "Genre 1");
         bookService.getByIsbn("XXX-X-XXX-XXXXX-0");
@@ -246,8 +245,7 @@ public class BookServiceTest {
     @Transactional
     void addAuthorToBook() {
         Author author = entityManager.persist(new Author("Author 1"));
-        Book book = entityManager.persist(new Book("XXX-X-XXX-XXXXX-0", "Title",
-                new HashSet<>(), new HashSet<>(), new HashSet<>()));
+        Book book = entityManager.persist(new Book("XXX-X-XXX-XXXXX-0", "Title"));
 
         bookService.addAuthorToBook("XXX-X-XXX-XXXXX-0", "Author 1");
         bookService.getByIsbn("XXX-X-XXX-XXXXX-0");

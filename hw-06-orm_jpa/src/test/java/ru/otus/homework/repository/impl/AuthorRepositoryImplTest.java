@@ -1,16 +1,16 @@
 package ru.otus.homework.repository.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.jdbc.Sql;
 import ru.otus.homework.entity.Author;
-import ru.otus.homework.entity.Book;
 import ru.otus.homework.repository.AuthorRepository;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,6 +26,12 @@ public class AuthorRepositoryImplTest {
     @Autowired
     private AuthorRepository authorRepository;
 
+    @BeforeEach
+    @Sql(statements = "DELETE FROM authors")
+    void prepare() {
+
+    }
+
     @DisplayName("Добавление")
     @Test
     void insertTest() {
@@ -36,11 +42,11 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Обновление")
     @Test
+    @Sql(statements = "INSERT INTO AUTHORS(id, full_name) values (1, 'Шарль Перро')")
     void updateTest() {
-        Author authorActual = new Author(null, "Test record");
-        authorActual = authorRepository.save(authorActual);
-
+        Author authorActual = authorRepository.getAuthorById(1);
         authorActual.setFullName("Test Title");
+
         Author savedAuthorExpected = authorRepository.save(authorActual);
         assertEquals(savedAuthorExpected, authorActual);
 
@@ -50,36 +56,37 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Удаление")
     @Test
+    @Sql(statements = "INSERT INTO AUTHORS(id, full_name) values (1, 'Шарль Перро'), (2, 'Якоб и Вильгельм Гримм')")
     void deleteTest() {
-        Author authorActual = authorRepository.save(new Author("Test1"));
-        Author authorExpected = authorRepository.save(new Author("Test2"));
+        Author author1 = authorRepository.getAuthorById(1);
+        Author author2 = authorRepository.getAuthorById(2);
 
-        authorRepository.delete(authorActual.getId());
+        authorRepository.delete(1);
 
-        boolean authorActualRecordFound = false;
-        boolean authorExpectedRecordFound = false;
+        Boolean author1RecordFound = false;
+        Boolean author2RecordFound = false;
 
         for (Author author : authorRepository.getAll()) {
-            if (author.getFullName().equals(authorActual.getFullName())) {
-                authorActualRecordFound = true;
+            if (author.equals(author1)) {
+                author1RecordFound = true;
             }
-            if (author.getFullName().equals(authorExpected.getFullName())) {
-                authorExpectedRecordFound = true;
+            if (author.equals(author2)) {
+                author2RecordFound = true;
             }
         }
-        assertFalse(authorActualRecordFound);
-        assertTrue(authorExpectedRecordFound);
+        assertFalse(author1RecordFound);
+        assertTrue(author2RecordFound);
     }
 
     @DisplayName("Получение всех записей")
     @Test
+    @Sql(statements = "INSERT INTO AUTHORS(id, full_name) values (1, 'Шарль Перро'), " +
+            "(2, 'Якоб и Вильгельм Гримм'), (3, 'Андерсен Ханс Кристиан')")
     void getAllTest() {
         Set<Author> booksActualList = new HashSet<>();
-        booksActualList.add(new Author("Test record"));
-
-        for (Author genre : booksActualList) {
-            authorRepository.save(genre);
-        }
+        booksActualList.add(new Author(1L, "Шарль Перро"));
+        booksActualList.add(new Author(2L, "Якоб и Вильгельм Гримм"));
+        booksActualList.add(new Author(3L, "Андерсен Ханс Кристиан"));
 
         Set<Author> authorExpectedList = authorRepository.getAll();
         assertEquals(authorExpectedList, booksActualList);
@@ -88,35 +95,33 @@ public class AuthorRepositoryImplTest {
 
     @DisplayName("Получение записи по ID")
     @Test
+    @Sql(statements = "INSERT INTO AUTHORS(id, full_name) values (1, 'Шарль Перро'), " +
+            "(2, 'Якоб и Вильгельм Гримм'), (3, 'Андерсен Ханс Кристиан')")
     void getAuthorByIdTest() {
-        Author authorActual = new Author("Test record");
-        authorActual = authorRepository.save(authorActual);
-
+        Author authorActual = new Author(1L, "Шарль Перро");
         Author authorExpected = authorRepository.getAuthorById(authorActual.getId());
         assertEquals(authorExpected, authorActual);
     }
 
     @DisplayName("Получение записи по имени")
     @Test
+    @Sql(statements = "INSERT INTO AUTHORS(id, full_name) values (1, 'Шарль Перро'), " +
+            "(2, 'Якоб и Вильгельм Гримм'), (3, 'Андерсен Ханс Кристиан')")
     void getByFullNameTest() {
-        Author authorActual = authorRepository.save(new Author("Test record"));
+        Author authorActual = new Author(2L, "Якоб и Вильгельм Гримм");
 
-        Author authorExpected = authorRepository.getByFullName(authorActual.getFullName());
+        Author authorExpected = authorRepository.getByFullName("Гримм");
         assertEquals(authorExpected, authorActual);
-
     }
 
     @DisplayName("Проверка, что автор ассоциирован с книгой")
     @Test
+    @Sql(statements = {"INSERT INTO AUTHORS(id, full_name) values (1, 'Шарль Перро'), (2, 'Якоб и Вильгельм Гримм')",
+            "INSERT INTO BOOKS (ISBN, TITLE) values ('XXX-XXX-XXX', 'Сказки Шарля Перро')",
+            "INSERT INTO BOOK_AUTHORS (ISBN, AUTHOR_ID) values ('XXX-XXX-XXX', 1)"})
     void isAttachedToBookTest() {
-        Author authorActual = authorRepository.save(new Author("Test record"));
-        assertFalse(authorRepository.authorHasBooks(authorActual.getId()));
-
-        Book book = new Book("TEST-ISBN", "Test title",
-                new HashSet<>(Collections.singletonList(authorActual)), new HashSet<>(), new HashSet<>());
-        entityManager.persist(book);
-
-        assertTrue(authorRepository.authorHasBooks(authorActual.getId()));
+        assertTrue(authorRepository.authorHasBooks(1));
+        assertFalse(authorRepository.authorHasBooks(2));
     }
 
 
