@@ -1,4 +1,6 @@
 /.idea
+/*.iml
+/.*
 /hw-01/target
 /hw-01/*.iml
 /hw-01/.idea
@@ -10,6 +12,9 @@
 /hw-03/target
 /hw-03/*.iml
 /hw-03/.idea
+/hw-05-dao/target
+/hw-05-dao/*.iml
+/hw-05-dao/.idea
 /hw-04-spring_shell/target
 /hw-04-spring_shell/*.iml
 /hw-04-spring_shell/.idea
