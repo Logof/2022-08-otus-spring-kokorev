@@ -13,4 +13,6 @@
 /hw-05-dao/target
 /hw-05-dao/*.iml
 /hw-05-dao/.idea
-
+/hw-06-orm_jpa/target
+/hw-06-orm_jpa/*.iml
+/hw-06-orm_jpa/.idea/
