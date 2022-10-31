@@ -1,0 +1,90 @@
+1666849113522:print-books
+1666849183233:add-book 123121231 title
+1666849187980:print-books
+1666849272215:add-book 123123 Title
+1666849278449:select-book 123123
+1666849284650:add-comment 324234324
+1666849289176:print-comment
+1666849297442:print-comments
+1666849942853:print-books
+1667199805844:prints-book
+1667199812072:print-books
+1667199826648:print-authors
+1667199834247:print-genres
+1667199840503:select-book 978-5-699-12014-7
+1667199843661:print-book
+1667199849137:help
+1667199864903:print-authors
+1667199870403:print-genres
+1667199895800:add-genre "Детские сказки"
+1667199911499:add-genre-book "Детские сказки"
+1667199923224:stacktrace
+1667200027067:print-books
+1667200035902:select-book 978-5-699-12014-7
+1667200043645:help
+1667200072797:print-book
+1667200083189:add-genre-book "Детские сказки"
+1667200146742:stacktrace
+1667200366900:print-books
+1667200378740:print-books-by-author "Шарль Перро"
+1667200385341:stacktrace
+1667200419182:print-books
+1667200429427:select-book 978-5-699-12014-7
+1667200453835:add-genre-book "Детские сказки"
+1667200543698:stacktrace
+1667200583934:select-book 978-5-699-12014-7
+1667200589477:add-genre-book "Детские сказки"
+1667200595166:stactrace
+1667200598689:stacktrace
+1667200618948:select-book 978-5-699-12014-7
+1667200625897:add-genre-book "Детские сказки"
+1667200782679:select-book 978-5-699-12014-7
+1667200786622:add-genre-book "Детские сказки"
+1667201924746:select-book 978-5-699-12014-7
+1667201930205:add-genre-book "Детские сказки"
+1667201938870:print-book
+1667201974605:add-author-book "Русский народ"
+1667201982219:print-book
+1667202009744:update-book-title "Колобок и все, все, все..."
+1667202013228:зкште-ищщл
+1667202017045:print-book
+1667202047705:add-comment Паламалася
+1667202055007:print-comments
+1667202061742:stacktrace
+1667202250929:select-book 978-5-699-12014-7
+1667202269214:update-book-title "Колобок и все, все, все..."
+1667203680105:select-book 978-5-699-12014-7
+1667203683475:update-book-title "Колобок и все, все, все..."
+1667203688042:print-book
+1667203707057:add-comment "Работает"!
+1667203719941:print-comments
+1667203727078:stacktrace
+1667203904005:select-book 978-5-699-12014-7
+1667203913301:print-comments
+1667203954572:select-book 978-5-699-12014-7
+1667203961809:add-comment "TRTRTR"
+1667203967208:print-comments
+1667203997658:print-book
+1667203999539:delete-author-id 1
+1667204018229:add-author "Author"
+1667204021094:delete-author-id 6
+1667204031252:print-authors
+1667204039899:print-books-by-author Гримм
+1667204043965:stacktrace
+1667204212224:print-books-by-author Гримм
+1667206221318:print-books
+1667208511250:print-books-by-author Гримм
+1667209788550:print-genres
+1667218041399:print-authors
+1667218050739:delete-author 2
+1667218086248:delete-author-id 2
+1667218207178:stacktrace
+1667218705567:delete-genre 1
+1667218723398:delete-author-id 1
+1667218729212:stacktrace
+1667218898437:delete-genre-id 1
+1667219031415:delete-author-id 1
+1667221362887:stacktrace
+1667221468134:delete-genre-id 1
+1667221501725:stacktrace
+1667221777802:delete-genre-id 1
