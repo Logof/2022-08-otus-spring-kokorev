@@ -35,7 +35,6 @@ public class ShellCommandTest {
 
     private static final String SHELL_MESSAGE_COMMAND_ERROR = "Command 't' exists but is not currently available because ";
 
-    private User testUser;
 
     @DisplayName("Не должно запускаться тестирование если не залогинился")
     @Test
@@ -50,7 +49,7 @@ public class ShellCommandTest {
     @DisplayName("должна запускаться регистрация нового пользователя")
     @Test
     void shouldReturnExpectedGreetingAfterLoginCommandEvaluated() {
-        testUser = new User();
+        User testUser = new User();
         testUser.setSurname("TestSurname");
         testUser.setName("TestName");
 
@@ -63,9 +62,9 @@ public class ShellCommandTest {
 
     }
 
-    @DisplayName(" logout")
+    @DisplayName("logout")
     @Test
-    void shouldReturnExpectedGreetingAfterLoginCommandEvaluated1() {
+    void shouldReturnExpectedGoodbuyAfterLogoutCommandEvaluated1() {
         String res = (String) shell.evaluate(() -> COMMAND_LOGOUT);
         assertThat(res).isEqualTo(messageService.getMessage("user.promt.goodbuy"));
 

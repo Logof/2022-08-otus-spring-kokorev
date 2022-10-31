@@ -47,14 +47,12 @@ public class QuestionServiceTest {
     @DisplayName("Вараант 2: Три ответа верные. Ответ из нескольких верных вариантов - инвертирован")
     public void test2() {
         String[] answersArray = {"hello world", "3, 1", "1"};
-        boolean[] resultActual = {true, true, true};
-
         List<Question> questionList = questionsRepository.getQuestionList();
 
         int i = 0;
         for (Question question : questionList) {
             List<Answer> userAnswer = questionService.getAnswersByUserAnswers(question, answersArray[i]);
-            assertEquals(questionService.checkingUserAnswers(question, userAnswer), resultActual[i]);
+            assertTrue(questionService.checkingUserAnswers(question, userAnswer));
             i += 1;
         }
 
@@ -77,10 +75,9 @@ public class QuestionServiceTest {
     }
 
     @Test
-    @DisplayName("Вариант 4: Не верный формат ответа или ответ не входит в диапозон вариантов ответа")
+    @DisplayName("Вариант 4: Не верный формат ответа или ответ не входит в диапазон вариантов ответа")
     public void test4() {
         String[] answersArray = {"HELLO world", "qwerty", "100"};
-        boolean[] resultActual = {true, false, false};
 
         List<Question> questionList = questionsRepository.getQuestionList();
 
@@ -98,7 +95,7 @@ public class QuestionServiceTest {
                 );
             } else {
                 List<Answer> userAnswer = questionService.getAnswersByUserAnswers(question, userAnswerString);
-                assertEquals(questionService.checkingUserAnswers(question, userAnswer), resultActual[i]);
+                assertTrue(questionService.checkingUserAnswers(question, userAnswer));
             }
         }
     }

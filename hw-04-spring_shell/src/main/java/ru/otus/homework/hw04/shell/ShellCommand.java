@@ -40,12 +40,12 @@ public class ShellCommand {
     @ShellMethod(value = "Logout command", key = {"o", "logout"})
     public String logout() {
         user = null;
-        return String.format(messageService.getMessage("user.promt.goodbuy"));
+        return messageService.getMessage("user.promt.goodbuy");
     }
 
     @ShellMethod(value = "Starting test", key = {"t", "test"})
     @ShellMethodAvailability(value = "isTestCommandAvailable")
-    public void publishEvent() {
+    public void runTesting() {
         testingSystemService.runTesting(user);
     }
 }
