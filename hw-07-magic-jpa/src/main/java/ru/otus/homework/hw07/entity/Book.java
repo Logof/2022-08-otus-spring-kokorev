@@ -9,6 +9,7 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -39,4 +40,19 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Book)) return false;
+        Book book = (Book) object;
+
+        return Objects.equals(isbn, book.isbn) & Objects.equals(title, book.title)
+                & Objects.equals(genres, book.genres)
+                & Objects.equals(authors, book.authors);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn, isbn, genres, authors);
+    }
 }

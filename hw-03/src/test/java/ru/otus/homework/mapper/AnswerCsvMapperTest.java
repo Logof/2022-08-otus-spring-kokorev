@@ -2,7 +2,9 @@ package ru.otus.homework.mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.entity.Answer;
+import ru.otus.homework.hw03.entity.Answer;
+import ru.otus.homework.hw03.mapper.AnswerCsvMapper;
+import ru.otus.homework.hw03.mapper.CsvMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

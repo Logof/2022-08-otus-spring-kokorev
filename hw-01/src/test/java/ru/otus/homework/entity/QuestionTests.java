@@ -2,6 +2,8 @@ package ru.otus.homework.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.otus.homework.hw01.entity.Answer;
+import ru.otus.homework.hw01.entity.Question;
 
 import java.util.ArrayList;
 import java.util.List;

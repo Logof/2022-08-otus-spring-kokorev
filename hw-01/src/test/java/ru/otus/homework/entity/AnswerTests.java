@@ -2,6 +2,7 @@ package ru.otus.homework.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.otus.homework.hw01.entity.Answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

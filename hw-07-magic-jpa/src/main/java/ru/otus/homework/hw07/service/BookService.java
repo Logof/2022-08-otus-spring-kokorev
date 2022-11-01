@@ -1,6 +1,7 @@
 package ru.otus.homework.hw07.service;
 
 import ru.otus.homework.hw07.entity.Book;
+import ru.otus.homework.hw07.entity.Comment;
 
 import java.util.List;
 
@@ -20,9 +21,9 @@ public interface BookService {
 
     List<Book> getAllByGenre(String genreName);
 
-    void addGenreToBook(String isbn, String genreName);
+    Book addGenreToBook(String isbn, String genreName);
 
-    void addAuthorToBook(String isbn, String fullName);
+    Book addAuthorToBook(String isbn, String fullName);
 
-    void addCommentToBook(String isbn, String commentText);
+    Comment addCommentToBook(String isbn, String commentText);
 }

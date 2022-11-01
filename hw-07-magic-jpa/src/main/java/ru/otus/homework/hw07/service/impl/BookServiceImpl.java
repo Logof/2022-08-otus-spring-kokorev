@@ -56,14 +56,12 @@ public class BookServiceImpl implements BookService {
             throw new FieldRequiredException("isbn", "title");
         }
         return bookRepository.save(book);
-        //ioService.outString(String.format("Book added. ISBN: %s", book.getIsbn()));
     }
 
     @Override
     @Transactional
     public void deleteByIsbn(String isbn) {
         bookRepository.deleteById(isbn);
-        //ioService.outString(String.format("Book deleted. ID: %s", isbn));
     }
 
     @Override
@@ -97,46 +95,40 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void addGenreToBook(String isbn, String genreName) {
+    public Book addGenreToBook(String isbn, String genreName) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
         Genre genre = genreRepository.findByGenreNameLike(genreName);
-        if (book.getGenres().contains(genreName)) {
+
+        if (genre != null && book.getGenres().contains(genre)) {
             throw new ObjectExistsException("The book already has an added genre");
-        } else {
-            if (genre == null) {
-                book.getGenres().add(new Genre(genreName));
-            } else {
-                book.getGenres().add(genre);
-            }
-            bookRepository.save(book);
         }
+        book.getGenres().add(genre != null ? genre : new Genre(genreName));
+
+        return bookRepository.save(book);
     }
 
     @Override
     @Transactional
-    public void addAuthorToBook(String isbn, String fullName) {
+    public Book addAuthorToBook(String isbn, String fullName) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
         Author author = authorRepository.findByFullNameLike(fullName);
 
-        if (book.getAuthors().contains(fullName)) {
+        if (author != null && book.getAuthors().contains(author)) {
             throw new ObjectExistsException("The book already has an added author");
-        } else {
-            if (author == null) {
-                book.getAuthors().add(new Author(fullName));
-            } else {
-                book.getAuthors().add(author);
-            }
         }
-        bookRepository.save(book);
+        book.getAuthors().add(author != null ? author : new Author(fullName));
+
+        return bookRepository.save(book);
 
     }
 
     @Override
     @Transactional
-    public void addCommentToBook(String isbn, String commentText) {
+    public Comment addCommentToBook(String isbn, String commentText) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
-        if (commentText != null && !commentText.isEmpty()) {
-            commentRepository.save(new Comment(commentText, book));
+        if (commentText == null || commentText.isEmpty()) {
+            throw new FieldRequiredException("commentText");
         }
+        return commentRepository.save(new Comment(commentText, book));
     }
 }

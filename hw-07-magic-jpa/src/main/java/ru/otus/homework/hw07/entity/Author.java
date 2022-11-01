@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -21,6 +22,14 @@ public class Author {
 
     public Author(String fullName) {
         this(null, fullName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Author)) return false;
+        Author author = (Author) o;
+        return Objects.equals(id, author.id) & Objects.equals(fullName, author.fullName);
     }
 
 }
