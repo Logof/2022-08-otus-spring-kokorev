@@ -3,39 +3,66 @@ package ru.otus.homework.hw04.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.homework.hw04.entity.Answer;
 import ru.otus.homework.hw04.entity.Question;
+import ru.otus.homework.hw04.enums.QuestionTypeEnum;
 import ru.otus.homework.hw04.exeption.IncorrectNumberAnswerException;
 import ru.otus.homework.hw04.repository.QuestionsRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
+//TODO поправить тесты, чтобы они работали
 public class QuestionServiceTest {
 
-    @Autowired
+    @MockBean
     private QuestionsRepository questionsRepository;
 
-    @Autowired
+    @MockBean
     private QuestionService questionService;
 
-    @Autowired
+    @MockBean
     private MessageService messageService;
+
+    private List<Question> getQuestionsForTest1() {
+        List<Question> questionList = new ArrayList<>();
+        questionList.add(new Question("Question", QuestionTypeEnum.ENTER_ANSWER,
+                Collections.singletonList(new Answer("hello world", true))));
+
+        List<Answer> answerList1 = new ArrayList<>();
+        answerList1.add(new Answer("True answer", true));
+        answerList1.add(new Answer("True false", false));
+        answerList1.add(new Answer("True answer", true));
+        questionList.add(new Question("Question", QuestionTypeEnum.CHOICE_ANSWERS, answerList1));
+
+        List<Answer> answerList2 = new ArrayList<>();
+        answerList2.add(new Answer("True answer", true));
+        answerList2.add(new Answer("True false", false));
+        answerList2.add(new Answer("True false", false));
+
+        questionList.add(new Question("Question", QuestionTypeEnum.CHOICE_ANSWERS, answerList2));
+        return questionList;
+    }
 
     @Test
     @DisplayName("Вараант 1: Три ответа верные")
     public void test1() {
+
         String[] answersArray = {"hello world", "1,3", "1"};
 
-        List<Question> questionList = questionsRepository.getQuestionList();
+        when(questionsRepository.getQuestionList()).thenReturn(getQuestionsForTest1());
+        List<Question> questions = questionsRepository.getQuestionList();
 
         int i = 0;
-        for (Question question : questionList) {
+        for (Question question : questions) {
             List<Answer> userAnswer = questionService.getAnswersByUserAnswers(question, answersArray[i]);
             assertTrue(questionService.checkingUserAnswers(question, userAnswer));
             i += 1;
