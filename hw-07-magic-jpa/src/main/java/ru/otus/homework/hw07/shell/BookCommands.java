@@ -32,23 +32,23 @@ public class BookCommands extends CommonShell {
     }
 
     @ShellMethod(value = "Output all books", key = "print-books")
-    public String outputAllBooks() {
+    public String printAllBooks() {
         return printService.objectsToPrint(bookService.getAll());
     }
 
     @ShellMethod(value = "Output all books", key = "print-books-by-author")
-    public String outputAllBooksByAuthors(@ShellOption(help = "Author full name ") String authorFullName) {
+    public String printAllBooksByAuthors(@ShellOption(help = "Author full name ") String authorFullName) {
         return printService.objectsToPrint(bookService.getAllByAuthor(authorFullName));
     }
 
     @ShellMethod(value = "Output all books", key = "print-books-by-genre")
-    public String outputAllBooksByGenre(@ShellOption(help = "Genre name ") String genreName) {
+    public String printAllBooksByGenre(@ShellOption(help = "Genre name ") String genreName) {
         return printService.objectsToPrint(bookService.getAllByGenre(genreName));
     }
 
     @ShellMethod(value = "Output the selected book", key = "print-book")
     @ShellMethodAvailability(value = "isEmptyIsbn")
-    public String outputTheSelectedBook() {
+    public String printSelectedBook() {
         return printService.objectToPrint(bookService.getByIsbn(getCurrBook()));
     }
 

@@ -8,10 +8,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
-import ru.otus.homework.entity.Author;
-import ru.otus.homework.entity.Book;
-import ru.otus.homework.entity.Genre;
-import ru.otus.homework.repository.BookRepository;
+import ru.otus.homework.hw06.entity.Author;
+import ru.otus.homework.hw06.entity.Book;
+import ru.otus.homework.hw06.entity.Genre;
+import ru.otus.homework.hw06.repository.BookRepository;
+import ru.otus.homework.hw06.repository.impl.BookRepositoryImpl;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -2,8 +2,8 @@ package ru.otus.homework.print;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.print.GenrePrintService;
+import ru.otus.homework.hw05.entity.Genre;
+import ru.otus.homework.hw05.service.print.GenrePrintService;
 
 import java.util.ArrayList;
 import java.util.List;

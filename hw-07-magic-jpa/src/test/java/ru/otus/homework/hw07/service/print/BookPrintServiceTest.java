@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Тест сервиса по подготовке сущности \"Книга\" к печати")
+@DisplayName("Тест сервиса по подготовке сущьности \"Книга\" к печати")
 public class BookPrintServiceTest {
 
     @Mock

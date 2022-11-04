@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Тест сервиса по подготовке сущности \"Автор\" к печати")
+@DisplayName("Тест сервиса по подготовке сущьности \"Автор\" к печати")
 public class AuthorPrintServiceTest {
 
     private final AuthorPrintService authorPrintService = new AuthorPrintService();

@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.hw07.entity.Comment;
 import ru.otus.homework.hw07.repository.CommentRepository;
 import ru.otus.homework.hw07.service.CommentService;
+import ru.otus.homework.hw07.service.print.PrintService;
 
 import java.util.List;
 
@@ -13,8 +14,12 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    private final PrintService<Comment> printService;
+
+
+    public CommentServiceImpl(CommentRepository commentRepository, PrintService<Comment> printService) {
         this.commentRepository = commentRepository;
+        this.printService = printService;
     }
 
     @Override

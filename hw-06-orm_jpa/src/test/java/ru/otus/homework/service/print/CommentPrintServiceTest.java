@@ -2,8 +2,9 @@ package ru.otus.homework.service.print;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.entity.Book;
-import ru.otus.homework.entity.Comment;
+import ru.otus.homework.hw06.entity.Book;
+import ru.otus.homework.hw06.entity.Comment;
+import ru.otus.homework.hw06.service.print.CommentPrintService;
 
 import java.util.HashSet;
 import java.util.Set;
