@@ -21,6 +21,7 @@
         <module>hw-01</module>
         <module>hw-02</module>
         <module>hw-03</module>
+        <module>hw-04-spring_shell</module>
         <module>hw-05-dao</module>
         <module>hw-06-orm_jpa</module>
         <module>hw-07-magic-jpa</module>
