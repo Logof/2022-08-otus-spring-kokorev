@@ -26,7 +26,7 @@ public class GenreCommands extends CommonShell {
 
     @ShellMethod(value = "Add an genre. Accepts genre name", key = "add-genre")
     public String addGenre(@ShellOption String genreName) {
-        return String.format("Genre added. ID: %d", genreService.add(genreName));
+        return String.format("Genre added. ID: %d", genreService.add(genreName).getId());
     }
 
     @ShellMethod(value = "Delete a genre by ID", key = "delete-genre-id")

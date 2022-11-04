@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.hw07.entity.Genre;
 import ru.otus.homework.hw07.repository.GenreRepository;
 import ru.otus.homework.hw07.service.GenreService;
-import ru.otus.homework.hw07.service.print.PrintService;
 
 import java.util.List;
 
@@ -13,12 +12,9 @@ import java.util.List;
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
-    private final PrintService<Genre> printService;
 
-    public GenreServiceImpl(GenreRepository genreRepository,
-                            PrintService<Genre> printService) {
+    public GenreServiceImpl(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
-        this.printService = printService;
     }
 
     @Override

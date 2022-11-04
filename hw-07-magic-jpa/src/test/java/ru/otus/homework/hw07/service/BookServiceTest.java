@@ -34,16 +34,16 @@ import static org.mockito.Mockito.*;
 public class BookServiceTest {
 
     @MockBean
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @MockBean
-    AuthorRepository authorRepository;
+    private AuthorRepository authorRepository;
 
     @MockBean
-    GenreRepository genreRepository;
+    private GenreRepository genreRepository;
 
     @MockBean
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
 
     @Autowired
     private BookService bookService;
