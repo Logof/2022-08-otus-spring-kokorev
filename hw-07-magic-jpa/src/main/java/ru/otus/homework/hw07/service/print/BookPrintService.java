@@ -1,38 +1,37 @@
 package ru.otus.homework.hw07.service.print;
 
 import org.springframework.stereotype.Service;
-import ru.otus.homework.hw07.entity.Author;
-import ru.otus.homework.hw07.entity.Book;
-import ru.otus.homework.hw07.entity.Genre;
+import ru.otus.homework.hw07.entity.dto.AuthorDto;
+import ru.otus.homework.hw07.entity.dto.BookDto;
+import ru.otus.homework.hw07.entity.dto.GenreDto;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BookPrintService implements PrintService<Book> {
+public class BookPrintService implements PrintService<BookDto> {
 
-    private final PrintService<Genre> genrePrintService;
+    private final PrintService<GenreDto> genrePrintService;
 
-    private final PrintService<Author> authorPrintService;
+    private final PrintService<AuthorDto> authorPrintService;
 
-    public BookPrintService(PrintService<Genre> genrePrintService,
-                            PrintService<Author> authorPrintService) {
+    public BookPrintService(PrintService<GenreDto> genrePrintService,
+                            PrintService<AuthorDto> authorPrintService) {
         this.genrePrintService = genrePrintService;
         this.authorPrintService = authorPrintService;
     }
 
-
     @Override
-    public String objectsToPrint(List<Book> objects) {
+    public String objectsToPrint(List<BookDto> objects) {
         return String.format("Total books: %d%s%s", objects.size(), System.lineSeparator(),
-                objects.stream().sorted(Comparator.comparing(Book::getTitle)).collect(Collectors.toList())
+                objects.stream().sorted(Comparator.comparing(BookDto::getTitle)).collect(Collectors.toList())
                         .stream().map(book -> objectToPrint(book))
                         .collect(Collectors.joining(System.lineSeparator(), "", "")));
     }
 
     @Override
-    public String objectToPrint(Book object) {
+    public String objectToPrint(BookDto object) {
 
         String genresPrintString = "";
         String authorsPrintString = "";

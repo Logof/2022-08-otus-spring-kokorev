@@ -19,10 +19,6 @@ public class Comment {
     @Column(name = "comment_text", nullable = false, unique = true)
     private String commentText;
 
-    public Comment(String commentText, Book book) {
-        this(null, commentText, book);
-    }
-
     @ManyToOne
     @JoinColumn(name = "isbn")
     private Book book;

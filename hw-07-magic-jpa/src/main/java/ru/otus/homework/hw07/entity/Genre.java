@@ -1,12 +1,14 @@
 package ru.otus.homework.hw07.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "genres")
 @AllArgsConstructor
@@ -18,8 +20,4 @@ public class Genre {
 
     @Column(name = "GENRE_NAME", unique = true)
     private String genreName;
-
-    public Genre(String genreName) {
-        this(null, genreName);
-    }
 }

@@ -1,14 +1,16 @@
 package ru.otus.homework.hw07.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -21,18 +23,14 @@ public class Book {
     @Column(name = "title", nullable = false)
     private String title;
 
-    public Book(String isbn, String title) {
-        this(isbn, title, new ArrayList<>(), new ArrayList<>());
-    }
-
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, targetEntity = Author.class)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<Author> authors;
+    private List<Author> authors = new ArrayList<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, targetEntity = Genre.class)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private List<Genre> genres;
+    private List<Genre> genres = new ArrayList<>();
 
 }

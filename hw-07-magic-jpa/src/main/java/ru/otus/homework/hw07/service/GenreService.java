@@ -1,13 +1,13 @@
 package ru.otus.homework.hw07.service;
 
-import ru.otus.homework.hw07.entity.Genre;
+import ru.otus.homework.hw07.entity.dto.GenreDto;
 
 import java.util.List;
 
 public interface GenreService {
     void delete(long genreId);
 
-    Genre add(String genreName);
+    GenreDto add(String genreName);
 
-    List<Genre> getAll();
+    List<GenreDto> getAll();
 }

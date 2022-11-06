@@ -3,7 +3,7 @@ package ru.otus.homework.hw07.shell;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.homework.hw07.entity.Genre;
+import ru.otus.homework.hw07.entity.dto.GenreDto;
 import ru.otus.homework.hw07.service.GenreService;
 import ru.otus.homework.hw07.service.print.PrintService;
 
@@ -12,9 +12,9 @@ public class GenreCommands extends CommonShell {
 
     private final GenreService genreService;
 
-    private final PrintService<Genre> printService;
+    private final PrintService<GenreDto> printService;
 
-    public GenreCommands(GenreService genreService, PrintService<Genre> printService) {
+    public GenreCommands(GenreService genreService, PrintService<GenreDto> printService) {
         this.genreService = genreService;
         this.printService = printService;
     }

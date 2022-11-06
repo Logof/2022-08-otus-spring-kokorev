@@ -112,7 +112,7 @@ public class BookServiceTest {
         bookActual.getAuthors().add(new Author(1L, "Якоб и Вильгельм Гримм"));
         bookActual.getAuthors().add(new Author(2L, "Шарль Перро"));
 
-        when(bookRepository.findAllByAuthor(any())).thenReturn(Collections.singletonList(bookActual));
+        when(bookRepository.findAllByAuthors_fullName(any())).thenReturn(Collections.singletonList(bookActual));
 
         List<Book> bookExpected = bookService.getAllByAuthor("Гримм");
         assertEquals(bookExpected, Collections.singletonList(bookActual));
@@ -123,7 +123,7 @@ public class BookServiceTest {
         Book bookActual = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
         bookActual.getGenres().add(new Genre(1L, "Сказки"));
 
-        when(bookRepository.findAllByGenre(any())).thenReturn(Collections.singletonList(bookActual));
+        when(bookRepository.findAllByGenres_genreNameLike(any())).thenReturn(Collections.singletonList(bookActual));
 
         List<Book> bookExpected = bookService.getAllByGenre("Сказки");
         assertEquals(bookExpected, Collections.singletonList(bookActual));

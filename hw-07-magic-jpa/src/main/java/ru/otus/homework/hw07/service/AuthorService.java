@@ -1,14 +1,14 @@
 package ru.otus.homework.hw07.service;
 
-import ru.otus.homework.hw07.entity.Author;
+import ru.otus.homework.hw07.entity.dto.AuthorDto;
 
 import java.util.List;
 
 public interface AuthorService {
 
-    Author add(String fullName);
+    AuthorDto add(String fullName);
 
     void delete(long authorId);
 
-    List<Author> getAll();
+    List<AuthorDto> getAll();
 }

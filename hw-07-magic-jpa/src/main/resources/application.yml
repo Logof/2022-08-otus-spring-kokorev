@@ -11,13 +11,11 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+
     properties:
       hibernate:
-        format_sql: true
-hibernate:
-  enable_lazy_load_no_trans: true
-
-
+        default_batch_fetch_size: 10
+        batch_fetch_style: PADDED
 logging:
   level:
     ROOT: ERROR

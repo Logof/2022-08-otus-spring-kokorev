@@ -4,9 +4,9 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.homework.hw07.entity.Author;
-import ru.otus.homework.hw07.entity.Book;
-import ru.otus.homework.hw07.entity.Genre;
+import ru.otus.homework.hw07.entity.dto.AuthorDto;
+import ru.otus.homework.hw07.entity.dto.BookDto;
+import ru.otus.homework.hw07.entity.dto.GenreDto;
 import ru.otus.homework.hw07.service.BookService;
 import ru.otus.homework.hw07.service.print.PrintService;
 
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @ShellComponent
 public class BookCommands extends CommonShell {
 
+    private final PrintService<BookDto> printService;
+
     private final BookService bookService;
 
-    private final PrintService<Book> printService;
-
-    public BookCommands(BookService bookService, PrintService<Book> printService) {
-        this.bookService = bookService;
+    public BookCommands(PrintService<BookDto> printService, BookService bookService) {
         this.printService = printService;
+        this.bookService = bookService;
     }
 
     @ShellMethod(value = "Select a book by ISBN", key = "select-book")
@@ -53,22 +53,22 @@ public class BookCommands extends CommonShell {
     }
 
     @ShellMethod(value = "Add a book. Usage ISBN TITLE [--authors {AUTHORS}] [--genres {GENRES}]", key = "add-book")
-    public String addBook(@ShellOption(help = "ISBN") String isbn,
+    public void addBook(@ShellOption(help = "ISBN") String isbn,
                           @ShellOption(help = "Book title") String title,
                           @ShellOption(help = "Authors(s)", defaultValue = "") String[] authors,
                           @ShellOption(help = "Genre(s)", defaultValue = "") String[] genres) {
-        List<Author> authorList = Arrays.asList(authors).stream().map(authorFullName ->
-                new Author(authorFullName)).collect(Collectors.toList());
-        List<Genre> genreList = Arrays.asList(genres).stream().map(genreName ->
-                new Genre(genreName)).collect(Collectors.toList());
-        return printService.objectToPrint(bookService.add(new Book(isbn, title, authorList, genreList)));
+        List<AuthorDto> authorList = Arrays.asList(authors).stream().map(authorFullName ->
+                new AuthorDto(authorFullName)).collect(Collectors.toList());
+        List<GenreDto> genreList = Arrays.asList(genres).stream().map(genreName ->
+                new GenreDto(genreName)).collect(Collectors.toList());
+        bookService.add(new BookDto(isbn, title, authorList, genreList));
     }
 
 
     @ShellMethod(value = "Update the title of the selected book by ISBN", key = "update-book-title")
     @ShellMethodAvailability(value = "isEmptyIsbn")
-    public String updateTitleBookById(@ShellOption String newTitle) {
-        return printService.objectToPrint(bookService.updateTitle(getCurrBook(), newTitle));
+    public void updateTitleBookById(@ShellOption String newTitle) {
+        bookService.updateTitle(getCurrBook(), newTitle);
     }
 
     @ShellMethod(value = "Delete selected book by ISBN", key = "delete-book")
