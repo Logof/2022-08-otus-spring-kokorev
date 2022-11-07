@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.hw05.entity.Author;
 import ru.otus.homework.hw05.repository.AuthorRepository;
+import ru.otus.homework.hw05.repository.impl.AuthorRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
 package ru.otus.homework.hw07.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.homework.hw07.entity.Comment;
+import ru.otus.homework.hw07.entity.dto.CommentDto;
+import ru.otus.homework.hw07.mapper.CommentMapper;
 import ru.otus.homework.hw07.repository.CommentRepository;
 import ru.otus.homework.hw07.service.CommentService;
-import ru.otus.homework.hw07.service.print.PrintService;
 
 import java.util.List;
 
@@ -13,22 +13,19 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-    private final PrintService<Comment> printService;
+    private final CommentMapper mapper;
 
-
-    public CommentServiceImpl(CommentRepository commentRepository, PrintService<Comment> printService) {
+    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper mapper) {
         this.commentRepository = commentRepository;
-        this.printService = printService;
+        this.mapper = mapper;
     }
 
     @Override
-    //@Transactional(readOnly = true)
-    public List<Comment> getAllByIsbn(String isbn) {
-        return commentRepository.findAllByBook_Isbn(isbn);
+    public List<CommentDto> getAllByIsbn(String isbn) {
+        return mapper.toDtos(commentRepository.findAllByBook_Isbn(isbn));
     }
 
     @Override
-    //@Transactional
     public void delete(long commentId) {
         commentRepository.deleteById(commentId);
     }

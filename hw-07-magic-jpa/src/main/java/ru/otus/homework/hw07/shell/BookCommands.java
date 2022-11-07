@@ -52,7 +52,7 @@ public class BookCommands extends CommonShell {
         return printService.objectToPrint(bookService.getByIsbn(getCurrBook()));
     }
 
-    @ShellMethod(value = "Add a book. Usage ISBN TITLE [--authors {AUTHORS}] [--genres {GENRES}]", key = "add-book")
+    @ShellMethod(value = "Add a book. Usage ISBN TITLE [AUTHORS] [GENRES]", key = "add-book")
     public void addBook(@ShellOption(help = "ISBN") String isbn,
                           @ShellOption(help = "Book title") String title,
                           @ShellOption(help = "Authors(s)", defaultValue = "") String[] authors,

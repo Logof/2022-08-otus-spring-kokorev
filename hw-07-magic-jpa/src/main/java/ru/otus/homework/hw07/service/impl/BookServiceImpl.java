@@ -7,10 +7,12 @@ import ru.otus.homework.hw07.entity.Book;
 import ru.otus.homework.hw07.entity.Comment;
 import ru.otus.homework.hw07.entity.Genre;
 import ru.otus.homework.hw07.entity.dto.BookDto;
+import ru.otus.homework.hw07.entity.dto.CommentDto;
 import ru.otus.homework.hw07.exception.DataNotFountException;
 import ru.otus.homework.hw07.exception.FieldRequiredException;
 import ru.otus.homework.hw07.exception.ObjectExistsException;
 import ru.otus.homework.hw07.mapper.BookMapper;
+import ru.otus.homework.hw07.mapper.CommentMapper;
 import ru.otus.homework.hw07.repository.AuthorRepository;
 import ru.otus.homework.hw07.repository.BookRepository;
 import ru.otus.homework.hw07.repository.CommentRepository;
@@ -18,7 +20,6 @@ import ru.otus.homework.hw07.repository.GenreRepository;
 import ru.otus.homework.hw07.service.BookService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -31,17 +32,20 @@ public class BookServiceImpl implements BookService {
 
     private final CommentRepository commentRepository;
 
-    private final BookMapper mapper;
+    private final BookMapper mapperBook;
+
+    private final CommentMapper mapperComment;
 
     public BookServiceImpl(BookRepository bookRepository,
                            AuthorRepository authorRepository,
                            GenreRepository genreRepository,
-                           CommentRepository commentRepository, BookMapper mapper) {
+                           CommentRepository commentRepository, BookMapper mapperBook, CommentMapper mapperComment) {
         this.bookRepository = bookRepository;
         this.commentRepository = commentRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
-        this.mapper = mapper;
+        this.mapperBook = mapperBook;
+        this.mapperComment = mapperComment;
     }
 
     @Override
@@ -52,7 +56,7 @@ public class BookServiceImpl implements BookService {
         }
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
         book.setTitle(newTitle);
-        return mapper.toDto(bookRepository.save(book));
+        return mapperBook.toDto(bookRepository.save(book));
     }
 
     @Override
@@ -61,8 +65,7 @@ public class BookServiceImpl implements BookService {
         if (book == null || book.getIsbn() == null || book.getIsbn().isBlank() || book.getTitle() == null || book.getTitle().isBlank()) {
             throw new FieldRequiredException("isbn", "title");
         }
-        //TODO много конвертаций
-        return mapper.toDto(bookRepository.save(mapper.toEntity(book)));
+        return mapperBook.toDto(bookRepository.save(mapperBook.toEntity(book)));
     }
 
     @Override
@@ -74,7 +77,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public List<BookDto> getAll() {
-        return bookRepository.findAll().stream().map(book -> mapper.toDto(book)).collect(Collectors.toList());
+        return mapperBook.toDtos(bookRepository.findAll());
     }
 
     @Override
@@ -83,24 +86,20 @@ public class BookServiceImpl implements BookService {
         if (isbn == null || isbn.isBlank()) {
             throw new FieldRequiredException("ISBN");
         }
-        return mapper.toDto(bookRepository.findById(isbn)
+        return mapperBook.toDto(bookRepository.findById(isbn)
                 .orElseThrow(() -> new DataNotFountException("Book not found")));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<BookDto> getAllByAuthor(String fullName) {
-        //Author author = authorRepository.findByFullNameLike("%" + fullName + "%");
-        return bookRepository.findAllByAuthors_fullName(fullName).stream()
-                .map(book -> mapper.toDto(book)).collect(Collectors.toList());
+        return mapperBook.toDtos(bookRepository.findAllByAuthors_fullNameLike("%" + fullName + "%"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<BookDto> getAllByGenre(String genreName) {
-        //Genre genre = genreRepository.findByGenreNameLike("%" + genreName + "%");
-        return bookRepository.findAllByGenres_genreNameLike(genreName).stream()
-                .map(book -> mapper.toDto(book)).collect(Collectors.toList());
+        return mapperBook.toDtos(bookRepository.findAllByGenres_genreNameLike("%" + genreName + "%"));
     }
 
     @Override
@@ -114,7 +113,7 @@ public class BookServiceImpl implements BookService {
         }
         book.getGenres().add(genre != null ? genre : new Genre(null, genreName));
 
-        return mapper.toDto(bookRepository.save(book));
+        return mapperBook.toDto(bookRepository.save(book));
     }
 
     @Override
@@ -128,17 +127,17 @@ public class BookServiceImpl implements BookService {
         }
         book.getAuthors().add(author != null ? author : new Author(null, fullName));
 
-        return mapper.toDto(bookRepository.save(book));
+        return mapperBook.toDto(bookRepository.save(book));
 
     }
 
     @Override
     @Transactional
-    public Comment addCommentToBook(String isbn, String commentText) {
+    public CommentDto addCommentToBook(String isbn, String commentText) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
         if (commentText == null || commentText.isEmpty()) {
             throw new FieldRequiredException("commentText");
         }
-        return commentRepository.save(new Comment(null, commentText, book));
+        return mapperComment.toDto(commentRepository.save(new Comment(null, commentText, book)));
     }
 }

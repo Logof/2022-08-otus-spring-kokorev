@@ -11,6 +11,7 @@ import ru.otus.homework.hw05.entity.Author;
 import ru.otus.homework.hw05.entity.Book;
 import ru.otus.homework.hw05.entity.Genre;
 import ru.otus.homework.hw05.repository.BookRepository;
+import ru.otus.homework.hw05.repository.impl.BookRepositoryImpl;
 import ru.otus.homework.hw05.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;

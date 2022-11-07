@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import ru.otus.homework.hw05.entity.Genre;
 import ru.otus.homework.hw05.repository.GenreRepository;
+import ru.otus.homework.hw05.repository.impl.GenreRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;

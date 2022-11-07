@@ -1,7 +1,7 @@
 package ru.otus.homework.hw07.service;
 
-import ru.otus.homework.hw07.entity.Comment;
 import ru.otus.homework.hw07.entity.dto.BookDto;
+import ru.otus.homework.hw07.entity.dto.CommentDto;
 
 import java.util.List;
 
@@ -25,5 +25,5 @@ public interface BookService {
 
     BookDto addAuthorToBook(String isbn, String fullName);
 
-    Comment addCommentToBook(String isbn, String commentText);
+    CommentDto addCommentToBook(String isbn, String commentText);
 }

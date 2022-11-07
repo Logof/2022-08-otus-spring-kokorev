@@ -10,7 +10,13 @@ import ru.otus.homework.hw07.entity.Author;
 import ru.otus.homework.hw07.entity.Book;
 import ru.otus.homework.hw07.entity.Comment;
 import ru.otus.homework.hw07.entity.Genre;
+import ru.otus.homework.hw07.entity.dto.AuthorDto;
+import ru.otus.homework.hw07.entity.dto.BookDto;
+import ru.otus.homework.hw07.entity.dto.CommentDto;
+import ru.otus.homework.hw07.entity.dto.GenreDto;
 import ru.otus.homework.hw07.exception.FieldRequiredException;
+import ru.otus.homework.hw07.mapper.BookMapper;
+import ru.otus.homework.hw07.mapper.CommentMapper;
 import ru.otus.homework.hw07.repository.AuthorRepository;
 import ru.otus.homework.hw07.repository.BookRepository;
 import ru.otus.homework.hw07.repository.CommentRepository;
@@ -25,7 +31,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 
 @DisplayName("Тест сервиса по работе с книгами")
@@ -34,30 +42,37 @@ import static org.mockito.Mockito.*;
 public class BookServiceTest {
 
     @MockBean
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @MockBean
-    AuthorRepository authorRepository;
+    private AuthorRepository authorRepository;
 
     @MockBean
-    GenreRepository genreRepository;
+    private GenreRepository genreRepository;
 
     @MockBean
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
+
+    @MockBean
+    private BookMapper mapperBook;
+
+    @MockBean
+    private CommentMapper mapperComment;
 
     @Autowired
     private BookService bookService;
 
     @Test
     public void updateTitleTest() {
-        Book book1 = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
-        Book book2 = new Book("978-5-04-094119-3", "1000 лучших сказок всех времен и народов");
-        when(bookRepository.findById(anyString())).thenReturn(Optional.of(book1));
-        when(bookRepository.save(any(Book.class))).thenReturn(book2);
+        BookDto bookDto = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
 
-        Book bookActual = bookService.getByIsbn("978-5-04-094119-3");
+        given(bookRepository.findById(anyString())).willReturn(Optional.of(new Book()));
+        given(bookRepository.save(any(Book.class))).willReturn(new Book());
+        given(mapperBook.toDto(any())).willReturn(bookDto);
+
+        BookDto bookActual = bookService.getByIsbn("978-5-04-094119-3");
         bookActual.setTitle("1000 лучших сказок всех времен и народов");
-        Book bookExpected = bookService.updateTitle("978-5-04-094119-3", "1000 лучших сказок всех времен и народов");
+        BookDto bookExpected = bookService.updateTitle("978-5-04-094119-3", "1000 лучших сказок всех времен и народов");
         assertEquals(bookExpected, bookActual);
 
         Exception exceptionNull = assertThrows(FieldRequiredException.class, () -> {
@@ -74,9 +89,13 @@ public class BookServiceTest {
 
     @Test
     public void addTest() {
-        Book bookActual = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
-        when(bookRepository.save(any(Book.class))).thenReturn(bookActual);
-        Book bookExpected = bookService.add(bookActual);
+        BookDto bookActual = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
+
+        given(mapperBook.toEntity(any())).willReturn(new Book());
+        given(bookRepository.save(any(Book.class))).willReturn(new Book());
+        given(mapperBook.toDto(any())).willReturn(bookActual);
+
+        BookDto bookExpected = bookService.add(bookActual);
         assertEquals(bookExpected, bookActual);
     }
 
@@ -87,89 +106,96 @@ public class BookServiceTest {
         verify(bookRepository).deleteById(anyString());
     }
 
+
     @Test
     void getAllTest() {
-        List<Book> booksActual = new ArrayList<>();
-        booksActual.add(new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов"));
-        booksActual.add(new Book("978-5-699-12014-7", "Колобок"));
-        when(bookRepository.findAll()).thenReturn(booksActual);
+        List<BookDto> booksActual = new ArrayList<>();
+        booksActual.add(new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов"));
+        booksActual.add(new BookDto("978-5-699-12014-7", "Колобок"));
+        given(bookRepository.findAll()).willReturn(new ArrayList<>());
+        given(mapperBook.toDtos(new ArrayList<>())).willReturn(booksActual);
 
-        List<Book> booksExpected = bookService.getAll();
+        List<BookDto> booksExpected = bookService.getAll();
         assertEquals(booksExpected, booksActual);
     }
 
     @Test
     void getByIdTest() {
-        Book bookActual = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
-        when(bookRepository.findById(anyString())).thenReturn(Optional.of(bookActual));
-        Book bookExpected = bookService.getByIsbn("978-5-04-094119-3");
+        BookDto bookActual = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
+        given(bookRepository.findById(anyString())).willReturn(Optional.of(new Book()));
+        given(mapperBook.toDto(any())).willReturn(bookActual);
+        BookDto bookExpected = bookService.getByIsbn("978-5-04-094119-3");
         assertEquals(bookExpected, bookActual);
     }
 
     @Test
     void getAllByAuthorTest() {
-        Book bookActual = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
-        bookActual.getAuthors().add(new Author(1L, "Якоб и Вильгельм Гримм"));
-        bookActual.getAuthors().add(new Author(2L, "Шарль Перро"));
+        BookDto bookActual = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
+        bookActual.getAuthors().add(new AuthorDto(1L, "Якоб и Вильгельм Гримм"));
+        bookActual.getAuthors().add(new AuthorDto(2L, "Шарль Перро"));
 
-        when(bookRepository.findAllByAuthors_fullName(any())).thenReturn(Collections.singletonList(bookActual));
-
-        List<Book> bookExpected = bookService.getAllByAuthor("Гримм");
+        given(bookRepository.findAllByAuthors_fullNameLike(any())).willReturn(Collections.singletonList(new Book()));
+        given(mapperBook.toDtos(any())).willReturn(Collections.singletonList(bookActual));
+        List<BookDto> bookExpected = bookService.getAllByAuthor("Гримм");
         assertEquals(bookExpected, Collections.singletonList(bookActual));
     }
 
     @Test
     void getAllByGenreTest() {
-        Book bookActual = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
-        bookActual.getGenres().add(new Genre(1L, "Сказки"));
+        BookDto bookActual = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
+        bookActual.getGenres().add(new GenreDto(1L, "Сказки"));
 
-        when(bookRepository.findAllByGenres_genreNameLike(any())).thenReturn(Collections.singletonList(bookActual));
+        given(bookRepository.findAllByGenres_genreNameLike(any())).willReturn(Collections.singletonList(new Book()));
+        given(mapperBook.toDtos(any())).willReturn(Collections.singletonList(bookActual));
 
-        List<Book> bookExpected = bookService.getAllByGenre("Сказки");
+        List<BookDto> bookExpected = bookService.getAllByGenre("Сказки");
         assertEquals(bookExpected, Collections.singletonList(bookActual));
     }
 
     @Test
     void addGenreToBook() {
-        Genre genre = new Genre(1L, "Сказки");
-        Book book = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
+        GenreDto genre = new GenreDto(1L, "Сказки");
+        BookDto book = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
 
-        Book bookActual = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов",
+        BookDto bookActual = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов",
                 new ArrayList<>(), Collections.singletonList(genre));
 
-        when(bookRepository.findById(anyString())).thenReturn(Optional.of(book));
-        when(genreRepository.findByGenreNameLike("Сказки")).thenReturn(genre);
-        when(bookRepository.save(any())).thenReturn(bookActual);
+        given(bookRepository.findById(anyString())).willReturn(Optional.of(new Book()));
+        given(genreRepository.findByGenreNameLike("Сказки")).willReturn(new Genre(1L, "Сказки"));
+        given(bookRepository.save(any())).willReturn(new Book());
+        given(mapperBook.toDto(any())).willReturn(bookActual);
 
-        Book bookExpected = bookService.addGenreToBook("978-5-04-094119-3", "Сказки");
+        BookDto bookExpected = bookService.addGenreToBook("978-5-04-094119-3", "Сказки");
         assertEquals(bookExpected, bookActual);
     }
 
     @Test
     void addAuthorToBook() {
         Author author = new Author(1L, "Якоб и Вильгельм Гримм");
-        Book book = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
+        AuthorDto authorDto = new AuthorDto(1L, "Якоб и Вильгельм Гримм");
 
-        Book bookActual = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов",
-                Collections.singletonList(author), new ArrayList<>());
+        BookDto bookActual = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов",
+                Collections.singletonList(authorDto), new ArrayList<>());
 
-        when(bookRepository.findById(anyString())).thenReturn(Optional.of(book));
-        when(authorRepository.findByFullNameLike("Сказки")).thenReturn(author);
-        when(bookRepository.save(any())).thenReturn(bookActual);
+        given(bookRepository.findById(anyString())).willReturn(Optional.of(new Book()));
+        given(authorRepository.findByFullNameLike("Гримм")).willReturn(author);
+        given(bookRepository.save(any())).willReturn(new Book());
+        given(mapperBook.toDto(any())).willReturn(bookActual);
 
-        Book bookExpected = bookService.addAuthorToBook("978-5-04-094119-3", "Шарль Перро");
+        BookDto bookExpected = bookService.addAuthorToBook("978-5-04-094119-3", "Шарль Перро");
         assertEquals(bookExpected, bookActual);
     }
 
     @Test
     void addCommentToBookTest() {
-        Book book = new Book("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
-        Comment commentActual = new Comment(1L, "Тестирование прошло успешно", book);
+        BookDto book = new BookDto("978-5-04-094119-3", "100 лучших сказок всех времен и народов");
+        CommentDto commentActual = new CommentDto(1L, "Тестирование прошло успешно", book);
 
-        when(bookRepository.findById(anyString())).thenReturn(Optional.of(book));
-        when(commentRepository.save(any())).thenReturn(commentActual);
+        given(bookRepository.findById(anyString())).willReturn(Optional.of(new Book()));
+        given(commentRepository.save(any())).willReturn(new Comment());
+        given(mapperComment.toDto(any())).willReturn(commentActual);
 
-        Comment commentExpected = bookService.addCommentToBook("978-5-04-094119-3", "Тестирование прошло успешно");
+        CommentDto commentExpected = bookService.addCommentToBook("978-5-04-094119-3", "Тестирование прошло успешно");
         assertEquals(commentExpected, commentActual);
     }
 }

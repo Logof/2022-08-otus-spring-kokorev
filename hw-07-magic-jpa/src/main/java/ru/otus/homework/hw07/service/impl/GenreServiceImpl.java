@@ -7,7 +7,6 @@ import ru.otus.homework.hw07.entity.dto.GenreDto;
 import ru.otus.homework.hw07.mapper.GenreMapper;
 import ru.otus.homework.hw07.repository.GenreRepository;
 import ru.otus.homework.hw07.service.GenreService;
-import ru.otus.homework.hw07.service.print.PrintService;
 
 import java.util.List;
 
@@ -16,14 +15,11 @@ public class GenreServiceImpl implements GenreService {
 
     private final GenreMapper mapper;
     private final GenreRepository genreRepository;
-    private final PrintService<GenreDto> printService;
 
     public GenreServiceImpl(GenreMapper mapper,
-                            GenreRepository genreRepository,
-                            PrintService<GenreDto> printService) {
+                            GenreRepository genreRepository) {
         this.mapper = mapper;
         this.genreRepository = genreRepository;
-        this.printService = printService;
     }
 
     @Override

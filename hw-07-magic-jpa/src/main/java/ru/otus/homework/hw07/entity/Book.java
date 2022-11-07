@@ -32,5 +32,4 @@ public class Book {
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres = new ArrayList<>();
-
 }

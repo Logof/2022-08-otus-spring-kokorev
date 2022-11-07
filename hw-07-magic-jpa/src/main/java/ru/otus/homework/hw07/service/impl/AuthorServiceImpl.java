@@ -7,21 +7,16 @@ import ru.otus.homework.hw07.entity.dto.AuthorDto;
 import ru.otus.homework.hw07.mapper.AuthorMapper;
 import ru.otus.homework.hw07.repository.AuthorRepository;
 import ru.otus.homework.hw07.service.AuthorService;
-import ru.otus.homework.hw07.service.print.PrintService;
 
 import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
-    private final PrintService<AuthorDto> printService;
-
     private final AuthorMapper mapper;
     private final AuthorRepository authorRepository;
 
-    public AuthorServiceImpl(PrintService<AuthorDto> printService,
-                             AuthorMapper mapper,
+    public AuthorServiceImpl(AuthorMapper mapper,
                              AuthorRepository authorRepository) {
-        this.printService = printService;
         this.mapper = mapper;
         this.authorRepository = authorRepository;
     }
