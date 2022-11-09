@@ -18,4 +18,8 @@
 /hw-05-dao/.idea
 /hw-06-orm_jpa/target
 /hw-06-orm_jpa/*.iml
-/hw-06-orm_jpa/.idea/
+/hw-06-orm_jpa/.idea
+/hw-07-magic-jpa/target
+/hw-07-magic-jpa/*.iml
+/hw-07-magic-jpa/.idea/
+

@@ -6,9 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.homework.entity.Answer;
-import ru.otus.homework.entity.Question;
-import ru.otus.homework.enums.QuestionTypeEnum;
+import ru.otus.homework.hw03.entity.Answer;
+import ru.otus.homework.hw03.entity.Question;
+import ru.otus.homework.hw03.enums.QuestionTypeEnum;
+import ru.otus.homework.hw03.mapper.AnswerCsvMapper;
+import ru.otus.homework.hw03.mapper.QuestionCsvMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;

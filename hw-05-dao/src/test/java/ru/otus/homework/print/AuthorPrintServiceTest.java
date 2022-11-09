@@ -2,15 +2,15 @@ package ru.otus.homework.print;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.entity.Author;
-import ru.otus.homework.service.print.AuthorPrintService;
+import ru.otus.homework.hw05.entity.Author;
+import ru.otus.homework.hw05.service.print.AuthorPrintService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Тест сервиса по подготовке сущьности \"Автор\" к печати")
+@DisplayName("Тест сервиса по подготовке сущности \"Автор\" к печати")
 public class AuthorPrintServiceTest {
 
     private final AuthorPrintService authorPrintService = new AuthorPrintService();

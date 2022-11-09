@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.otus.homework.hw01.service.OutputService;
+import ru.otus.homework.hw01.service.OutputServiceImpl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

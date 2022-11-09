@@ -7,11 +7,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import ru.otus.homework.entity.Author;
-import ru.otus.homework.entity.Book;
-import ru.otus.homework.entity.Genre;
-import ru.otus.homework.repository.BookRepository;
-import ru.otus.homework.service.impl.OutputServiceStreams;
+import ru.otus.homework.hw05.entity.Author;
+import ru.otus.homework.hw05.entity.Book;
+import ru.otus.homework.hw05.entity.Genre;
+import ru.otus.homework.hw05.repository.BookRepository;
+import ru.otus.homework.hw05.repository.impl.BookRepositoryImpl;
+import ru.otus.homework.hw05.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
 import java.util.List;

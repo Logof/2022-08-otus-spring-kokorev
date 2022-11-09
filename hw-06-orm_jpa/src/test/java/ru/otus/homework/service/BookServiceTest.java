@@ -7,11 +7,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import ru.otus.homework.entity.Author;
-import ru.otus.homework.entity.Book;
-import ru.otus.homework.entity.Genre;
-import ru.otus.homework.exception.FieldRequiredException;
-import ru.otus.homework.service.impl.OutputServiceStreams;
+import ru.otus.homework.hw06.entity.Author;
+import ru.otus.homework.hw06.entity.Book;
+import ru.otus.homework.hw06.entity.Genre;
+import ru.otus.homework.hw06.exception.FieldRequiredException;
+import ru.otus.homework.hw06.service.BookService;
+import ru.otus.homework.hw06.service.impl.OutputServiceStreams;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;

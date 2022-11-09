@@ -8,11 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.homework.entity.Author;
-import ru.otus.homework.entity.Book;
-import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.impl.BookServiceImpl;
-import ru.otus.homework.service.impl.OutputServiceStreams;
+import ru.otus.homework.hw05.entity.Author;
+import ru.otus.homework.hw05.entity.Book;
+import ru.otus.homework.hw05.entity.Genre;
+import ru.otus.homework.hw05.service.impl.BookServiceImpl;
+import ru.otus.homework.hw05.service.impl.OutputServiceStreams;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,8 +2,11 @@ package ru.otus.homework.mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.entity.Answer;
-import ru.otus.homework.entity.Question;
+import ru.otus.homework.hw01.entity.Answer;
+import ru.otus.homework.hw01.entity.Question;
+import ru.otus.homework.hw01.mapper.AnswerCsvMapper;
+import ru.otus.homework.hw01.mapper.CsvMapper;
+import ru.otus.homework.hw01.mapper.QuestionCsvMapper;
 
 import java.util.ArrayList;
 import java.util.List;

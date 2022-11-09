@@ -3,18 +3,18 @@ package ru.otus.homework.print;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import ru.otus.homework.entity.Author;
-import ru.otus.homework.entity.Book;
-import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.print.BookPrintService;
-import ru.otus.homework.service.print.PrintService;
+import ru.otus.homework.hw05.entity.Author;
+import ru.otus.homework.hw05.entity.Book;
+import ru.otus.homework.hw05.entity.Genre;
+import ru.otus.homework.hw05.service.print.BookPrintService;
+import ru.otus.homework.hw05.service.print.PrintService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Тест сервиса по подготовке сущьности \"Книга\" к печати")
+@DisplayName("Тест сервиса по подготовке сущности \"Книга\" к печати")
 public class BookPrintServiceTest {
 
     @Mock

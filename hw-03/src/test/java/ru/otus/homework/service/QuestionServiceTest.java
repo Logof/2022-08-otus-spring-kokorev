@@ -5,10 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.otus.homework.entity.Answer;
-import ru.otus.homework.entity.Question;
-import ru.otus.homework.exeption.IncorrectNumberAnswerException;
-import ru.otus.homework.repository.QuestionsRepository;
+import ru.otus.homework.hw03.entity.Answer;
+import ru.otus.homework.hw03.entity.Question;
+import ru.otus.homework.hw03.exeption.IncorrectNumberAnswerException;
+import ru.otus.homework.hw03.repository.QuestionsRepository;
+import ru.otus.homework.hw03.service.MessageService;
+import ru.otus.homework.hw03.service.QuestionService;
 
 import java.util.List;
 

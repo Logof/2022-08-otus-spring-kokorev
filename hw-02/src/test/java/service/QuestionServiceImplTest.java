@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.entity.Answer;
-import ru.otus.homework.entity.Question;
-import ru.otus.homework.enums.QuestionTypeEnum;
-import ru.otus.homework.exeption.IncorrectNumberAnswerException;
-import ru.otus.homework.service.QuestionServiceImpl;
+import ru.otus.homework.hw02.entity.Answer;
+import ru.otus.homework.hw02.entity.Question;
+import ru.otus.homework.hw02.enums.QuestionTypeEnum;
+import ru.otus.homework.hw02.exeption.IncorrectNumberAnswerException;
+import ru.otus.homework.hw02.service.QuestionServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

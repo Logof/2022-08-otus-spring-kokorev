@@ -2,7 +2,7 @@ package service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.service.FileReaderCsv;
+import ru.otus.homework.hw02.service.FileReaderCsv;
 
 import java.util.ArrayList;
 import java.util.List;

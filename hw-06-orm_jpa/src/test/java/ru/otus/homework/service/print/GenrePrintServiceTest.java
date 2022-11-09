@@ -2,14 +2,15 @@ package ru.otus.homework.service.print;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.homework.entity.Genre;
+import ru.otus.homework.hw06.entity.Genre;
+import ru.otus.homework.hw06.service.print.GenrePrintService;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Тест сервиса по подготовке сущьности \"Жанр\" к печати")
+@DisplayName("Тест сервиса по подготовке сущности \"Жанр\" к печати")
 public class GenrePrintServiceTest {
     private final GenrePrintService genrePrintService = new GenrePrintService();
 

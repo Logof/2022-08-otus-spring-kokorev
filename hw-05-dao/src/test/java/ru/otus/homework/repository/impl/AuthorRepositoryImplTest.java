@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import ru.otus.homework.entity.Author;
-import ru.otus.homework.repository.AuthorRepository;
+import ru.otus.homework.hw05.entity.Author;
+import ru.otus.homework.hw05.repository.AuthorRepository;
+import ru.otus.homework.hw05.repository.impl.AuthorRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
