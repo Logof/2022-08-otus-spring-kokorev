@@ -2,114 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <script>
-        function changeAuthors(selectObject, valueId, valueName) {
-            var idName = selectObject+".id";
-            var idValue = selectObject+".fullName";
-            document.getElementById(idName).value = valueId;
-            document.getElementById(idValue).value = valueName;
-        }
-
-        function addAuthorFields() {
-            var parentForSelect = document.getElementById("authors");
-            var childs = parentForSelect.children;
-
-            var isCreateHiddenFields = false;
-            var isCreateSelect = false;
-            for (let child of childs) {
-                if (child.tagName == "DIV" && child.getAttribute("id") == "hidden_authors") {
-                    lastP = child.lastElementChild;
-                    let copyP = lastP.cloneNode(true);
-                    copyP.setAttribute("name", "hidden_author" + child.childElementCount)
-                    for (let input of copyP.children) {
-                        if (input.getAttribute("id") == "authors"+(child.childElementCount -1)+".id") {
-                            input.setAttribute("id", "authors"+child.childElementCount+".id");
-                            input.setAttribute("name", "authors["+child.childElementCount+"].id");
-                        }
-                        if (input.getAttribute("id") == "authors"+(child.childElementCount-1)+".fullName") {
-                            input.setAttribute("id", "authors"+child.childElementCount+".fullName")
-                            input.setAttribute("name", "authors["+child.childElementCount+"].fullName")
-                        }
-                    }
-
-                    child.append(copyP);
-                    isCreateHiddenFields = true;
-                }
-
-                if (child.tagName == "DIV" && child.getAttribute("id") == "select_authors") {
-
-                    lastSelect = child.lastElementChild;
-                    let copySelect = lastSelect.cloneNode(true);
-
-                    copySelect.setAttribute("name", "authors" + child.childElementCount);
-                    child.append(copySelect);
-                    isCreateSelect = true;
-                }
-
-                if (isCreateSelect && isCreateHiddenFields) {
-                    break;
-                }
-            }
-        }
-
-
-
-    </script>
-
-    <script>
-        function changeGenres(selectObject, valueId, valueName) {
-            var idName = selectObject+".id";
-            var idValue = selectObject+".genreName";
-            document.getElementById(idName).value = valueId;
-            document.getElementById(idValue).value = valueName;
-        }
-
-        function addGenreFields() {
-            var parentForSelect = document.getElementById("genres");
-            var childs = parentForSelect.children;
-
-            var isCreateHiddenFields = false;
-            var isCreateSelect = false;
-            for (let child of childs) {
-                if (child.tagName == "DIV" && child.getAttribute("id") == "hidden_genres") {
-                    lastP = child.lastElementChild;
-                    let copyP = lastP.cloneNode(true);
-                    copyP.setAttribute("name", "hidden_genre" + child.childElementCount)
-                    for (let input of copyP.children) {
-                        if (input.getAttribute("id") == "genres"+(child.childElementCount -1)+".id") {
-                            input.setAttribute("id", "genres"+child.childElementCount+".id");
-                            input.setAttribute("name", "genres["+child.childElementCount+"].id");
-                        }
-                        if (input.getAttribute("id") == "genres"+(child.childElementCount-1)+".genreName") {
-                            input.setAttribute("id", "genres"+child.childElementCount+".genreName")
-                            input.setAttribute("name", "genres["+child.childElementCount+"].genreName")
-                        }
-                    }
-
-                    child.append(copyP);
-                    isCreateHiddenFields = true;
-                }
-
-                if (child.tagName == "DIV" && child.getAttribute("id") == "select_genres") {
-
-                    lastSelect = child.lastElementChild;
-                    let copySelect = lastSelect.cloneNode(true);
-
-                    copySelect.setAttribute("name", "genres" + child.childElementCount);
-                    child.append(copySelect);
-                    isCreateSelect = true;
-                }
-
-                if (isCreateSelect && isCreateHiddenFields) {
-                    break;
-                }
-            }
-        }
-
-
-
-    </script>
+    <script src="/js/authors.js"></script>
+    <script src="/js/genres.js"></script>
 </head>
 <body>
 <div class="container">
@@ -138,7 +32,7 @@
                     </svg>
                 </div>
                 <div class="col p-4 d-flex flex-column position-static">
-                    <div class="mb-1" th:text="'ISBN: ' + ${book.isbn}">ISBN: 978-5-04-106088-6</div>
+                    <div class="mb-1">ISBN: [[${book.isbn}]]</div>
 
                     <form id="book" action="edit.html" th:action="@{/book}" th:method="post" th:object="${book}">
                         <input type="hidden" th:field="*{isbn}"/>
