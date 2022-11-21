@@ -36,7 +36,7 @@ public class WebControllerTest {
     private GenreService genreService;
 
     @MockBean
-    AuthorService authorService;
+    private AuthorService authorService;
 
     @MockBean
     private CommentService commentService;
