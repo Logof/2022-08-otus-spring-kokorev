@@ -25,5 +25,6 @@
         <module>hw-05-dao</module>
         <module>hw-06-orm_jpa</module>
         <module>hw-07-magic-jpa</module>
+        <module>hw-09-mvc-view</module>
     </modules>
 </project>
