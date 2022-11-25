@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      database: book_db_test
+      host: localhost
+      port: 27017
+  shell:
+    interactive:
+      enabled: false
+logging:
+  level:
+    ROOT: ERROR
