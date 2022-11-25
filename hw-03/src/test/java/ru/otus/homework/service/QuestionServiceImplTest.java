@@ -6,10 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.homework.entity.Answer;
-import ru.otus.homework.entity.Question;
-import ru.otus.homework.enums.QuestionTypeEnum;
-import ru.otus.homework.exeption.IncorrectNumberAnswerException;
+import ru.otus.homework.hw03.entity.Answer;
+import ru.otus.homework.hw03.entity.Question;
+import ru.otus.homework.hw03.enums.QuestionTypeEnum;
+import ru.otus.homework.hw03.exeption.IncorrectNumberAnswerException;
+import ru.otus.homework.hw03.service.MessageService;
+import ru.otus.homework.hw03.service.QuestionService;
 
 import java.util.ArrayList;
 import java.util.List;

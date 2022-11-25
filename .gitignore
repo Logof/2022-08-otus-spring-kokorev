@@ -3,12 +3,23 @@
 /.*
 /hw-01/target
 /hw-01/*.iml
-/hw-01/.idea/
+/hw-01/.idea
 /hw-02/target
 /hw-02/*.iml
-/hw-02/.idea/
+/hw-02/.idea
 /hw-03/target
 /hw-03/*.iml
-/hw-03/.idea/
-
+/hw-03/.idea
+/hw-04-spring_shell/target
+/hw-04-spring_shell/*.iml
+/hw-04-spring_shell/.idea
+/hw-05-dao/target
+/hw-05-dao/*.iml
+/hw-05-dao/.idea
+/hw-06-orm_jpa/target
+/hw-06-orm_jpa/*.iml
+/hw-06-orm_jpa/.idea
+/hw-07-magic-jpa/target
+/hw-07-magic-jpa/*.iml
+/hw-07-magic-jpa/.idea/
 

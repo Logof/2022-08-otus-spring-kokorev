@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/authors.js"></script>
+    <script src="/js/genres.js"></script>
+</head>
+<body>
+<div class="container">
+    <header class="blog-header lh-1 py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+            <div class="col-4 pt-1">
+                <a class="link-secondary" href="https://otus.ru">Otus</a>
+            </div>
+            <div class="col-4 text-center">
+                <a class="blog-header-logo text-dark" href="/">Библиотека</a>
+            </div>
+            <div class="col-4 d-flex justify-content-end align-items-center">
+                <a class="link-secondary" href="https://github.com/Logof/2022-08-otus-spring-kokorev">GitHub</a>
+            </div>
+        </div>
+    </header>
+</div>
+<main class="container">
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                         role="img" aria-label="Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#55595c"></rect>
+                    </svg>
+                </div>
+                <div class="col p-4 d-flex flex-column position-static">
+                    <div class="mb-1">ISBN: [[${book.isbn}]]</div>
+
+                    <form id="book" action="edit.html" th:action="@{/book}" th:method="post" th:object="${book}">
+                        <input type="hidden" th:field="*{isbn}"/>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label" for="title">Title:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="title" th:field="*{title}">
+                            </div>
+                        </div>
+                        <label class="col-sm-2 col-form-label" for="select_authors">Автор(ы):</label>
+                        <div class="col-sm-10 form-group" id="authors">
+                            <div id="hidden_authors">
+                                    <span th:each="bookAuthor, bookAuthorID: *{authors}">
+                                        <input type="hidden" th:field="*{authors[__${bookAuthorID.index}__].id}"
+                                               th:value="${bookAuthor.id}">
+                                        <input type="hidden" th:field="*{authors[__${bookAuthorID.index}__].fullName}"
+                                               th:value="${bookAuthor.fullName}">
+                                    </span>
+                            </div>
+                            <div id="select_authors">
+                                <select th:each="bookAuthor, bookAuthorID: *{authors}" class="form-control"
+                                        th:name="'authors' + ${bookAuthorID.index}"
+                                        onchange="changeAuthors(this.getAttribute('name'), this.value, this.options[this.selectedIndex].text)">
+                                    <option th:each="author : ${authorList}" th:selected="${author.id == bookAuthor.id}"
+                                            th:value="${author.id}" th:text="${author.fullName}"></option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="#" id="addAuthorFields" onclick="addAuthorFields()"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        Добавить автора
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label class="col-sm-2 col-form-label" for="select_genres">Жанр(ы):</label>
+                        <div class="col-sm-10 form-group" id="genres">
+                            <div id="hidden_genres">
+                                    <span th:each="bookGenre, bookGenreID: *{genres}">
+                                        <input type="hidden" th:field="*{genres[__${bookGenreID.index}__].id}"
+                                               th:value="${bookGenre.id}">
+                                        <input type="hidden" th:field="*{genres[__${bookGenreID.index}__].genreName}"
+                                               th:value="${bookGenre.genreName}">
+                                    </span>
+                            </div>
+                            <div id="select_genres">
+                                <select th:each="bookGenre, bookGenreID: *{genres}" class="form-control"
+                                        th:name="'genres' + ${bookGenreID.index}"
+                                        onchange="changeGenres(this.getAttribute('name'), this.value, this.options[this.selectedIndex].text)">
+                                    <option th:each="genre : ${genreList}" th:selected="${genre.id == bookGenre.id}"
+                                            th:value="${genre.id}" th:text="${genre.genreName}">1
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="#" id="addGenreFields" onclick="addGenreFields()"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        Добавить жанр
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary">Сохранить</button>
+                                    <a href="/" th:href="@{/}" class="btn btn-sm btn-outline-secondary" role="button">Отмена</a>
+                                </div>
+                            </div>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>

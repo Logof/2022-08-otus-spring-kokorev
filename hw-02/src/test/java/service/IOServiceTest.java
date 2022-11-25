@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.homework.service.IOServiceImpl;
+import ru.otus.homework.hw02.service.IOServiceImpl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
