@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>ru.otus</groupId>
-    <artifactId>homework_8</artifactId>
+    <artifactId>hw-08-mongo</artifactId>
     <version>0.0.1</version>
-    <name>homework_8</name>
+
     <description>Приложение хранящее информацию о книгах в библиотеке</description>
     <properties>
         <java.version>11</java.version>
