@@ -9,6 +9,6 @@ public interface CommentService {
 
     List<Comment> getCommentsByIsbn(String isbn);
 
-    Book deleteCommentByIndex(String isbn, int commentId);
+    Book deleteCommentByIndex(String isbn, int index);
 
 }

@@ -10,3 +10,9 @@ spring:
 logging:
   level:
     ROOT: ERROR
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG

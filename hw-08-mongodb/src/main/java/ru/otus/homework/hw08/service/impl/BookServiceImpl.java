@@ -80,13 +80,13 @@ public class BookServiceImpl implements BookService, CommentService {
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAllByAuthor(String fullName) {
-        return bookRepository.findAllByAuthorsLike("%" + fullName + "%");
+        return bookRepository.findAllByAuthors(fullName);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAllByGenre(String genreName) {
-        return bookRepository.findAllByGenresLike("%" + genreName + "%");
+        return bookRepository.findAllByGenres(genreName);
     }
 
     @Override
