@@ -95,7 +95,7 @@ public class BookServiceImpl implements BookService, CommentService {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
         Genre genre = genreRepository.findByGenreNameLike(genreName);
 
-        if (genre != null && book.getGenres().contains(genre)
+        if (genre != null && book.getGenres().contains(genreName)
                 || genre != null && genre.getIsbnList().contains(isbn)) {
             throw new ObjectExistsException("The book already has an added genre");
         }
@@ -116,7 +116,7 @@ public class BookServiceImpl implements BookService, CommentService {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
         Author author = authorRepository.findByFullNameLike(fullName);
 
-        if (author != null && book.getAuthors().contains(author)
+        if (author != null && book.getAuthors().contains(fullName)
                 || author != null && author.getIsbnList().contains(isbn)) {
             throw new ObjectExistsException("The book already has an added author");
         }
