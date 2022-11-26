@@ -27,5 +27,6 @@
         <module>hw-07-magic-jpa</module>
         <module>hw-08-mongodb</module>
         <module>hw-09-mvc-view</module>
+        <module>hw-10-ajax</module>
     </modules>
 </project>

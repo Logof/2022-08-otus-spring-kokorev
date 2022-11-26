@@ -1,0 +1,17 @@
+export const GenreActionTypes = {
+  SELECTED_GENRES: "SELECTED_GENRES"
+}
+
+export const AuthorActionTypes = {
+  SELECTED_AUTHORS: "SELECTED_AUTHORS"
+}
+
+export const CommentActionTypes = {
+  SELECTED_COMMENTS: "SELECTED_COMMENTS",
+  REMOVE_SELECTED_COMMENT: "REMOVE_SELECTED_COMMENT"
+}
+
+export const ProductActionTypes = {
+  SELECTED_PRODUCT: "SELECT_PRODUCT",
+  REMOVE_SELECTED_PRODUCT: "REMOVE_SELECTED_PRODUCT"
+}
