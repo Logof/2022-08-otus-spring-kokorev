@@ -13,14 +13,13 @@ import ru.otus.homework.hw08.repository.AuthorRepository;
 import ru.otus.homework.hw08.repository.BookRepository;
 import ru.otus.homework.hw08.repository.GenreRepository;
 import ru.otus.homework.hw08.service.BookService;
-import ru.otus.homework.hw08.service.CommentService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Service
-public class BookServiceImpl implements BookService, CommentService {
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
@@ -141,19 +140,6 @@ public class BookServiceImpl implements BookService, CommentService {
         }
 
         book.getComments().add(new Comment(commentText));
-        return bookRepository.save(book);
-    }
-
-    @Override
-    public List<Comment> getCommentsByIsbn(String isbn) {
-        Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
-        return book.getComments();
-    }
-
-    @Override
-    public Book deleteCommentByIndex(String isbn, int index) {
-        Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
-        book.getComments().remove(index);
         return bookRepository.save(book);
     }
 }

@@ -12,7 +12,6 @@ import java.util.List;
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
-
 @EqualsAndHashCode
 public class Genre {
     @Id

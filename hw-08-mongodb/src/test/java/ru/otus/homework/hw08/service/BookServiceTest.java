@@ -9,16 +9,12 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
-import ru.otus.homework.hw08.entity.Author;
 import ru.otus.homework.hw08.entity.Book;
-import ru.otus.homework.hw08.entity.Comment;
-import ru.otus.homework.hw08.entity.Genre;
 import ru.otus.homework.hw08.service.impl.BookServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
@@ -28,9 +24,6 @@ public class BookServiceTest {
     private static final String COLLECTION_NAME = Book.class.getSimpleName().toLowerCase();
     @Autowired
     private BookService bookService;
-
-    @Autowired
-    private CommentService commentService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -175,60 +168,5 @@ public class BookServiceTest {
         assertEquals(expectedBook.getComments().get(0).getCommentText(), "new comment");
     }
 
-    @SneakyThrows
-    @Test
-    public void getCommentsByIsbnTest() {
-        mongoTemplate.remove(new Query(), COLLECTION_NAME);
-        bookService.add(new Book("1234-0", "Title"));
-        bookService.addCommentToBook("1234-0", "new comment");
-        bookService.addCommentToBook("1234-0", "new comment 2");
 
-        List<Comment> commentList = commentService.getCommentsByIsbn("1234-0");
-        assertEquals(commentList.size(), 2);
-
-        boolean isComment1Found = false;
-        boolean isComment2Found = false;
-
-        for (Comment comment: commentList) {
-            if (comment.getCommentText().equals("new comment")) {
-                isComment1Found = true;
-            }
-
-            if (comment.getCommentText().equals("new comment 2")) {
-                isComment2Found = true;
-            }
-        }
-
-        assertTrue(isComment1Found);
-        assertTrue(isComment2Found);
-    }
-
-    @Test
-    public void deleteCommentByIndexTest() {
-        mongoTemplate.remove(new Query(), COLLECTION_NAME);
-        bookService.add(new Book("1234-0", "Title"));
-        bookService.addCommentToBook("1234-0", "new comment");
-        bookService.addCommentToBook("1234-0", "new comment 2");
-
-        List<Comment> commentList = commentService.getCommentsByIsbn("1234-0");
-        assertEquals(commentList.size(), 2);
-
-        Book expectedBook = commentService.deleteCommentByIndex("1234-0", 0);
-
-        boolean isComment1Found = false;
-        boolean isComment2Found = false;
-
-        for (Comment comment: expectedBook.getComments()) {
-            if (comment.getCommentText().equals("new comment")) {
-                isComment1Found = true;
-            }
-
-            if (comment.getCommentText().equals("new comment 2")) {
-                isComment2Found = true;
-            }
-        }
-
-        assertFalse(isComment1Found);
-        assertTrue(isComment2Found);
-    }
 }
