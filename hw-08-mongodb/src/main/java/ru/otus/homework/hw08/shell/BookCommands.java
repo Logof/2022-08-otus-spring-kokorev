@@ -4,16 +4,9 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.homework.hw08.entity.Author;
 import ru.otus.homework.hw08.entity.Book;
-import ru.otus.homework.hw08.entity.Genre;
 import ru.otus.homework.hw08.service.BookService;
 import ru.otus.homework.hw08.service.print.PrintService;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @ShellComponent
 public class BookCommands extends CommonShell {
@@ -56,7 +49,7 @@ public class BookCommands extends CommonShell {
     @ShellMethod(value = "Add a book. Usage ISBN TITLE", key = "add-book")
     public void addBook(@ShellOption(help = "ISBN") String isbn,
                           @ShellOption(help = "Book title") String title) {
-        bookService.add(new Book(isbn, title, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        bookService.add(new Book(isbn, title));
     }
 
 
@@ -83,12 +76,6 @@ public class BookCommands extends CommonShell {
     @ShellMethodAvailability(value = "isEmptyIsbn")
     public void addAuthorToBook(@ShellOption String fullName) {
         bookService.addAuthorToBook(getCurrBook(), fullName);
-    }
-
-    @ShellMethod(value = "Add an author to selected book. Accepts full name", key = "add-comment")
-    @ShellMethodAvailability(value = "isEmptyIsbn")
-    public void addCommentToBook(@ShellOption String commentText) {
-        bookService.addCommentToBook(getCurrBook(), commentText);
     }
 
 }

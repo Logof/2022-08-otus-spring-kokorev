@@ -22,4 +22,6 @@
 /hw-07-magic-jpa/target
 /hw-07-magic-jpa/*.iml
 /hw-07-magic-jpa/.idea/
-
+/hw-08-mongodb/target
+/hw-08-mongodb/*.iml
+/hw-08-mongodb/.idea/

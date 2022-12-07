@@ -1,12 +1,15 @@
 spring:
-  data:
-    mongodb:
-      database: book_db_test
-      host: localhost
-      port: 27017
   shell:
     interactive:
       enabled: false
+  data:
+    mongodb:
+      port: 0
+      database: test
+  mongodb:
+    embedded:
+      version: 4.4.13
+
 logging:
   level:
     ROOT: ERROR

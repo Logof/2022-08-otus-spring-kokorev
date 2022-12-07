@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.hw08.entity.Author;
 import ru.otus.homework.hw08.entity.Book;
-import ru.otus.homework.hw08.entity.Comment;
 import ru.otus.homework.hw08.entity.Genre;
 import ru.otus.homework.hw08.exception.DataNotFountException;
 import ru.otus.homework.hw08.exception.FieldRequiredException;
@@ -17,6 +16,7 @@ import ru.otus.homework.hw08.service.BookService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -64,7 +64,8 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAll() {
-        return bookRepository.findAll();
+        List<Book> bookList =  bookRepository.findAll();
+        return bookList;
     }
 
     @Override
@@ -79,13 +80,13 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAllByAuthor(String fullName) {
-        return bookRepository.findAllByAuthors(fullName);
+        return bookRepository.findAllByAuthors_fullNameLike(fullName);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAllByGenre(String genreName) {
-        return bookRepository.findAllByGenres(genreName);
+        return bookRepository.findAllByGenres_genreNameLike(genreName);
     }
 
     @Override
@@ -94,16 +95,20 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
         Genre genre = genreRepository.findByGenreNameLike(genreName);
 
-        if (genre != null && book.getGenres().contains(genreName)
-                || genre != null && genre.getIsbnList().contains(isbn)) {
+        if (genre != null && (book.getGenres().stream()
+                .filter(g -> g.getGenreName().equals(genreName))
+                .collect(Collectors.toList()).size() != 0
+                || genre.getBookList().stream()
+                .filter(b -> b.getIsbn().equals(isbn))
+                .collect(Collectors.toList()).size() != 0)) {
             throw new ObjectExistsException("The book already has an added genre");
         }
 
         if (Objects.isNull(genre)) {
             genre = new Genre(genreName, new ArrayList<>());
         }
-        genre.getIsbnList().add(isbn);
-        book.getGenres().add(genreName);
+        genre.getBookList().add(book);
+        book.getGenres().add(genre);
 
         genreRepository.save(genre);
         return bookRepository.save(book);
@@ -115,31 +120,20 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
         Author author = authorRepository.findByFullNameLike(fullName);
 
-        if (author != null && book.getAuthors().contains(fullName)
-                || author != null && author.getIsbnList().contains(isbn)) {
+        if (author != null && (
+                book.getAuthors().stream().filter(a -> a.getFullName().equals(fullName)).collect(Collectors.toList()).size() != 0
+                || author.getBookList().stream().filter(b -> b.getIsbn().equals(isbn)).collect(Collectors.toList()).size() !=0)) {
             throw new ObjectExistsException("The book already has an added author");
         }
 
         if (Objects.isNull(author)) {
-            author = new Author(fullName, new ArrayList<>());
+            author = new Author(fullName);
         }
-        author.getIsbnList().add(isbn);
-        book.getAuthors().add(fullName);
+        author.getBookList().add(book);
+        book.getAuthors().add(author);
+
         authorRepository.save(author);
-
         return bookRepository.save(book);
 
-    }
-
-    @Override
-    @Transactional
-    public Book addCommentToBook(String isbn, String commentText) {
-        Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
-        if (commentText == null || commentText.isEmpty()) {
-            throw new FieldRequiredException("commentText");
-        }
-
-        book.getComments().add(new Comment(commentText));
-        return bookRepository.save(book);
     }
 }

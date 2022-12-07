@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BookRepository extends MongoRepository<Book, String> {
 
-    List<Book> findAllByAuthors(String author);
+    List<Book> findAllByAuthors_fullNameLike(String author);
 
-    List<Book> findAllByGenres(String genre);
+    List<Book> findAllByGenres_genreNameLike(String genre);
 }

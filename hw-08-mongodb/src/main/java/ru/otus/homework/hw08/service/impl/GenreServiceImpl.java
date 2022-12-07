@@ -22,9 +22,9 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
-    public void delete(String genreName) {
+    public void delete(String genreName) throws DeleteDataException {
         Genre genre = genreRepository.findById(genreName).orElseThrow(() -> new DataNotFountException("Genre not found"));
-        if (genre.getIsbnList().size() != 0) {
+        if (genre.getBookList().size() != 0) {
             throw new DeleteDataException("Can't remove genre - there are links to books");
         }
         genreRepository.deleteById(genreName);

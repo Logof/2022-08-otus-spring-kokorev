@@ -1,7 +1,6 @@
 package ru.otus.homework.hw08.service;
 
 import com.mongodb.client.MongoCollection;
-import lombok.SneakyThrows;
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,8 @@ import ru.otus.homework.hw08.service.impl.BookServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataMongoTest
 @Import(BookServiceImpl.class)
@@ -98,7 +98,7 @@ public class BookServiceTest {
         mongoTemplate.remove(new Query(), COLLECTION_NAME);
     }
 
-    @Test
+    /*@Test
     public void getAllByAuthorTest() {
         mongoTemplate.remove(new Query(), COLLECTION_NAME);
         List<String> authorStringList = new ArrayList<>();
@@ -157,7 +157,8 @@ public class BookServiceTest {
 
         assertEquals(expectedBook, book);
     }
-
+    */
+/*
     @Test
     public void addCommentToBookTest() {
         mongoTemplate.remove(new Query(), COLLECTION_NAME);
@@ -167,6 +168,6 @@ public class BookServiceTest {
         assertEquals(expectedBook.getComments().size(), 1);
         assertEquals(expectedBook.getComments().get(0).getCommentText(), "new comment");
     }
-
+*/
 
 }

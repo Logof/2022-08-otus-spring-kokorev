@@ -4,6 +4,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.hw08.entity.Author;
+import ru.otus.homework.hw08.exception.DeleteDataException;
 import ru.otus.homework.hw08.service.AuthorService;
 import ru.otus.homework.hw08.service.print.PrintService;
 
@@ -30,8 +31,14 @@ public class AuthorCommands extends CommonShell {
     }
 
     @ShellMethod(value = "Delete a author by full name", key = "delete-author-by-full-name")
-    public void deleteAuthorById(@ShellOption String fullName) {
-        authorService.delete(fullName);
+    public String deleteAuthorById(@ShellOption String fullName) {
+        try {
+            authorService.delete(fullName);
+            return "author deleted successfully";
+        } catch (DeleteDataException ex) {
+            return ex.getMessage();
+        }
+
     }
 
 }

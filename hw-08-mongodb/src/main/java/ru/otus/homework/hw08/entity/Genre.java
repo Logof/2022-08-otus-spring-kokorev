@@ -17,5 +17,5 @@ public class Genre {
     @Id
     private String genreName;
 
-    private List<String> isbnList = new ArrayList<>();
+    private List<Book> bookList = new ArrayList<>();
 }

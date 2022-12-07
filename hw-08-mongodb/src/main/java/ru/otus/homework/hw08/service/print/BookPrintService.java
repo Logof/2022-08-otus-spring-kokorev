@@ -1,7 +1,9 @@
 package ru.otus.homework.hw08.service.print;
 
 import org.springframework.stereotype.Service;
+import ru.otus.homework.hw08.entity.Author;
 import ru.otus.homework.hw08.entity.Book;
+import ru.otus.homework.hw08.entity.Genre;
 
 import java.util.Comparator;
 import java.util.List;
@@ -9,6 +11,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookPrintService implements PrintService<Book> {
+
+    private final PrintService<Genre> printServiceGenre;
+
+    private final PrintService<Author> printServiceAuthor;
+
+    public BookPrintService(PrintService<Genre> printServiceGenre,
+                            PrintService<Author> printServiceAuthor) {
+        this.printServiceGenre = printServiceGenre;
+        this.printServiceAuthor = printServiceAuthor;
+    }
 
     @Override
     public String objectsToPrint(List<Book> objects) {
@@ -18,13 +30,6 @@ public class BookPrintService implements PrintService<Book> {
                         .collect(Collectors.joining(System.lineSeparator(), "", "")));
     }
 
-
-    private String stringsToPrint(List<String> objects) {
-        return objects.stream().map(object -> String.format("%s (id=%d)", object, objects.indexOf(object)))
-                        .collect(Collectors.joining(System.lineSeparator() + "\t", "\t", ""));
-    }
-
-
     @Override
     public String objectToPrint(Book object) {
 
@@ -32,20 +37,20 @@ public class BookPrintService implements PrintService<Book> {
         String authorsPrintString = "";
 
         if (object.getGenres() != null && object.getGenres().size() > 0) {
-            genresPrintString = stringsToPrint(object.getGenres());
+            genresPrintString = printServiceGenre.objectsToPrint(object.getGenres());
         }
 
         if (object.getAuthors() != null && object.getAuthors().size() > 0) {
-            authorsPrintString = stringsToPrint(object.getAuthors());
+            authorsPrintString = printServiceAuthor.objectsToPrint(object.getAuthors());
         }
 
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(String.format("Title: %s (ISBN: %s)", object.getTitle(), object.getIsbn()))
                 .append(System.lineSeparator())
-                .append("Genre: ").append(System.lineSeparator()).append(genresPrintString)
+                .append("Genre(s): ").append(System.lineSeparator()).append(genresPrintString)
                 .append(System.lineSeparator())
-                .append("Authors: ").append(System.lineSeparator()).append(authorsPrintString)
+                .append("Author(s): ").append(System.lineSeparator()).append(authorsPrintString)
                 .append(System.lineSeparator())
                 .append("---------------------------------------")
                 .append(System.lineSeparator());

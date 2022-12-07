@@ -16,7 +16,13 @@ import java.util.List;
 @EqualsAndHashCode
 public class Author implements Serializable {
     @Id
+    private String id;
+
     private String fullName;
 
-    private List<String> isbnList = new ArrayList<>();
+    private List<Book> bookList = new ArrayList<>();
+
+    public Author(String fullName) {
+        this(null, fullName, new ArrayList<>());
+    }
 }

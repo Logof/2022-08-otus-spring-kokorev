@@ -1,5 +1,6 @@
 package ru.otus.homework.hw08.service;
 
+
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
@@ -22,12 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AuthorServiceTest {
 
     private static final String COLLECTION_NAME = Author.class.getSimpleName().toLowerCase();
+
     @Autowired
     private AuthorService authorService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
-
 
     @Test
     public void deleteTest() {
@@ -35,11 +36,11 @@ public class AuthorServiceTest {
         MongoCollection<Document> documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 0);
 
-        Author author = authorService.add("fullName");
+        Author author = authorService.add("Author");
         documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 1);
 
-        authorService.delete("fullName");
+        authorService.delete("Author");
         documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 0);
 

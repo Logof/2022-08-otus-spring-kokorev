@@ -32,4 +32,10 @@ public class CommentShell extends CommonShell {
         commentService.deleteCommentByIndex(getCurrBook(), commentId);
     }
 
+    @ShellMethod(value = "Add an author to selected book. Accepts full name", key = "add-comment")
+    @ShellMethodAvailability(value = "isEmptyIsbn")
+    public void addCommentToBook(@ShellOption String commentText) {
+        commentService.addCommentToBook(getCurrBook(), commentText);
+    }
+
 }

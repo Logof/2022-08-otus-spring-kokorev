@@ -4,6 +4,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.homework.hw08.entity.Genre;
+import ru.otus.homework.hw08.exception.DeleteDataException;
 import ru.otus.homework.hw08.service.GenreService;
 import ru.otus.homework.hw08.service.print.PrintService;
 
@@ -30,8 +31,13 @@ public class GenreCommands extends CommonShell {
     }
 
     @ShellMethod(value = "Delete a genre by name", key = "delete-genre-by-name")
-    public void deleteGenre(@ShellOption String genreName) {
-        genreService.delete(genreName);
+    public String deleteGenre(@ShellOption String genreName) {
+        try {
+            genreService.delete(genreName);
+            return "genre deleted successfully";
+        } catch (DeleteDataException ex) {
+            return ex.getMessage();
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package ru.otus.homework.hw08.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -19,13 +20,14 @@ public class Book {
 
     private String title;
 
-    private List<String> authors = new ArrayList<>();
+    @DBRef
+    private List<Author> authors = new ArrayList<>();
 
-    private List<String> genres = new ArrayList<>();
+    @DBRef
+    private List<Genre> genres = new ArrayList<>();
 
-    private List<Comment> comments = new ArrayList<>();
 
     public Book(String isbn, String title) {
-        this(isbn, title, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this(isbn, title, new ArrayList<>(), new ArrayList<>());
     }
 }
