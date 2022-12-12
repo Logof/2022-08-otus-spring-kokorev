@@ -1,6 +1,7 @@
 package ru.otus.homework.hw11.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.hw11.entity.Book;
 import ru.otus.homework.hw11.entity.Comment;
 import ru.otus.homework.hw11.exception.DataNotFountException;
@@ -10,7 +11,6 @@ import ru.otus.homework.hw11.repository.BookRepository;
 import ru.otus.homework.hw11.repository.CommentRepository;
 import ru.otus.homework.hw11.service.CommentService;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 

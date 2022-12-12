@@ -1,9 +1,10 @@
 package ru.otus.homework.hw11.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
+
 
 @Getter
 @Setter

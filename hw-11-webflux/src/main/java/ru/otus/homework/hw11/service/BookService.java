@@ -8,7 +8,7 @@ public interface BookService {
 
         void updateTitle(String isbn, String newTitle);
 
-        Book add(Book book);
+        Book save(Book book);
 
         void deleteByIsbn(String isbn);
 

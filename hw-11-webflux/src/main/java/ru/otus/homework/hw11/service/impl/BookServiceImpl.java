@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Book add(Book book) {
+    public Book save(Book book) {
         if (book == null || book.getIsbn() == null || book.getIsbn().isBlank() || book.getTitle() == null || book.getTitle().isBlank()) {
             throw new FieldRequiredException("isbn", "title");
         }
