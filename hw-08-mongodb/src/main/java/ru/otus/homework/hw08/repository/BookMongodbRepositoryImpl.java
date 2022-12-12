@@ -10,7 +10,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Repository
 public class BookMongodbRepositoryImpl implements BookMongodbRepository {
-    
+
     private final MongoTemplate mongoTemplate;
 
     public BookMongodbRepositoryImpl(MongoTemplate mongoTemplate) {
