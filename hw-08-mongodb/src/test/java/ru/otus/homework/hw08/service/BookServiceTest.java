@@ -78,15 +78,16 @@ public class BookServiceTest {
 
     @Test
     public void getAllTest() {
-        List<Book> bookGenres = new ArrayList<>();
+        mongoTemplate.remove(new Query(), COLLECTION_NAME);
+        List<Book> actualBookList = new ArrayList<>();
         Book book1 = bookService.add(new Book("1234-0", "genreName 1"));
         Book book2 = bookService.add(new Book("1234-1", "genreName 2"));
-        bookGenres.add(book1);
-        bookGenres.add(book2);
+        actualBookList.add(book1);
+        actualBookList.add(book2);
 
-        List<Book> bookList = bookService.getAll();
+        List<Book> expectedBookList = bookService.getAll();
 
-        assertTrue(bookList.equals(bookGenres));
+        assertTrue(expectedBookList.equals(actualBookList));
         mongoTemplate.remove(new Query(), COLLECTION_NAME);
     }
 
@@ -98,76 +99,26 @@ public class BookServiceTest {
         mongoTemplate.remove(new Query(), COLLECTION_NAME);
     }
 
-    /*@Test
-    public void getAllByAuthorTest() {
-        mongoTemplate.remove(new Query(), COLLECTION_NAME);
-        List<String> authorStringList = new ArrayList<>();
-        authorStringList.add("Author 1");
-        authorStringList.add("Author 2");
-
-        List<Book> actualBooks = new ArrayList<>();
-        Book book1 = bookService.add(new Book("1234-0", "Title", authorStringList, new ArrayList<>(), new ArrayList<>()));
-        actualBooks.add(book1);
-
-        List<Book> expectedBook = bookService.getAllByAuthor("Author 1");
-        assertTrue(expectedBook.equals(actualBooks));
-
-        expectedBook = bookService.getAllByAuthor("Author 2");
-        assertTrue(expectedBook.equals(actualBooks));
-    }
-
-    @Test
-    public void getAllByGenreTest() {
-        mongoTemplate.remove(new Query(), COLLECTION_NAME);
-        List<String> genreStringList = new ArrayList<>();
-        genreStringList.add("Genre 1");
-        genreStringList.add("Genre 2");
-
-        List<Book> actualBooks = new ArrayList<>();
-        Book book1 = bookService.add(new Book("1234-0", "Title", new ArrayList<>(), genreStringList, new ArrayList<>()));
-        actualBooks.add(book1);
-
-        List<Book> expectedBook = bookService.getAllByGenre("Genre 1");
-        assertTrue(expectedBook.equals(actualBooks));
-
-        expectedBook = bookService.getAllByGenre("Genre 2");
-        assertTrue(expectedBook.equals(actualBooks));
-    }
-
     @Test
     public void addGenreToBookTest() {
         mongoTemplate.remove(new Query(), COLLECTION_NAME);
-        mongoTemplate.remove(new Query(), "genre");
         Book book = bookService.add(new Book("1234-0", "Title"));
 
         Book expectedBook = bookService.addGenreToBook("1234-0", "new genre");
-        book.getGenres().add("new genre");
-
-        assertEquals(expectedBook, book);
+        assertEquals(expectedBook.getGenres().size(), 1);
+        assertTrue(expectedBook.getGenres().get(0).getGenreName().equals("new genre"));
     }
+
 
     @Test
     public void addAuthorToBookTest() {
         mongoTemplate.remove(new Query(), COLLECTION_NAME);
-        mongoTemplate.remove(new Query(), "author");
         Book book = bookService.add(new Book("1234-0", "Title"));
 
         Book expectedBook = bookService.addAuthorToBook("1234-0", "new Author");
-        book.getAuthors().add("new Author");
 
-        assertEquals(expectedBook, book);
+        assertEquals(expectedBook.getAuthors().size(), 1);
+        assertTrue(expectedBook.getAuthors().get(0).getFullName().equals("new Author"));
     }
-    */
-/*
-    @Test
-    public void addCommentToBookTest() {
-        mongoTemplate.remove(new Query(), COLLECTION_NAME);
-        bookService.add(new Book("1234-0", "Title"));
-
-        Book expectedBook = bookService.addCommentToBook("1234-0", "new comment");
-        assertEquals(expectedBook.getComments().size(), 1);
-        assertEquals(expectedBook.getComments().get(0).getCommentText(), "new comment");
-    }
-*/
 
 }

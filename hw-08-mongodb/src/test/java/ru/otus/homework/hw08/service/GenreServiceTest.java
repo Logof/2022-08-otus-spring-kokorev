@@ -13,6 +13,7 @@ import ru.otus.homework.hw08.service.impl.GenreServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +36,7 @@ public class GenreServiceTest {
         MongoCollection<Document> documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 0);
 
-        Genre genre = genreService.add("genreName");
+        mongoTemplate.save(new Genre(UUID.randomUUID().toString(), "genreName"), COLLECTION_NAME);
         documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 1);
 

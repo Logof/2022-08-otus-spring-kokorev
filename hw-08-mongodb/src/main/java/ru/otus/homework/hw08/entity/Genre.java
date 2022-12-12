@@ -4,9 +4,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @Document
@@ -15,7 +12,11 @@ import java.util.List;
 @EqualsAndHashCode
 public class Genre {
     @Id
+    private String id;
+
     private String genreName;
 
-    private List<Book> bookList = new ArrayList<>();
+    public Genre(String genreName) {
+        this(null, genreName);
+    }
 }

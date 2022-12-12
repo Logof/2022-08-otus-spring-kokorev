@@ -13,10 +13,7 @@ import ru.otus.homework.hw08.repository.BookRepository;
 import ru.otus.homework.hw08.repository.GenreRepository;
 import ru.otus.homework.hw08.service.BookService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -64,8 +61,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAll() {
-        List<Book> bookList =  bookRepository.findAll();
-        return bookList;
+        return bookRepository.findAll();
     }
 
     @Override
@@ -80,37 +76,32 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAllByAuthor(String fullName) {
-        return bookRepository.findAllByAuthors_fullNameLike(fullName);
+        Author author = authorRepository.findByFullNameLike(fullName)
+                .orElseThrow(() -> new DataNotFountException("Author not found"));
+        return bookRepository.findAllByAuthors(author);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Book> getAllByGenre(String genreName) {
-        return bookRepository.findAllByGenres_genreNameLike(genreName);
+        Genre genre = genreRepository.findByGenreNameLike(genreName)
+                .orElseThrow(() -> new DataNotFountException("Genre not found"));
+        return bookRepository.findAllByGenres(genre);
     }
 
     @Override
     @Transactional
     public Book addGenreToBook(String isbn, String genreName) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
-        Genre genre = genreRepository.findByGenreNameLike(genreName);
+        Genre genre = genreRepository.findByGenreNameLike(genreName)
+                .orElse(genreRepository.save(new Genre(genreName)));
 
-        if (genre != null && (book.getGenres().stream()
-                .filter(g -> g.getGenreName().equals(genreName))
-                .collect(Collectors.toList()).size() != 0
-                || genre.getBookList().stream()
-                .filter(b -> b.getIsbn().equals(isbn))
-                .collect(Collectors.toList()).size() != 0)) {
+        if (book.getGenres().stream()
+                .filter(g -> g.getGenreName().equals(genreName)).count() != 0) {
             throw new ObjectExistsException("The book already has an added genre");
         }
 
-        if (Objects.isNull(genre)) {
-            genre = new Genre(genreName, new ArrayList<>());
-        }
-        genre.getBookList().add(book);
         book.getGenres().add(genre);
-
-        genreRepository.save(genre);
         return bookRepository.save(book);
     }
 
@@ -118,21 +109,15 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public Book addAuthorToBook(String isbn, String fullName) {
         Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
-        Author author = authorRepository.findByFullNameLike(fullName);
+        Author author = authorRepository.findByFullNameLike(fullName)
+                .orElse(authorRepository.save(new Author(fullName)));
 
-        if (author != null && (
-                book.getAuthors().stream().filter(a -> a.getFullName().equals(fullName)).collect(Collectors.toList()).size() != 0
-                || author.getBookList().stream().filter(b -> b.getIsbn().equals(isbn)).collect(Collectors.toList()).size() !=0)) {
+        if (book.getAuthors().stream()
+                .filter(a -> a.getFullName().equals(fullName)).count() != 0) {
             throw new ObjectExistsException("The book already has an added author");
         }
 
-        if (Objects.isNull(author)) {
-            author = new Author(fullName);
-        }
-        author.getBookList().add(book);
         book.getAuthors().add(author);
-
-        authorRepository.save(author);
         return bookRepository.save(book);
 
     }

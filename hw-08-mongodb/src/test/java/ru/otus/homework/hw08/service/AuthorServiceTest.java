@@ -14,6 +14,7 @@ import ru.otus.homework.hw08.service.impl.AuthorServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,6 +28,7 @@ public class AuthorServiceTest {
     @Autowired
     private AuthorService authorService;
 
+
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -36,7 +38,7 @@ public class AuthorServiceTest {
         MongoCollection<Document> documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 0);
 
-        Author author = authorService.add("Author");
+        mongoTemplate.save(new Author(UUID.randomUUID().toString(), "Author"), COLLECTION_NAME);
         documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 1);
 

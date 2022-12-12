@@ -5,8 +5,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,9 +18,7 @@ public class Author implements Serializable {
 
     private String fullName;
 
-    private List<Book> bookList = new ArrayList<>();
-
     public Author(String fullName) {
-        this(null, fullName, new ArrayList<>());
+        this(null, fullName);
     }
 }
