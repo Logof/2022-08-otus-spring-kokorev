@@ -34,16 +34,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Book updateTitle(String isbn, String newTitle) {
+    public void updateTitle(String isbn, String newTitle) {
         if (isbn == null || isbn.isBlank() || newTitle == null || newTitle.isBlank()) {
             throw new FieldRequiredException("isbn", "title");
         }
-        //Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
-        //book.setTitle(newTitle);
-
         bookRepository.updateDocumentTitle(isbn, newTitle);
-        return null;
-        //return bookRepository.save(book);
     }
 
     @Override
