@@ -2,34 +2,20 @@ package ru.otus.homework.hw12.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.otus.homework.hw12.security.CustomUserDetailsService;
 
 @Configuration
-//@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
-    CustomUserDetailsService customUserDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
-        this.customUserDetailsService = customUserDetailsService;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http,
-                                                       BCryptPasswordEncoder bCryptPasswordEncoder,
-                                                       CustomUserDetailsService customUserDetailsService)
-            throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder)
-                .and()
-                .build();
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -37,10 +23,12 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/book**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/new**").hasRole("ADMIN")
-                .antMatchers("/edit**").hasRole("ADMIN")
-                .antMatchers("/delete**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/book**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/new**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/edit**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/delete**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/book").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/delete").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .and()
