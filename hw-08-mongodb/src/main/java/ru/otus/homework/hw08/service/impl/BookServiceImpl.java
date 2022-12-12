@@ -38,9 +38,12 @@ public class BookServiceImpl implements BookService {
         if (isbn == null || isbn.isBlank() || newTitle == null || newTitle.isBlank()) {
             throw new FieldRequiredException("isbn", "title");
         }
-        Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
-        book.setTitle(newTitle);
-        return bookRepository.save(book);
+        //Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
+        //book.setTitle(newTitle);
+
+        bookRepository.updateDocumentTitle(isbn, newTitle);
+        return null;
+        //return bookRepository.save(book);
     }
 
     @Override
