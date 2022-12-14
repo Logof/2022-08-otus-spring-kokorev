@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="/js/authors.js"></script>
+    <script src="/js/genres.js"></script>
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/header :: header"/>
+</div>
+<main class="container">
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                         role="img" aria-label="Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#55595c"></rect>
+                    </svg>
+                </div>
+                <div class="col p-4 d-flex flex-column position-static">
+                    <form id="book" action="new.html" th:action="@{/book}" th:method="post">
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label" for="isnb">ISBN:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="isnb" name="isbn">
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="title">Заголовок:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="title" name="title">
+                            </div>
+                        </div>
+                        <label class="col-sm-2 col-form-label" for="select_authors">Автор(ы):</label>
+                        <div class="col-sm-10 form-group" id="authors">
+                            <div id="hidden_authors">
+                                    <span>
+                                        <input type="hidden" id="authors0.id" name="authors[0].id">
+                                        <input type="hidden" id="authors0.fullName" name="authors[0].fullName">
+                                    </span>
+                            </div>
+                            <div id="select_authors">
+                                <select name="authors0"
+                                        onchange="changeAuthors(this.getAttribute('name'), this.value, this.options[this.selectedIndex].text)">
+                                    <option th:value="-1" text="----------" selected="selected"></option>
+                                    <option th:each="author : ${authorList}" th:value="${author.id}"
+                                            th:text="${author.fullName}"></option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="#" id="addAuthorFields" onclick="addAuthorFields()"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        Добавить автора
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label class="col-sm-2 col-form-label" for="select_genres">Жанр(ы):</label>
+                        <div class="col-sm-10 form-group" id="genres">
+                            <div id="hidden_genres">
+                                    <span>
+                                        <input type="hidden" id="genres0.id" name="genres[0].id">
+                                        <input type="hidden" id="genres0.genreName" name="genres[0].genreName">
+                                    </span>
+                            </div>
+                            <div id="select_genres">
+                                <select name="genres0"
+                                        onchange="changeGenres(this.getAttribute('name'), this.value, this.options[this.selectedIndex].text)">
+                                    <option th:value="-1" text="----------" selected="selected"></option>
+                                    <option th:each="genre : ${genreList}" th:value="${genre.id}"
+                                            th:text="${genre.genreName}">1
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="#" id="addGenreFields" onclick="addGenreFields()"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        Добавить жанр
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary">Сохранить</button>
+                                    <a href="/" th:href="@{/}" class="btn btn-sm btn-outline-secondary" role="button">Отмена</a>
+                                </div>
+                            </div>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>

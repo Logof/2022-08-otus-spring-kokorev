@@ -28,5 +28,6 @@
         <module>hw-08-mongodb</module>
         <module>hw-09-mvc-view</module>
         <module>hw-10-ajax</module>
+        <module>hw-12-auth</module>
     </modules>
 </project>
