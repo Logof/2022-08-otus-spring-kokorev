@@ -11,6 +11,7 @@ import ru.otus.homework.hw08.repository.GenreRepository;
 import ru.otus.homework.hw08.service.GenreService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -29,8 +30,9 @@ public class GenreServiceImpl implements GenreService {
     public void delete(String genreName) throws DeleteDataException {
         Genre genre = genreRepository.findByGenreNameLike(genreName)
                 .orElseThrow(() -> new DataNotFountException("Genre not found"));
-        List<Book> book = bookRepository.findAllByGenres(genre);
-        if (book.size() != 0) {
+
+        Optional<Book> book = bookRepository.findOneByGenres(genre);
+        if (book.isPresent()) {
             throw new DeleteDataException("Can't remove genre - there are links to books");
         }
         genreRepository.deleteById(genre.getId());

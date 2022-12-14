@@ -4,6 +4,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Document
@@ -12,11 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @EqualsAndHashCode
 public class Genre {
     @Id
-    private String id;
+    private UUID id;
 
     private String genreName;
 
     public Genre(String genreName) {
-        this(null, genreName);
+        this(UUID.randomUUID(), genreName);
     }
 }

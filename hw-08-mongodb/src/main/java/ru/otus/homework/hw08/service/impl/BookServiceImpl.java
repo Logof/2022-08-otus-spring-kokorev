@@ -10,6 +10,7 @@ import ru.otus.homework.hw08.exception.FieldRequiredException;
 import ru.otus.homework.hw08.exception.ObjectExistsException;
 import ru.otus.homework.hw08.repository.AuthorRepository;
 import ru.otus.homework.hw08.repository.BookRepository;
+import ru.otus.homework.hw08.repository.CommentRepository;
 import ru.otus.homework.hw08.repository.GenreRepository;
 import ru.otus.homework.hw08.service.BookService;
 
@@ -24,12 +25,16 @@ public class BookServiceImpl implements BookService {
 
     private final GenreRepository genreRepository;
 
+    private final CommentRepository commentRepository;
+
     public BookServiceImpl(BookRepository bookRepository,
                            AuthorRepository authorRepository,
-                           GenreRepository genreRepository) {
+                           GenreRepository genreRepository,
+                           CommentRepository commentRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -53,7 +58,10 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteByIsbn(String isbn) {
-        bookRepository.deleteById(isbn);
+        Book book = bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
+        commentRepository.deleteByBook(book);
+
+        bookRepository.deleteById(book.getIsbn());
     }
 
     @Override

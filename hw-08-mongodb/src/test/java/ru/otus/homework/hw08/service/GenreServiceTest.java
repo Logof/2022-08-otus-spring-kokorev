@@ -36,7 +36,7 @@ public class GenreServiceTest {
         MongoCollection<Document> documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 0);
 
-        mongoTemplate.save(new Genre(UUID.randomUUID().toString(), "genreName"), COLLECTION_NAME);
+        mongoTemplate.save(new Genre(UUID.randomUUID(), "genreName"), COLLECTION_NAME);
         documentList = mongoTemplate.getCollection(COLLECTION_NAME);
         assertEquals(documentList.countDocuments(), 1);
 
