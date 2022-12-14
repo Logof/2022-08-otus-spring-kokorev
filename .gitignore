@@ -21,5 +21,13 @@
 /hw-06-orm_jpa/.idea
 /hw-07-magic-jpa/target
 /hw-07-magic-jpa/*.iml
-/hw-07-magic-jpa/.idea/
-
+/hw-07-magic-jpa/.idea
+/hw-09-mvc-view/target
+/hw-09-mvc-view/*.iml
+/hw-09-mvc-view/.idea
+/hw-10-ajax/target
+/hw-10-ajax/*.iml
+/hw-10-ajax/.idea
+/hw-12-auth/target
+/hw-12-auth/*.iml
+/hw-12-auth/.idea
