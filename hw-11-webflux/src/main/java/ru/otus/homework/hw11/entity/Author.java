@@ -4,8 +4,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @Document(collection = "authors")
@@ -14,11 +12,11 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class Author {
     @Id
-    private UUID id;
+    private String id;
 
     private String fullName;
 
     public Author(String fullName) {
-        this(UUID.randomUUID(), fullName);
+        this(null, fullName);
     }
 }

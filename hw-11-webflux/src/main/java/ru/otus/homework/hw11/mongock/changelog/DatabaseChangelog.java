@@ -14,7 +14,6 @@ import ru.otus.homework.hw11.repository.GenreRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @ChangeLog
 public class DatabaseChangelog {
@@ -30,16 +29,16 @@ public class DatabaseChangelog {
 
     @ChangeSet(order = "002", id = "initAuthors", author = "logof")
     public void initAuthors(AuthorRepository authorRepository) {
-        authors.add(authorRepository.save(new Author(UUID.randomUUID(), "Русские народные сказки")).block());
-        authors.add(authorRepository.save(new Author(UUID.randomUUID(), "Якоб и Вильгельм Гримм")).block());
-        authors.add(authorRepository.save(new Author(UUID.randomUUID(), "Шарль Перро")).block());
-        authors.add(authorRepository.save(new Author(UUID.randomUUID(), "Джозеф Джекобс")).block());
-        authors.add(authorRepository.save(new Author(UUID.randomUUID(), "Андерсен Ханс Кристиан")).block());
+        authors.add(authorRepository.save(new Author( "Русские народные сказки")).block());
+        authors.add(authorRepository.save(new Author( "Якоб и Вильгельм Гримм")).block());
+        authors.add(authorRepository.save(new Author( "Шарль Перро")).block());
+        authors.add(authorRepository.save(new Author( "Джозеф Джекобс")).block());
+        authors.add(authorRepository.save(new Author( "Андерсен Ханс Кристиан")).block());
     }
 
     @ChangeSet(order = "003", id = "initGenres", author = "logof")
     public void initGenres(GenreRepository genreRepository) {
-        genres.add(genreRepository.save(new Genre(UUID.randomUUID(), "Сказки")).block());
+        genres.add(genreRepository.save(new Genre( "Сказки")).block());
     }
 
     @ChangeSet(order = "004", id = "initBooks", author = "logof")

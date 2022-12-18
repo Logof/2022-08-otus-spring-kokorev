@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenreDto  {
-    private UUID id;
+    private String id;
     private String genreName;
 
     public GenreDto(String genreName) {

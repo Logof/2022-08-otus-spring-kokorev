@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import httpCommon from "../http-common";
 
 import { BookEdit, BookDetails, Comments } from "./templates/Template";
-import { fetchBook, removeSelectedBook, createdBook } from "../redux/actions/bookActions";
+import { fetchBook, removeSelectedBook } from "../redux/actions/bookActions";
 
 import { fetchComments } from "../redux/actions/commentActions";
 import { fetchAuthors } from "../redux/actions/authorActions";
@@ -24,15 +24,10 @@ export default function BookPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (id==="new") {
-            setIsEdit(true);
-            return () => {dispatch(createdBook)}
-        } else {
-            dispatch(fetchBook(id));
-            return () => {
+        dispatch(fetchBook(id));
+        return () => {
             dispatch(removeSelectedBook())
-            };
-        }
+        };
     }, [dispatch, id]);
 
     useEffect(() => { dispatch(fetchComments(id)); }, [dispatch, id]);
@@ -71,21 +66,17 @@ export default function BookPage() {
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="btn-group">
                         <button className="btn btn-sm btn-outline-secondary" onClick={homePage}>К списку</button>
-                        { id!=="new" ? <button className="btn btn-sm btn-outline-secondary" onClick={deleteBook}>Удалить</button> :  <></>}
+                        <button className="btn btn-sm btn-outline-secondary" onClick={deleteBook}>Удалить</button>
                     </div>
                 </div>
-                { 
-                    id==="new" ? 
-                        <BookEdit product={book} genreListAll={genre} authorListAll={author} />
-                    :
-                        Object.keys(book).length !== 0 ? <BookEdit product={book} genreListAll={genre} authorListAll={author} /> : '404 Product Not Found!'
-                    
-                }
+                {Object.keys(book).length !== 0 ?
+                    <BookEdit product={book} genreListAll={genre} authorListAll={author} /> : '404 Product Not Found!'}
             </div>
         );
     }
 
     return (
+        
             <div id="book-page">
                 <h3>Описание</h3>
                 <div className="d-flex justify-content-between align-items-center">

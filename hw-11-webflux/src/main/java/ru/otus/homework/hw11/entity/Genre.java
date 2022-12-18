@@ -4,8 +4,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
-
 
 @Getter
 @Setter
@@ -15,7 +13,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class Genre {
     @Id
-    private UUID id;
+    private String id;
 
     private String genreName;
 

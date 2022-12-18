@@ -31,6 +31,7 @@ export function BookForList({product}) {
     );
 }
 
+
 export function BookDetails({product}) {
     return (
         <div className="container-fluid">
@@ -84,20 +85,6 @@ export function BookEdit({product, genreListAll, authorListAll}) {
 
     const navigate = useNavigate();
 
-    function homePage() {
-        navigate("/")
-    }
-
-    function deleteBook() {
-        httpCommon.delete(`/api/book/${product.isbn}`)
-            .then(_ => {
-                homePage()
-            })
-            .catch(error => {
-                console.log("Error occured!");
-            });
-    }
-
     function handleSubmit(event) {
         console.log("- form submitted - ")
         event.preventDefault();
@@ -114,13 +101,12 @@ export function BookEdit({product, genreListAll, authorListAll}) {
                 console.error(`[ERROR] While updating product!`);
                 console.error(error);
             })
-
     }
 
     function updateGenreList(newValue) {
-        console.log("new value = ", newValue)
+        console.log(newValue)
         const newGenreList = genreList.map(obj => {
-            if (obj.id === newValue.id) {
+            if (obj.index === newValue.index) {
                 return newValue;
             }
             return obj;
@@ -132,63 +118,63 @@ export function BookEdit({product, genreListAll, authorListAll}) {
         console.log(newValue)
 
         const newAuthorList = authorList.map(obj => {
-            if (obj.id === newValue.id) {
+            if (obj.index === newValue.index) {
                 return newValue;
             }
             return obj;
         });
         setAuthors(newAuthorList);
+        console.log(newAuthorList)
     };
 
     return (
-        <div className="container-fluid">
-            <div className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div className="col-md-2" >
-                    <svg className="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
-                        role="img" aria-label="Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <rect width="100%" height="100%" fill="#55595c"></rect>
-                    </svg>
-                </div>
-                <div className="col-md-10">
-                    <form onSubmit={handleSubmit} className="form-inline">
-                        <div className="form-group g-0 align-items-center">
-                            <label htmlFor="inputISBN" className="col-form-label">ISBN: </label>
-                            <input type="text" id="inputISBN" className="form-control" name="isbn" defaultValue={product.isbn} />
-                        </div>
-                        <div className="form-group g-0 align-items-center">
-                            <label htmlFor="inputTitle" className="col-form-label">Заголовок: </label>
-                            <input type="text" id="inputTitle" className="form-control" name="title" defaultValue={product.title} />
-                        </div>
-                        <div className="form-group g-0 align-items-center">
-                            <label htmlFor="selectGenres" className="col-form-label">Жанр(ы): </label>
-                            {
+        <div className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div className="col-md-2" >
+                <svg className="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                         role="img" aria-label="Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#55595c"></rect>
+                </svg>
+            </div>
+            <div className="col-md-10">
+                <form onSubmit={handleSubmit}>
+                    <div className="row g-0 align-items-center">
+                        <label htmlFor="inputISBN" className="col-form-label">ISBN: </label>
+                        <input type="text" id="inputISBN" className="form-control" name="isbn" defaultValue={product.isbn} />
+                    </div>
+                    <div className="row g-0 align-items-center">
+                        <label htmlFor="inputTitle" className="col-form-label">Заголовок: </label>
+                        <input type="text" id="inputTitle" className="form-control" name="title" defaultValue={product.title} />
+                    </div>
+
+                    <div className="row g-0 align-items-center">
+                        <label htmlFor="selectGenres" className="col-form-label">Жанр(ы): </label>
+                        {
                                 genreList.length > 0 
                                     ? genreList.map((genre, index) => {
                                         return (
-                                            <>
+                                            <div key={"genre"+index}>
                                                 <select key={genre.id} 
                                                         className="form-select" 
                                                         onChange={e => { updateGenreList(genreListAll.find(genre => {return genre.id === e.target.value}))}}>
                                                     {genreListAll.map(genreItem => {
-                                                                return (
-                                                                    (genre.id === genreItem.id) 
-                                                                    ? 
-                                                                    <option key={genreItem.id} value={genreItem.id} selected='selected'>
-                                                                        {genreItem.genreName}
-                                                                    </option>
-                                                                    :
-                                                                    <option key={genreItem.id} value={genreItem.id}>
-                                                                        {genreItem.genreName}
-                                                                    </option>
-                                                                ) })
-                                                    }
+                                                        return (genre.id === genreItem.id
+                                                            ?
+                                                                <option key={genreItem.id} value={genreItem.id} selected='selected'>
+                                                                    {genreItem.genreName}
+                                                                </option>
+                                                            :
+                                                                <option key={genreItem.id} value={genreItem.id}>
+                                                                    {genreItem.genreName}
+                                                                </option>
+                                                            )
+                                                        })}
                                                 </select>
                                                 <div className="col-auto">
                                                     <button type="button" className="btn btn-outline-success btn-sm" 
                                                             onClick={() => setGenres(genreList.filter((_, id) => id !== index))} > Удалить </button>
                                                     <button type="button" className="btn btn-outline-success btn-sm" onClick={() => setGenres([...genreList, genreListAll[0]])} > Добавить </button>
                                                 </div>
-                                            </>)
+                                            </div>)
                                         })
                                     : genreListAll.length > 0 
                                         ? 
@@ -200,32 +186,36 @@ export function BookEdit({product, genreListAll, authorListAll}) {
                                             Заполнить список жанров
                                         </a>
                             }
-                        </div>    
-                        <div className="form-group g-0 align-items-center">
-                            <label className="col-form-label">Автор(ы): </label>
-                            {
-                                authorList.length > 0 ? authorList.map((author, index) => { return (                                
-                            <><select key={index} className="form-select" onChange={e => {
-                                                        updateAuthorList(authorListAll.find(author => author.id === e.target.value))}} >
-                                                        {authorListAll.map(authorItem => {
-                                                            return (
-                                                                (author.id === authorItem.id) 
-                                                                ? 
-                                                                <option key={authorItem.id} value={authorItem.id} selected='selected'>
-                                                                    {authorItem.fullName}
-                                                                </option>
+                    </div>    
+                    <div className="form-group g-0 align-items-center">
+                        <label className="col-form-label">Автор(ы): </label>
+                        {
+                            authorList.length > 0 
+                                ? authorList.map((author, index) => { 
+                                    return (                                
+                                        <div key={"author"+index}>
+                                            <select key={index} 
+                                                    className="form-select" onChange={e => {
+                                                    updateAuthorList(authorListAll.find(author => author.id === e.target.value))}} >
+                                                    {authorListAll.map(authorItem => {
+                                                        return (author.id === authorItem.id
+                                                                ?
+                                                                    <option key={authorItem.id} value={authorItem.id} selected='selected'>
+                                                                        {authorItem.fullName}
+                                                                    </option>
                                                                 :
-                                                                <option key={authorItem.id} value={authorItem.id}>
-                                                                    {authorItem.fullName}
-                                                                </option>
-                                                            )
-                                                        })}
-                            </select>
-                            <div className="col-auto">
-                                <button type="button" className="btn btn-outline-success btn-sm" 
+                                                                    <option key={authorItem.id} value={authorItem.id}>
+                                                                        {authorItem.fullName}
+                                                                    </option>
+                                                                )
+                                                    })}
+                                            </select>
+                                            <div className="col-auto">
+                                                <button type="button" className="btn btn-outline-success btn-sm" 
                                                         onClick={() => setAuthors(authorList.filter((_, id) => id !== index))} > Удалить </button>
-                                <button type="button" className="btn btn-outline-success btn-sm" onClick={() => setAuthors([...authorList, authorListAll[0]])} > Добавить </button>
-                            </div></>)})
+                                                <button type="button" className="btn btn-outline-success btn-sm" onClick={() => setAuthors([...authorList, authorListAll[0]])} > Добавить </button>
+                                            </div>
+                                        </div>)})
                                     : authorListAll.length > 0 ?
                                         <button type="button" className="btn btn-outline-success btn-sm" onClick={() => setAuthors([...authorList, authorListAll[0]])} > Добавить </button>
                                         :
@@ -243,8 +233,6 @@ export function BookEdit({product, genreListAll, authorListAll}) {
                     </form>
                 </div>
             </div>
-        </div>
-        
     )
 }
 
