@@ -1,6 +1,6 @@
-import React, { useState }  from "react";
-import {Link, redirect, useNavigate} from "react-router-dom";
-import Axios from "axios";
+import React from "react";
+import {useNavigate} from "react-router-dom";
+import httpCommon from "../../http-common";
 
 export function GenreAdd() {
     
@@ -15,7 +15,7 @@ export function GenreAdd() {
         let newGenre = Object.create(genre);
         newGenre.genreName = event.target.genreName.value;
 
-        Axios.post("http://localhost:8010/proxy/api/genre", newGenre)
+        httpCommon.post("/api/genre", newGenre)
             .then(_ =>  {
                 navigate("/")
             })

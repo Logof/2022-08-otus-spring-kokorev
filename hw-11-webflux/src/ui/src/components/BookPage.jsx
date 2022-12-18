@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import Axios from "axios";
+import httpCommon from "../http-common";
 
 import { BookEdit, BookDetails, Comments } from "./templates/Template";
 import { fetchBook, removeSelectedBook, createdBook } from "../redux/actions/bookActions";
@@ -55,7 +55,7 @@ export default function BookPage() {
     }
 
     function deleteBook() {
-        Axios.delete(`http://localhost:8010/proxy/api/book/${book.isbn}`)
+        httpCommon.delete(`/api/book/${book.isbn}`)
             .then(_ => {
                 homePage()
             })

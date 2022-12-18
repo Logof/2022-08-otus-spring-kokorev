@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import Axios from "axios";
 import { BookForList } from "../templates/Template";
 import { Row, Col } from 'react-bootstrap';
+import httpCommon from "../../http-common";
 
 export default function Supply() {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        Axios.get('http://localhost:8010/proxy/api/book')
+        httpCommon.get('/api/book')
             .then(response => {
                 setProducts(response.data);
             })

@@ -1,6 +1,6 @@
 import React, { useState }  from "react";
 import {Link, useNavigate} from "react-router-dom";
-import Axios from "axios";
+import httpCommon from "../../http-common";
 
 export function BookForList({product}) {
     return (
@@ -89,7 +89,7 @@ export function BookEdit({product, genreListAll, authorListAll}) {
     }
 
     function deleteBook() {
-        Axios.delete(`http://localhost:8010/proxy/api/book/${product.isbn}`)
+        httpCommon.delete(`/api/book/${product.isbn}`)
             .then(_ => {
                 homePage()
             })
@@ -106,7 +106,7 @@ export function BookEdit({product, genreListAll, authorListAll}) {
         product.genres = genreList; //event.target.genres;
         product.authors = authorList; //event.target.authors;
         console.log(product);
-        Axios.post("http://localhost:8010/proxy/api/book", product)
+        httpCommon.post("/api/book", product)
             .then(_ =>  {
                 navigate("/")
             })

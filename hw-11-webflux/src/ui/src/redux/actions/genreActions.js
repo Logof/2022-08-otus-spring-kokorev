@@ -1,8 +1,8 @@
 import {GenreActionTypes} from "../constants/action-types";
-import Axios from 'axios';
+import httpCommon from "../../http-common";
 
 export const fetchGenres = () => async (dispatch) => {
-    Axios.get(`http://localhost:8010/proxy/api/genre/`)
+    httpCommon.get(`/api/genre/`)
         .then(response => {
             dispatch({type: GenreActionTypes.SELECTED_GENRES, payload: response.data});
         })

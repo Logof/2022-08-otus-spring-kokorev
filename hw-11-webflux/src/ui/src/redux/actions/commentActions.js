@@ -1,8 +1,8 @@
 import {CommentActionTypes} from "../constants/action-types";
-import Axios from 'axios';
+import httpCommon from "../../http-common";
 
 export const fetchComments = (productID) => async (dispatch) => {
-    Axios.get(`http://localhost:8010/proxy/api/comment/${productID}`)
+    httpCommon.get(`/api/comment/${productID}`)
         .then(response => {
             dispatch({type: CommentActionTypes.SELECTED_COMMENTS, payload: response.data});
         })

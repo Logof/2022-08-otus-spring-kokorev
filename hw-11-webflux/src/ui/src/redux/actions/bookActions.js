@@ -1,8 +1,8 @@
 import {ProductActionTypes} from "../constants/action-types";
-import Axios from 'axios';
+import httpCommon from "../../http-common";
 
 export const fetchBook = (productID) => async (dispatch) => {
-    Axios.get(`http://localhost:8010/proxy/api/book/${productID}`)
+    httpCommon.get(`/api/book/${productID}`)
         .then(response => {
             dispatch({type: ProductActionTypes.SELECTED_PRODUCT, payload: response.data});
         })

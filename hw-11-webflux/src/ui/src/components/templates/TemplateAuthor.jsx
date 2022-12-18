@@ -1,6 +1,6 @@
-import React, { useState }  from "react";
-import {Link, redirect, useNavigate} from "react-router-dom";
-import Axios from "axios";
+import React from "react";
+import {useNavigate} from "react-router-dom";
+import httpCommon from "../../http-common";
 
 export function AuthorAdd() {
        
@@ -15,7 +15,7 @@ export function AuthorAdd() {
         let newAuthor = Object.create(author);
         newAuthor.fullName = event.target.fullName.value;
 
-        Axios.post("http://localhost:8010/proxy/api/author", newAuthor)
+        httpCommon.post("/api/author", newAuthor)
             .then(_ =>  {
                 navigate("/")
             })

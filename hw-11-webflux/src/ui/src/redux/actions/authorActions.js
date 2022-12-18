@@ -1,8 +1,8 @@
 import {AuthorActionTypes} from "../constants/action-types";
-import Axios from 'axios';
+import httpCommon from "../../http-common";
 
 export const fetchAuthors = () => async (dispatch) => {
-    Axios.get(`http://localhost:8010/proxy/api/author/`)
+    httpCommon.get(`/api/author/`)
         .then(response => {
             dispatch({type: AuthorActionTypes.SELECTED_AUTHORS, payload: response.data});
         })
