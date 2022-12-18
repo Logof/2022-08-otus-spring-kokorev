@@ -2,7 +2,6 @@ package ru.otus.homework.hw08.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.homework.hw08.entity.Book;
 import ru.otus.homework.hw08.entity.Genre;
 import ru.otus.homework.hw08.exception.DataNotFountException;
 import ru.otus.homework.hw08.exception.DeleteDataException;
@@ -11,7 +10,6 @@ import ru.otus.homework.hw08.repository.GenreRepository;
 import ru.otus.homework.hw08.service.GenreService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -31,8 +29,7 @@ public class GenreServiceImpl implements GenreService {
         Genre genre = genreRepository.findByGenreNameLike(genreName)
                 .orElseThrow(() -> new DataNotFountException("Genre not found"));
 
-        Optional<Book> book = bookRepository.findOneByGenres(genre);
-        if (book.isPresent()) {
+        if (bookRepository.existsByGenres(genre)) {
             throw new DeleteDataException("Can't remove genre - there are links to books");
         }
         genreRepository.deleteById(genre.getId());

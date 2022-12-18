@@ -5,7 +5,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,11 +14,11 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class Author implements Serializable {
     @Id
-    private UUID id;
+    private String id;
 
     private String fullName;
 
     public Author(String fullName) {
-        this(UUID.randomUUID(), fullName);
+        this(null, fullName);
     }
 }

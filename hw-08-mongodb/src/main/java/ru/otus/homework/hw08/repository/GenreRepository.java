@@ -4,9 +4,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.homework.hw08.entity.Genre;
 
 import java.util.Optional;
-import java.util.UUID;
 
-public interface GenreRepository extends MongoRepository<Genre, UUID> {
+public interface GenreRepository extends MongoRepository<Genre, String> {
     Optional<Genre> findByGenreNameLike(String genreName);
 
 }

@@ -14,9 +14,13 @@ public interface BookRepository extends MongoRepository<Book, String>, BookMongo
 
     Optional<Book> findOneByGenres(Genre genre);
 
+    boolean existsByGenres(Genre genre);
+
     List<Book> findAllByAuthors(Author author);
 
     Optional<Book> findOneByAuthors(Author author);
+
+    boolean existsByAuthors(Author author);
 
     void updateDocumentTitle(String id, String title);
 
