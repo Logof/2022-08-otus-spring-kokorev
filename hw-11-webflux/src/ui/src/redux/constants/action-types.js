@@ -12,6 +12,7 @@ export const CommentActionTypes = {
 }
 
 export const ProductActionTypes = {
+  CREATE_PRODUCT: "CREATE_PRODUCT",
   SELECTED_PRODUCT: "SELECT_PRODUCT",
   REMOVE_SELECTED_PRODUCT: "REMOVE_SELECTED_PRODUCT"
 }

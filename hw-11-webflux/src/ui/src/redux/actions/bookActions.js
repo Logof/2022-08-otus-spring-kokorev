@@ -23,3 +23,9 @@ export const removeSelectedBook = () => {
         type: ProductActionTypes.REMOVE_SELECTED_PRODUCT,
     };
 };
+
+export const createdBook = () => {
+    return {
+        type: ProductActionTypes.CREATE_PRODUCT
+    };
+}

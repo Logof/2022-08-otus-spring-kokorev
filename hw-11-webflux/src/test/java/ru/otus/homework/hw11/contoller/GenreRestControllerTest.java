@@ -1,36 +1,37 @@
 package ru.otus.homework.hw11.contoller;
 
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
 import ru.otus.homework.hw11.entity.dto.GenreDto;
-import ru.otus.homework.hw11.service.GenreService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@WebMvcTest(GenreRestController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWebTestClient
 public class GenreRestControllerTest {
-    @MockBean
-    private GenreService genreService;
-
     @Autowired
-    private MockMvc mvc;
+    private WebTestClient webClient;
 
     @Test
-    public void getAllAuthorsTest() throws Exception {
-        List<GenreDto> genreDtos = new ArrayList<>();
-        given(genreService.getAll()).willReturn(genreDtos);
+    public void getAllGenresTest() throws Exception {
+        webClient.get()
+                .uri("/api/genre")
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
 
-        mvc.perform(get("/api/genre").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+    @Test
+    void saveGenreTest() {
+        webClient.post()
+                .uri("/api/genre")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(new GenreDto("Genre")))
+                .exchange()
+                .expectStatus()
+                .isOk();
     }
 }

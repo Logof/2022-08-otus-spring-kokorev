@@ -2,35 +2,36 @@ package ru.otus.homework.hw11.contoller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
 import ru.otus.homework.hw11.entity.dto.AuthorDto;
-import ru.otus.homework.hw11.service.AuthorService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@WebMvcTest(AuthorRestController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWebTestClient
 public class AuthorRestControllerTest {
-
-    @MockBean
-    private AuthorService authorService;
-
     @Autowired
-    private MockMvc mvc;
+    private WebTestClient webClient;
 
     @Test
     public void getAllAuthorsTest() throws Exception {
-        List<AuthorDto> authorDtos = new ArrayList<>();
-        given(authorService.getAll()).willReturn(authorDtos);
+        webClient.get()
+                .uri("/api/author")
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
 
-        mvc.perform(get("/api/author").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+    @Test
+    void saveAuthorTest() {
+        webClient.post()
+                .uri("/api/author")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(new AuthorDto("Author")))
+                .exchange()
+                .expectStatus()
+                .isOk();
     }
 }

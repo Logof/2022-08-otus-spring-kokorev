@@ -1,10 +1,9 @@
 package ru.otus.homework.hw11.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import ru.otus.homework.hw11.entity.Genre;
 
-import java.util.Optional;
+import java.util.UUID;
 
-public interface GenreRepository extends MongoRepository<Genre, String> {
-    Optional<Genre> findByGenreNameLike(String genreName);
+public interface GenreRepository extends ReactiveMongoRepository<Genre, UUID> {
 }

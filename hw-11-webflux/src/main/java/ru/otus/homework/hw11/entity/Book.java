@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collation = "books")
+@Document(collection = "books")
 public class Book {
     @Id
     private String isbn;

@@ -1,11 +1,16 @@
 package ru.otus.homework.hw11.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import ru.otus.homework.hw11.entity.Book;
 import ru.otus.homework.hw11.entity.Comment;
 
-import java.util.List;
+import java.util.UUID;
 
-public interface CommentRepository extends MongoRepository<Comment, String> {
+public interface CommentRepository extends ReactiveMongoRepository<Comment, UUID> {
 
-    List<Comment> findAllByBook_Isbn(String isbn);
+    Flux<Comment> findAllByBook_Isbn(String isbn);
+
+    Mono<Void> deleteByBook(Book book);
 }

@@ -4,17 +4,18 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.UUID;
 
 
 @Getter
 @Setter
-@Document(collation = "genres")
+@Document(collection = "genres")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Genre {
     @Id
-    private String id;
+    private UUID id;
 
     private String genreName;
 

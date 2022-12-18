@@ -7,3 +7,7 @@ spring:
 logging:
   level:
     ROOT: INFO
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.homework.hw11.mongock.changelog
