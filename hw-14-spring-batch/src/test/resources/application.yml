@@ -2,8 +2,11 @@ spring:
   batch:
     job:
       enabled: false
+  shell:
+    interactive:
+      enabled: false
   datasource:
-    url: jdbc:h2:file:~/migration
+    url: jdbc:h2:mem:~/migration
   sql:
     init:
       mode: always
@@ -20,10 +23,10 @@ spring:
         batch_fetch_style: PADDED
   data:
     mongodb:
-      uri: mongodb://localhost
-      port: 27017
-      database: migr
+      port: 0
+      database: test
 
-logging:
-  level:
-    ROOT: INFO
+  mongodb:
+    embedded:
+      version: 4.0.21
+  debug: true
