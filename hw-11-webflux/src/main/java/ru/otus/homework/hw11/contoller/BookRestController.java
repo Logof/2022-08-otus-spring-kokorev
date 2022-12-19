@@ -44,12 +44,17 @@ public class BookRestController {
     }
 
     @DeleteMapping(path = "/api/book/{isbn}")
-    public boolean deleteBook(@PathVariable("isbn") String isbn) {
+    public Mono<Void> deleteBook(@PathVariable("isbn") String isbn) {
         if (isbn != null) {
-            commentRepository.findAllByBook_Isbn(isbn);
-            bookRepository.deleteById(isbn).subscribe();
-            return true;
+            return bookRepository.findById(isbn).flatMap(
+                    book -> {
+                        commentRepository.findAllByBook_Isbn(book.getIsbn()).map(
+                                comment -> commentRepository.delete(comment)
+                        );
+                        return bookRepository.deleteById(book.getIsbn());
+                    }
+            );
         }
-        return false;
+        return Mono.empty();
     }
 }
