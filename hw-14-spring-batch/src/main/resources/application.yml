@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:~/migration
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+    properties:
+      hibernate:
+        default_batch_fetch_size: 10
+        batch_fetch_style: PADDED
+logging:
+  level:
+    ROOT: INFO
