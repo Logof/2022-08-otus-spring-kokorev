@@ -1,0 +1,32 @@
+spring:
+  batch:
+    job:
+      enabled: false
+  shell:
+    interactive:
+      enabled: false
+  datasource:
+    url: jdbc:h2:mem:~/migration
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 10
+        batch_fetch_style: PADDED
+  data:
+    mongodb:
+      port: 0
+      database: test
+
+  mongodb:
+    embedded:
+      version: 4.0.21
+  debug: true

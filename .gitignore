@@ -31,3 +31,6 @@
 /hw-12-auth/target
 /hw-12-auth/*.iml
 /hw-12-auth/.idea
+/hw-14-spring-batch/target
+/hw-14-spring-batch/*.iml
+/hw-14-spring-batch/.idea
