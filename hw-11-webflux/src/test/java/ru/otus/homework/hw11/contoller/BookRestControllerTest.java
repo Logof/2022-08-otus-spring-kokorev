@@ -80,16 +80,16 @@ public class BookRestControllerTest {
 
     @Test
     void deleteBookTest() {
-        BookDto bookDto = new BookDto("1234", "Заголовок");
-        when(bookRepository.deleteById(bookDto.getIsbn())).thenReturn(Mono.empty());
-
+        Book book = new Book("1234", "Заголовок");
+        when(bookRepository.findById(book.getIsbn())).thenReturn(Mono.just(book));
+        when(bookRepository.deleteById(book.getIsbn())).thenReturn(Mono.empty());
+        when(commentRepository.deleteByBook(any())).thenReturn(Mono.empty());
         webClient.delete()
-                .uri("/api/book/" + bookDto.getIsbn())
+                .uri("/api/book/" + book.getIsbn())
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        verify(bookRepository, times(1)).deleteById(eq(bookDto.getIsbn()));
-        //verify(commentRepository, times(1)).deleteByBook(eq(new Book("1234", "Заголовок")));
+        verify(bookRepository, times(1)).deleteById(eq(book.getIsbn()));
     }
 }
