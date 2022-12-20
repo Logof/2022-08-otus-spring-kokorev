@@ -1,0 +1,21 @@
+spring:
+  shell:
+    interactive:
+      enabled: false
+  data:
+    mongodb:
+      port: 0
+      database: test
+  mongodb:
+    embedded:
+      version: 4.4.13
+
+logging:
+  level:
+    ROOT: ERROR
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
