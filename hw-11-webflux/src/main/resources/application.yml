@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      database: book_flex_db
+      host: localhost
+      port: 27017
+logging:
+  level:
+    ROOT: INFO
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.homework.hw11.mongock.changelog
