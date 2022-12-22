@@ -75,7 +75,7 @@ public class ImportJobTest {
         Job job = jobLauncherTestUtils.getJob();
         assertThat(job).isNotNull()
                 .extracting(Job::getName)
-                .isEqualTo(JobConfig.getJobName());
+                .isEqualTo(JobConfig.IMPORT_H2_TO_MONGO_JOB_NAME);
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
         assertThat(jobExecution.getExitStatus().getExitCode()).isEqualTo("COMPLETED");

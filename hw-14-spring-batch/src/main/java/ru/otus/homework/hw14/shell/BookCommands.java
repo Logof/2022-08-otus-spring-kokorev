@@ -17,7 +17,7 @@ public class BookCommands {
     @SneakyThrows
     @ShellMethod(value = "start migration", key = "start")
     public String startMigration() {
-        Long executionId = jobOperator.startNextInstance(JobConfig.getJobName());
+        Long executionId = jobOperator.startNextInstance(JobConfig.IMPORT_H2_TO_MONGO_JOB_NAME);
         return jobOperator.getSummary(executionId);
     }
 }

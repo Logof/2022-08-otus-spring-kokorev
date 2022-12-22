@@ -1,7 +1,6 @@
 package ru.otus.homework.hw14.mapper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.hw14.entity.h2.Author;
 import ru.otus.homework.hw14.entity.h2.Book;
@@ -15,24 +14,28 @@ import ru.otus.homework.hw14.repository.MongoAuthorRepository;
 import ru.otus.homework.hw14.repository.MongoGenreRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
 public class EntityToDocumentConverter {
 
-    @Autowired
-    MongoGenreRepository genreRepository;
+    private final MongoGenreRepository genreRepository;
 
-    @Autowired
-    MongoAuthorRepository authorRepository;
+    private final MongoAuthorRepository authorRepository;
 
-    private final Map<Author, AuthorDocument> authorMap = new HashMap<>();
+    private final Map<Author, AuthorDocument> authorMap = new ConcurrentHashMap<>();
 
-    private final Map<Genre, GenreDocument> genreMap = new HashMap<>();
+    private final Map<Genre, GenreDocument> genreMap = new ConcurrentHashMap<>();
 
-    private final Map<String, BookDocument> bookMap = new HashMap<>();
+    private final Map<String, BookDocument> bookMap = new ConcurrentHashMap<>();
+
+    public EntityToDocumentConverter(MongoGenreRepository genreRepository,
+                                     MongoAuthorRepository authorRepository) {
+        this.genreRepository = genreRepository;
+        this.authorRepository = authorRepository;
+    }
 
     public BookDocument bookTransformation (Book source) {
         BookDocument target = new BookDocument();

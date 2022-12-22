@@ -32,12 +32,7 @@ import java.util.HashMap;
 public class JobConfig {
     private static final int CHUNK_SIZE = 5;
 
-    private static final String IMPORT_H2_TO_MONGO_JOB_NAME = "importH2ToMongoJob";
-
-
-    public static String getJobName() {
-        return IMPORT_H2_TO_MONGO_JOB_NAME;
-    }
+    public static final String IMPORT_H2_TO_MONGO_JOB_NAME = "importH2ToMongoJob";
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -64,7 +59,7 @@ public class JobConfig {
     @StepScope
     @Bean
     public RepositoryItemWriter<BookDocument> bookWriter(MongoBookRepository bookRepository) {
-        RepositoryItemWriter writer = new RepositoryItemWriter();
+        RepositoryItemWriter writer = new RepositoryItemWriter<>();
         writer.setRepository(bookRepository);
         writer.setMethodName("save");
         return writer;
@@ -123,7 +118,7 @@ public class JobConfig {
     @Bean
     public Job importH2ToMongoJob(Step step1MigateBooks, Step step2MigateComments) {
 
-        return jobBuilderFactory.get(getJobName())
+        return jobBuilderFactory.get(IMPORT_H2_TO_MONGO_JOB_NAME)
                 .incrementer(new RunIdIncrementer())
                 .start(step1MigateBooks)
                 .next(step2MigateComments)
