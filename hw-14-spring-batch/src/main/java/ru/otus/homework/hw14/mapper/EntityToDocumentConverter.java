@@ -1,6 +1,7 @@
 package ru.otus.homework.hw14.mapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.hw14.entity.h2.Author;
 import ru.otus.homework.hw14.entity.h2.Book;
@@ -37,6 +38,14 @@ public class EntityToDocumentConverter {
         this.authorRepository = authorRepository;
     }
 
+    public AuthorDocument authorTransformation (Author source) {
+        return new AuthorDocument(new ObjectId().toString(), source.getFullName());
+    }
+
+    public GenreDocument genreTransformation (Genre source) {
+        return new GenreDocument(new ObjectId().toString(), source.getGenreName());
+    }
+
     public BookDocument bookTransformation (Book source) {
         BookDocument target = new BookDocument();
         target.setId(source.getIsbn());
@@ -47,10 +56,6 @@ public class EntityToDocumentConverter {
         if (source.getGenres() != null && source.getGenres().size() != 0) {
             for (Genre genre : source.getGenres()){
                 GenreDocument genreDocument = genreMap.get(genre);
-                if (genreDocument == null) {
-                    genreDocument = genreRepository.save(new GenreDocument(genre.getGenreName()));
-                    genreMap.put(genre, genreDocument);
-                }
                 target.getGenres().add(genreDocument);
             }
         }
@@ -58,10 +63,6 @@ public class EntityToDocumentConverter {
         if (source.getAuthors() != null && source.getAuthors().size() != 0) {
             for (Author author : source.getAuthors()) {
                 AuthorDocument authorDocument = authorMap.get(author);
-                if (authorDocument == null) {
-                    authorDocument = authorRepository.save(new AuthorDocument(author.getFullName()));
-                    authorMap.put(author, authorDocument);
-                }
                 target.getAuthors().add(authorDocument);
             }
         }
