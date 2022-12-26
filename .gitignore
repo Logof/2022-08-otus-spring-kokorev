@@ -38,4 +38,6 @@
 /hw-12-auth/target
 /hw-12-auth/*.iml
 /hw-12-auth/.idea
-
+/hw-13-auth2/target
+/hw-13-auth2/*.iml
+/hw-13-auth2/.idea

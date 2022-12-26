@@ -30,5 +30,6 @@
         <module>hw-10-ajax</module>
         <module>hw-11-webflux</module>
         <module>hw-12-auth</module>
+        <module>hw-13-auth2</module>
     </modules>
 </project>
