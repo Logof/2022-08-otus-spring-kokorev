@@ -33,9 +33,6 @@ public class Book {
     private List<Author> authors = new ArrayList<>();
 
     public Book(Long id, String title) {
-        this.id = id;
-        this.title = title;
-        this.authors = new ArrayList<>();
-        this.genres = new ArrayList<>();
+        this(id, title, new ArrayList<>(), new ArrayList<>());
     }
 }

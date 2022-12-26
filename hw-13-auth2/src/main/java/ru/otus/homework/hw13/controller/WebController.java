@@ -38,13 +38,13 @@ public class WebController {
 
     @GetMapping(value = "/")
     public String indexPageBook(Model model) {
-        model.addAttribute("bookList",  bookMapper.toDtos(bookService.getAll()));
+        model.addAttribute("bookList",  bookService.getAll());
         return "index";
     }
 
     @GetMapping(value = "/book")
     public String viewPageBook(@PathParam("isbn") long isbn, Model model) {
-        model.addAttribute("book", bookMapper.toDto(bookService.getByIsbn(isbn)));
+        model.addAttribute("book", bookService.getByIsbn(isbn));
         //model.addAttribute("commentList", commentService.getAllByIsbn(isbn));
         return "view";
     }
@@ -61,7 +61,7 @@ public class WebController {
     @PreAuthorize("hasRole('EDITOR')")
     @GetMapping(value = "/edit")
     public String editPageBook(@PathParam("isbn") long isbn, Model model) {
-        model.addAttribute("book", bookMapper.toDto(bookService.getByIsbn(isbn)));
+        model.addAttribute("book", bookService.getByIsbn(isbn));
         model.addAttribute("authorList", authorService.getAll());
         model.addAttribute("genreList", genreService.getAll());
         return "edit";

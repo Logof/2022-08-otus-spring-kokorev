@@ -3,8 +3,10 @@ package ru.otus.homework.hw13.service.impl;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import ru.otus.homework.hw13.dto.BookDto;
 import ru.otus.homework.hw13.entity.Book;
 import ru.otus.homework.hw13.exception.DataNotFountException;
+import ru.otus.homework.hw13.mapper.BookMapper;
 import ru.otus.homework.hw13.repository.BookRepository;
 import ru.otus.homework.hw13.service.BookService;
 import ru.otus.homework.hw13.service.PermissionService;
@@ -15,11 +17,15 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
-    private final PermissionService permissionService;
+    private final BookMapper bookMapper;
+
+    private final PermissionService<Book> permissionService;
 
     public BookServiceImpl(BookRepository bookRepository,
-                           PermissionService permissionService) {
+                           BookMapper bookMapper,
+                           PermissionService<Book> permissionService) {
         this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
         this.permissionService = permissionService;
     }
 
@@ -30,18 +36,18 @@ public class BookServiceImpl implements BookService {
         Book savedBook = bookRepository.save(book);
         permissionService.addPermissionForUser(book, BasePermission.WRITE, authentication.getName());
         permissionService.addPermissionForUser(book, BasePermission.READ, authentication.getName());
-
         return savedBook;
     }
 
     @Override
-    public List<Book> getAll() {
-        return bookRepository.findAll();
+    public List<BookDto> getAll() {
+        return bookMapper.toDtos(bookRepository.findAll());
     }
 
     @Override
-    public Book getByIsbn(long isbn) {
-        return bookRepository.findById(isbn).orElseThrow(() -> new DataNotFountException("Book not found"));
+    public BookDto getByIsbn(long isbn) {
+        return bookMapper.toDto(bookRepository.findById(isbn)
+                .orElseThrow(() -> new DataNotFountException("Book not found")));
     }
 
     @Override
