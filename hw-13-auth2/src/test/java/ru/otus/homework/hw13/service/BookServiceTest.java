@@ -49,6 +49,9 @@ public class BookServiceTest {
     @MockBean
     private Authentication authentication;
 
+    @MockBean
+    private PermissionService<Book> permissionService;
+
     @Autowired
     private BookService bookService;
 
@@ -61,10 +64,10 @@ public class BookServiceTest {
         BookDto bookActualDto = new BookDto(9785040941193L, "100 лучших сказок всех времен и народов",
                 new ArrayList<>(), new ArrayList<>());
 
-        given(mapperBook.toEntity(any())).willReturn(new Book());
-        given(bookRepository.save(any(Book.class))).willReturn(new Book());
+        given(mapperBook.toEntity(any())).willReturn(bookActual);
+        given(bookRepository.save(any(Book.class))).willReturn(bookActual);
         given(mapperBook.toDto(any())).willReturn(bookActualDto);
-        given(authentication.getName()).willReturn("USER");
+        given(authentication.getName()).willReturn("admin");
 
         Book bookExpected = bookService.save(bookActual, authentication);
         assertEquals(bookExpected, bookActual);

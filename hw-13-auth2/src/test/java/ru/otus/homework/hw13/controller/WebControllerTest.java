@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.homework.hw13.dto.AuthorDto;
 import ru.otus.homework.hw13.dto.BookDto;
 import ru.otus.homework.hw13.dto.GenreDto;
+import ru.otus.homework.hw13.mapper.BookMapper;
 import ru.otus.homework.hw13.service.AuthorService;
 import ru.otus.homework.hw13.service.BookService;
 import ru.otus.homework.hw13.service.GenreService;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,6 +38,8 @@ public class WebControllerTest {
     @MockBean
     private AuthorService authorService;
 
+    @MockBean
+    private BookMapper bookMapper;
     @Autowired
     private MockMvc mvc;
 
@@ -51,7 +54,7 @@ public class WebControllerTest {
 
     @Test
     public void viewPageBookTest() throws Exception {
-        given(bookService.getByIsbn(any())).willReturn(new BookDto());
+        given(bookService.getByIsbn(anyLong())).willReturn(new BookDto());
 
         mvc.perform(get("/book?isbn=123123").accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk());
@@ -68,7 +71,7 @@ public class WebControllerTest {
 
     @Test
     public void editPageBookTest() throws Exception {
-        given(bookService.getByIsbn(any())).willReturn(new BookDto(123123L, "Title",
+        given(bookService.getByIsbn(anyLong())).willReturn(new BookDto(123123L, "Title",
                 new ArrayList<>(), new ArrayList<>()));
         given(authorService.getAll()).willReturn(Collections.singletonList(new AuthorDto()));
         given(genreService.getAll()).willReturn(Collections.singletonList(new GenreDto()));
@@ -91,7 +94,7 @@ public class WebControllerTest {
 
     @Test
     public void deleteBookTest() throws Exception {
-        mvc.perform(post("/delete").accept(MediaType.TEXT_PLAIN))
+        mvc.perform(post("/delete?isbn=123123").accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().is3xxRedirection());
     }
 }
