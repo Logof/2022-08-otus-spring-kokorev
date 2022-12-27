@@ -1,6 +1,5 @@
 package ru.otus.homework.hw13.service.impl;
 
-import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.hw13.dto.BookDto;
@@ -8,6 +7,7 @@ import ru.otus.homework.hw13.entity.Book;
 import ru.otus.homework.hw13.exception.DataNotFountException;
 import ru.otus.homework.hw13.mapper.BookMapper;
 import ru.otus.homework.hw13.repository.BookRepository;
+import ru.otus.homework.hw13.security.CustomRolesPermission;
 import ru.otus.homework.hw13.service.BookService;
 import ru.otus.homework.hw13.service.PermissionService;
 
@@ -32,10 +32,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book save(Book book, Authentication authentication) {
-
         Book savedBook = bookRepository.save(book);
-        permissionService.addPermissionForUser(book, BasePermission.WRITE, authentication.getName());
-        permissionService.addPermissionForUser(book, BasePermission.READ, authentication.getName());
+        permissionService.addPermissionForRole(book, CustomRolesPermission.ROLE_READER, authentication.getName());
+        permissionService.addPermissionForUser(book, CustomRolesPermission.ROLE_EDITOR, authentication.getName());
         return savedBook;
     }
 

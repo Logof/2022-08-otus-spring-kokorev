@@ -42,14 +42,14 @@ public class WebController {
         return "index";
     }
 
+    @PreAuthorize("hasAnyRole('READER', 'EDITOR')")
     @GetMapping(value = "/book")
     public String viewPageBook(@PathParam("isbn") long isbn, Model model) {
         model.addAttribute("book", bookService.getByIsbn(isbn));
-        //model.addAttribute("commentList", commentService.getAllByIsbn(isbn));
         return "view";
     }
 
-    @PreAuthorize("hasRole('WRITER')")
+    @PreAuthorize("hasRole('EDITOR')")
     @GetMapping(value = "/new")
     public String newPageBook(Model model) {
         model.addAttribute("authorList", authorService.getAll());
@@ -72,19 +72,21 @@ public class WebController {
         return "redirect:/";
     }
 
+    @PreAuthorize("hasRole('EDITOR')")
     @GetMapping(value = "/delete")
     public String deletePageBook(@PathParam("isbn") long isbn, Model model) {
         model.addAttribute("isbn", isbn);
         return "delete";
     }
 
+    @PreAuthorize("hasRole('EDITOR')")
     @PostMapping(value = "/book")
     public String saveBook(BookDto book, Authentication authentication) {
         bookService.save(bookMapper.toEntity(book), authentication);
         return "redirect:/";
     }
 
-    @PreAuthorize("hasPermission(#book, 'DELETE')")
+    @PreAuthorize("hasRole('EDITOR')")
     @PostMapping(value = "/delete")
     public String deleteBook(@PathParam("isbn") long isbn, Model model) {
         bookService.deleteById(isbn);

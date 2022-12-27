@@ -1,7 +1,6 @@
 package ru.otus.homework.hw13.security;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,23 +8,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import ru.otus.homework.hw13.dto.BookDto;
+import ru.otus.homework.hw13.service.AuthorService;
 import ru.otus.homework.hw13.service.BookService;
+import ru.otus.homework.hw13.service.GenreService;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -33,98 +26,84 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Slf4j
 public class UserAccountDataControllerTest {
-
     @Autowired
-    private static MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext context;
+    private MockMvc mockMvc;
 
     @MockBean
     private BookService bookService;
 
-    @BeforeEach
-    public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
-    }
+    @MockBean
+    private AuthorService authorService;
+
+    @MockBean
+    private GenreService genreService;
 
     @Test
     @WithAnonymousUser
     public void unauthorizedUserAccessTest() throws Exception
     {
-        when(bookService.getByIsbn(any())).thenReturn(new BookDto());
+        when(bookService.getAll()).thenReturn(new ArrayList<>());
+        when(bookService.getByIsbn(anyLong())).thenReturn(new BookDto());
 
-        List<String> urlTemplateGetList = Arrays.asList("/book?isbn=123", "/edit?isbn=123", "/new", "/delete");
-        List<String> urlTemplatePostList = Arrays.asList("/book", "/delete");
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        mockMvc.perform(get("/book?isbn=9785040941193"))
+                .andExpect(redirectedUrl("http://localhost/login")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(get("/new"))
+                .andExpect(redirectedUrl("http://localhost/login")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(get("/denied"))
+                .andExpect(redirectedUrl("/")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(get("/delete?isbn=9785040941193"))
+                .andExpect(redirectedUrl("http://localhost/login")).andExpect(status().is3xxRedirection());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.ALL))
-                .andExpect(status().isOk());
+        mockMvc.perform(post("/book").accept(MediaType.ALL))
+                .andExpect(redirectedUrl("http://localhost/login")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(post("/delete?isbn=9785040941193").accept(MediaType.ALL))
+                .andExpect(redirectedUrl("http://localhost/login")).andExpect(status().is3xxRedirection());
+    }
 
-        for (String urlTemplate : urlTemplateGetList) {
-            mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate).accept(MediaType.ALL))
-                    .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("http://localhost/login"));
-        }
 
-        for (String urlTemplate : urlTemplatePostList) {
-            mockMvc.perform(MockMvcRequestBuilders.post(urlTemplate).accept(MediaType.ALL))
-                    .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("http://localhost/login"));
-        }
+    @Test
+    @WithMockUser(authorities = {"ROLE_READER"})
+    public void readerAccessTest() throws Exception
+    {
+        when(bookService.getAll()).thenReturn(new ArrayList<>());
+        when(bookService.getByIsbn(anyLong())).thenReturn(new BookDto());
+
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        mockMvc.perform(get("/book?isbn=9785040941193")).andExpect(status().isOk());
+        mockMvc.perform(get("/new"))
+                .andExpect(redirectedUrl("/denied")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(get("/denied"))
+                .andExpect(redirectedUrl("/")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(get("/delete?isbn=9785040941193"))
+                .andExpect(redirectedUrl("/denied")).andExpect(status().is3xxRedirection());
+
+        mockMvc.perform(post("/book").accept(MediaType.ALL))
+                .andExpect(redirectedUrl("/denied")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(post("/delete?isbn=9785040941193").accept(MediaType.ALL))
+                .andExpect(redirectedUrl("/denied")).andExpect(status().is3xxRedirection());
     }
 
     @Test
-    public void authorizedRoleAccessTest() throws Exception
+    @WithMockUser(authorities = {"ROLE_EDITOR"})
+    public void editorAccessTest() throws Exception
     {
-        when(bookService.getByIsbn(any())).thenReturn(new BookDto());
+        when(bookService.getAll()).thenReturn(new ArrayList<>());
+        when(bookService.getByIsbn(anyLong())).thenReturn(new BookDto());
+        when(authorService.getAll()).thenReturn(new ArrayList<>());
+        when(genreService.getAll()).thenReturn(new ArrayList<>());
 
-        Map<String, ResultMatcher> adminGetResults = new HashMap<>();
-        adminGetResults.put("/", status().isOk());
-        adminGetResults.put("/book?isbn=123", status().isOk());
-        adminGetResults.put("/edit?isbn=123", status().isOk());
-        adminGetResults.put("/new", status().isOk());
-        adminGetResults.put("/delete", status().isOk());
-
-        Map<String, ResultMatcher> userGetResults = new HashMap<>();
-        userGetResults.put("/", status().isOk());
-        userGetResults.put("/book?isbn=123", status().isOk());
-        userGetResults.put("/edit?isbn=123", status().is4xxClientError());
-        userGetResults.put("/new", status().is4xxClientError());
-        userGetResults.put("/delete", status().is4xxClientError());
-
-
-        List<String> roleList = Arrays.asList("USER", "ADMIN");
-
-        for (String role : roleList) {
-            for (Map.Entry<String, ResultMatcher> entry :
-                    (role.equals("USER") ? userGetResults : adminGetResults).entrySet()
-            ) {
-                mockMvc.perform(get(entry.getKey())
-                                .with(user("user")
-                                        .password("123456")
-                                        .roles(role)))
-                        .andExpect(entry.getValue());
-            }
-        }
-
-        Map<String, ResultMatcher> adminPostResults = new HashMap<>();
-        adminPostResults.put("/book", status().is3xxRedirection());
-        adminPostResults.put("/delete", status().is3xxRedirection());
-
-        Map<String, ResultMatcher> userPostResults = new HashMap<>();
-        userPostResults.put("/book", status().is4xxClientError());
-        userPostResults.put("/delete", status().is4xxClientError());
-
-        for (String role : roleList) {
-            for (Map.Entry<String, ResultMatcher> entry :
-                    (role.equals("USER") ? userPostResults : adminPostResults).entrySet()
-            ) {
-                mockMvc.perform(post(entry.getKey())
-                                .with(user("user")
-                                        .password("123456")
-                                        .roles(role)))
-                        .andExpect(entry.getValue());
-            }
-        }
+        mockMvc.perform(get("/")).andExpect(status().isOk());
+        mockMvc.perform(get("/book?isbn=9785040941193")).andExpect(status().isOk());
+        mockMvc.perform(get("/new")).andExpect(status().isOk());
+        mockMvc.perform(get("/denied"))
+                .andExpect(redirectedUrl("/")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(get("/delete?isbn=9785040941193"))
+                .andExpect(status().isOk());
+        mockMvc.perform(post("/book").accept(MediaType.ALL))
+                .andExpect(redirectedUrl("/")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(post("/delete?isbn=9785040941193").accept(MediaType.ALL))
+                .andExpect(redirectedUrl("/")).andExpect(status().is3xxRedirection());
     }
 }

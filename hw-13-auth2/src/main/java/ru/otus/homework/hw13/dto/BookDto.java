@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookDto {
-    private long isbn;
+    private Long isbn;
     private String title;
     private List<AuthorDto> authors;
     private List<GenreDto> genres;

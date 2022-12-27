@@ -2,6 +2,7 @@ package ru.otus.homework.hw13.service.impl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.*;
@@ -28,6 +29,12 @@ public class PermissionServiceAcl implements PermissionService<Book> {
     @Override
     public void addPermissionForUser(Book targetObj, Permission permission, String username) {
         final Sid sid = new PrincipalSid(username);
+        addPermissionForSid(targetObj, permission, sid);
+    }
+
+    @Override
+    public void addPermissionForRole(Book targetObj, Permission permission, String authority) {
+        final Sid sid = new GrantedAuthoritySid(authority);
         addPermissionForSid(targetObj, permission, sid);
     }
 
