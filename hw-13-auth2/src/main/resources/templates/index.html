@@ -28,15 +28,15 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                             <a href="#" th:href="@{/book(isbn=${book.isbn})}" class="btn btn-sm btn-outline-secondary"
-                               role="button" sec:authorize="hasAnyRole('USER', 'ADMIN')">
+                               role="button" sec:authorize="hasAnyRole('READER', 'EDITOR')">
                                 Комментарии
                             </a>
                             <a href="#" th:href="@{/edit(isbn=${book.isbn})}" class="btn btn-sm btn-outline-secondary"
-                               role="button" sec:authorize="hasRole('ADMIN')">
+                               role="button" sec:authorize="hasRole('EDITOR')">
                                 Редактировать
                             </a>
                             <a href="#" th:href="@{/delete(isbn=${book.isbn})}" class="btn btn-sm btn-outline-secondary"
-                               role="button" sec:authorize="hasRole('ADMIN')">
+                               role="button" sec:authorize="hasRole('EDITOR')">
                                 Удалить
                             </a>
                         </div>

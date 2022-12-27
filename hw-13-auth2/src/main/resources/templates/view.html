@@ -30,11 +30,11 @@
                                 Назад
                             </a>
                             <a href="#" th:href="@{/edit(isbn=${book.isbn})}" class="btn btn-sm btn-outline-secondary"
-                               role="button" sec:authorize="hasRole('ADMIN')">
+                               role="button" sec:authorize="hasRole('EDITOR')">
                                 Редактировать
                             </a>
                             <a href="#" th:href="@{/delete(isbn=${book.isbn})}" class="btn btn-sm btn-outline-secondary"
-                               role="button" sec:authorize="hasRole('ADMIN')">
+                               role="button" sec:authorize="hasRole('EDITOR')">
                                 Удалить
                             </a>
                         </div>
