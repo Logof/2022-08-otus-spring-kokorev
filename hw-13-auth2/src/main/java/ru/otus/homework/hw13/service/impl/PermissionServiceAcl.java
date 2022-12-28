@@ -1,7 +1,7 @@
 package ru.otus.homework.hw13.service.impl;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NonNull;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
@@ -16,14 +16,17 @@ import ru.otus.homework.hw13.entity.Book;
 import ru.otus.homework.hw13.service.PermissionService;
 
 @Service
-@Transactional
 public class PermissionServiceAcl implements PermissionService<Book> {
 
-    @Autowired
-    private MutableAclService aclService;
+    private final MutableAclService aclService;
 
-    @Autowired
-    private PlatformTransactionManager transactionManager;
+    private final PlatformTransactionManager transactionManager;
+
+    public PermissionServiceAcl(MutableAclService aclService,
+                                PlatformTransactionManager transactionManager) {
+        this.aclService = aclService;
+        this.transactionManager = transactionManager;
+    }
 
 
     @Override
@@ -38,15 +41,16 @@ public class PermissionServiceAcl implements PermissionService<Book> {
         addPermissionForSid(targetObj, permission, sid);
     }
 
+    @Transactional
     private void addPermissionForSid(Book targetObj, Permission permission, Sid sid) {
         final TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
+            protected void doInTransactionWithoutResult(@NonNull TransactionStatus status) {
                 final ObjectIdentity objectIdentity = new ObjectIdentityImpl(targetObj.getClass(), targetObj.getId());
 
-                MutableAcl acl = null;
+                MutableAcl acl;
                 try {
                     acl = (MutableAcl) aclService.readAclById(objectIdentity);
                 } catch (final NotFoundException nfe) {
