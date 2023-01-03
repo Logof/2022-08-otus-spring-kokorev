@@ -1,7 +1,6 @@
 package ru.otus.homework.hw13.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,14 +41,12 @@ public class WebController {
         return "index";
     }
 
-    @PreAuthorize("hasAnyRole('READER', 'EDITOR')")
     @GetMapping(value = "/book")
     public String viewPageBook(@PathParam("isbn") long isbn, Model model) {
         model.addAttribute("book", bookService.getByIsbn(isbn));
         return "view";
     }
 
-    @PreAuthorize("hasRole('EDITOR')")
     @GetMapping(value = "/new")
     public String newPageBook(Model model) {
         model.addAttribute("authorList", authorService.getAll());
@@ -57,8 +54,6 @@ public class WebController {
         return "new";
     }
 
-
-    @PreAuthorize("hasRole('EDITOR')")
     @GetMapping(value = "/edit")
     public String editPageBook(@PathParam("isbn") long isbn, Model model) {
         model.addAttribute("book", bookService.getByIsbn(isbn));
@@ -72,21 +67,18 @@ public class WebController {
         return "redirect:/";
     }
 
-    @PreAuthorize("hasRole('EDITOR')")
     @GetMapping(value = "/delete")
     public String deletePageBook(@PathParam("isbn") long isbn, Model model) {
         model.addAttribute("isbn", isbn);
         return "delete";
     }
 
-    @PreAuthorize("hasRole('EDITOR')")
     @PostMapping(value = "/book")
     public String saveBook(BookDto book, Authentication authentication) {
         bookService.save(bookMapper.toEntity(book), authentication);
         return "redirect:/";
     }
 
-    @PreAuthorize("hasRole('EDITOR')")
     @PostMapping(value = "/delete")
     public String deleteBook(@PathParam("isbn") long isbn, Model model) {
         bookService.deleteById(isbn);

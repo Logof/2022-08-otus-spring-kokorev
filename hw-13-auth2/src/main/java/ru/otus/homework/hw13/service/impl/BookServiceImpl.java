@@ -1,5 +1,6 @@
 package ru.otus.homework.hw13.service.impl;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.hw13.dto.BookDto;
@@ -30,6 +31,7 @@ public class BookServiceImpl implements BookService {
     }
 
 
+
     @Override
     public Book save(Book book, Authentication authentication) {
         Book savedBook = bookRepository.save(book);
@@ -43,14 +45,16 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toDtos(bookRepository.findAll());
     }
 
+    @PreAuthorize("hasPermission(#id, 'ru.otus.homework.hw13.entity.Book', 'READ')")
     @Override
-    public BookDto getByIsbn(long isbn) {
-        return bookMapper.toDto(bookRepository.findById(isbn)
+    public BookDto getByIsbn(long id) {
+        return bookMapper.toDto(bookRepository.findById(id)
                 .orElseThrow(() -> new DataNotFountException("Book not found")));
     }
 
+    @PreAuthorize("hasPermission(#id, 'ru.otus.homework.hw13.entity.Book', 'DELETE')")
     @Override
-    public void deleteById(long isbn) {
-        bookRepository.deleteById(isbn);
+    public void deleteById(long id) {
+        bookRepository.deleteById(id);
     }
 }

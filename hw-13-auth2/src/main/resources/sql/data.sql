@@ -58,7 +58,8 @@ INSERT INTO acl_object_identity (object_id_class, object_id_identity, parent_obj
 INSERT INTO acl_entry (acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure) VALUES
 ((select id from acl_object_identity where object_id_identity = 9785040941193), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
 ((select id from acl_object_identity where object_id_identity = 9785040941193), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785040941193), 2, (select id from acl_sid where sid = 'user'), 1, 1, 0, 0),
+((select id from acl_object_identity where object_id_identity = 9785040941193), 2, (select id from acl_sid where sid = 'admin'), 8,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = 9785040941193), 3, (select id from acl_sid where sid = 'user'), 1, 1, 0, 0),
 ((select id from acl_object_identity where object_id_identity = 9785699120147), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
 ((select id from acl_object_identity where object_id_identity = 9785699120147), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
 ((select id from acl_object_identity where object_id_identity = 9785699120147), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0),
