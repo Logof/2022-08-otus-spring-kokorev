@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface GenreService {
 
-    void delete(long genreId);
+    void delete(Long genreId);
 
     GenreDto add(String genreName);
 

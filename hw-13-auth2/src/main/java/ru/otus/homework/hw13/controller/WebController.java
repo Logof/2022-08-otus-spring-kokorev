@@ -42,7 +42,7 @@ public class WebController {
     }
 
     @GetMapping(value = "/book")
-    public String viewPageBook(@PathParam("isbn") long isbn, Model model) {
+    public String viewPageBook(@PathParam("isbn") Long isbn, Model model) {
         model.addAttribute("book", bookService.getByIsbn(isbn));
         return "view";
     }
@@ -55,7 +55,7 @@ public class WebController {
     }
 
     @GetMapping(value = "/edit")
-    public String editPageBook(@PathParam("isbn") long isbn, Model model) {
+    public String editPageBook(@PathParam("isbn") Long isbn, Model model) {
         model.addAttribute("book", bookService.getByIsbn(isbn));
         model.addAttribute("authorList", authorService.getAll());
         model.addAttribute("genreList", genreService.getAll());
@@ -68,7 +68,7 @@ public class WebController {
     }
 
     @GetMapping(value = "/delete")
-    public String deletePageBook(@PathParam("isbn") long isbn, Model model) {
+    public String deletePageBook(@PathParam("isbn") Long isbn, Model model) {
         model.addAttribute("isbn", isbn);
         return "delete";
     }
@@ -80,7 +80,7 @@ public class WebController {
     }
 
     @PostMapping(value = "/delete")
-    public String deleteBook(@PathParam("isbn") long isbn, Model model) {
+    public String deleteBook(@PathParam("isbn") Long isbn, Model model) {
         bookService.deleteById(isbn);
         return "redirect:/";
     }

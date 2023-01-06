@@ -3,7 +3,8 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:file:~/aclBook
+    url: jdbc:h2:file:~/aclBook;MODE=LEGACY
+    driverClassName: org.h2.Driver
   sql:
     init:
       mode: always

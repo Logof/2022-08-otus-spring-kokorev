@@ -11,7 +11,7 @@ public interface BookService {
 
     List<BookDto> getAll();
 
-    BookDto getByIsbn(long isbn);
+    BookDto getByIsbn(Long isbn);
 
-    void deleteById(long isbn);
+    void deleteById(Long isbn);
 }

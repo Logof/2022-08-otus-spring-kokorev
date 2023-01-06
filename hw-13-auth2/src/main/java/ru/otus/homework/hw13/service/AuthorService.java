@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AuthorService {
 
-    void delete(long authorId);
+    void delete(Long authorId);
 
     AuthorDto add(String fullName);
 
