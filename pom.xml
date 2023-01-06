@@ -31,5 +31,6 @@
         <module>hw-11-webflux</module>
         <module>hw-12-auth</module>
         <module>hw-15-integration</module>
+        <module>hw-16-metrics</module>
     </modules>
 </project>
