@@ -9,6 +9,7 @@ services:
       - "8080:8080"
     # Эти свойства перегружают соответствующие в application.yml
     environment:
+      - SPRING_SQL_INIT_SCHEMA-LOCATIONS=classpath:sql/schema.postgre.sql
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/database
       - SPRING_DATASOURCE_USERNAME=postgres
