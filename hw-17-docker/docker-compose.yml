@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    privileged: true
+    container_name: "hw17-app_docker"
     ports:
       - "8080:8080"
     # Эти свойства перегружают соответствующие в application.yml
@@ -14,11 +14,13 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/database
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres
     networks:
-      - nw
+      - network
   postgres:
-    # В идеале должна быть ещё и версия image
-    image: "postgres"
+    image: "postgres:15.1"
+    container_name: "postgres-15.1"
     ports:
       - "5432:5432"
     environment:
@@ -26,6 +28,6 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=database
     networks:
-      - nw
+      - network
 networks:
-  nw:
+  network:
