@@ -1,20 +1,23 @@
 spring:
   datasource:
-    url: jdbc:h2:file:~/IdeaProjects/Otus/lesson/2022-08-otus-spring-kokorev/data/collectorio
-  sql:
-    init:
-      mode: always
-
+    url: jdbc:mysql://localhost:3306/basevue3?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: root
   jpa:
-    generate-ddl: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
-
     properties:
       hibernate:
-        default_batch_fetch_size: 10
-        batch_fetch_style: PADDED
-logging:
-  level:
-    root: INFO
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+
+app:
+  jwtSecret: secret
+  jwtExpirationInMs: 3600000
+
+cors:
+  allowedOrings: '*'
