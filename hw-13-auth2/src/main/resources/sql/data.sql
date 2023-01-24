@@ -1,12 +1,12 @@
-insert into ROLES(name) values ('READER');
-insert into ROLES(name) values ('EDITOR');
+insert into ROLES(name) values ('ROLE_READER');
+insert into ROLES(name) values ('ROLE_EDITOR');
 
 insert into USERS(user_name, password) values ('user', '$2a$10$bfhDL0Vbp13GO0IJAntFkuAK765RtGRHsG0IjrSlUBbsd5dUc9t9i');
 insert into USERS(user_name, password) values ('admin', '$2a$10$bfhDL0Vbp13GO0IJAntFkuAK765RtGRHsG0IjrSlUBbsd5dUc9t9i');
 
-insert into USER_ROLES(user_name, role_id) values ('user', (select id from ROLES where name = 'READER'));
-insert into USER_ROLES(user_name, role_id) values ('admin', (select id from ROLES where name = 'READER'));
-insert into USER_ROLES(user_name, role_id) values ('admin', (select id from ROLES where name = 'EDITOR'));
+insert into USER_ROLES(user_name, role_id) values ('user', (select id from ROLES where name = 'ROLE_READER'));
+insert into USER_ROLES(user_name, role_id) values ('admin', (select id from ROLES where name = 'ROLE_READER'));
+insert into USER_ROLES(user_name, role_id) values ('admin', (select id from ROLES where name = 'ROLE_EDITOR'));
 
 INSERT INTO BOOKS(isbn, title) VALUES (9785040941193, '100 лучших сказок всех времен и народов');
 INSERT INTO BOOKS(isbn, title) VALUES (9785699120147, 'Колобок');

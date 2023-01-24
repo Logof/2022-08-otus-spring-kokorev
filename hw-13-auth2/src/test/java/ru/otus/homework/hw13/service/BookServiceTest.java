@@ -50,7 +50,7 @@ public class BookServiceTest {
     private Authentication authentication;
 
     @MockBean
-    private PermissionService<Book> permissionService;
+    private PermissionService permissionService;
 
     @Autowired
     private BookService bookService;

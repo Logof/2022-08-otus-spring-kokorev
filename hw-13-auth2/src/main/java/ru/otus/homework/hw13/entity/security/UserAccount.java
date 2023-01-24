@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -32,16 +31,10 @@ public class UserAccount implements UserDetails {
     @JoinTable(
             name="user_roles", joinColumns = @JoinColumn(name="user_name"),
             inverseJoinColumns = @JoinColumn(name="role_id"))
-    private List<Role> roles = new ArrayList<>();
-
+    private List<Role> authorities = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        this.roles.forEach(r -> {
-            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r.getName());
-            authorities.add(authority);
-        });
         return authorities;
     }
 

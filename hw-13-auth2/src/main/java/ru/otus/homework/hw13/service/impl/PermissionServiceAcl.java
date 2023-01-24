@@ -2,10 +2,12 @@ package ru.otus.homework.hw13.service.impl;
 
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -15,8 +17,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 import ru.otus.homework.hw13.entity.Book;
 import ru.otus.homework.hw13.service.PermissionService;
 
+import java.util.Collection;
+
+@Slf4j
 @Service
-public class PermissionServiceAcl implements PermissionService<Book> {
+public class PermissionServiceAcl implements PermissionService {
 
     private final MutableAclService aclService;
 
@@ -36,9 +41,11 @@ public class PermissionServiceAcl implements PermissionService<Book> {
     }
 
     @Override
-    public void addPermissionForRole(Book targetObj, Permission permission, String authority) {
-        final Sid sid = new GrantedAuthoritySid(authority);
-        addPermissionForSid(targetObj, permission, sid);
+    public void addPermissionForRole(Book targetObj, Permission permission, Collection<? extends GrantedAuthority> roles) {
+        for (GrantedAuthority role: roles) {
+            Sid sid = new GrantedAuthoritySid(role);
+            addPermissionForSid(targetObj, permission, sid);
+        }
     }
 
     @Transactional
