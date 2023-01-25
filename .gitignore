@@ -41,6 +41,12 @@
 /hw-13-auth2/target
 /hw-13-auth2/*.iml
 /hw-13-auth2/.idea
+/hw-14-spring-batch/target
+/hw-14-spring-batch/*.iml
+/hw-14-spring-batch/.idea
+/hw-15-integration/target
+/hw-15-integration/*.iml
+/hw-15-integration/.idea
 /hw-16-metrics/target
 /hw-16-metrics/*.iml
 /hw-16-metrics/.idea
