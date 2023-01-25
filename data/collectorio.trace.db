@@ -1,0 +1,63 @@
+2022-12-23 13:09:43 jdbc[3]: exception
+java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supported.
+	at org.h2.jdbc.JdbcConnection.setClientInfo(JdbcConnection.java:1573)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.populateClientAppName(GenericDataSource.java:183)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.openConnection(GenericDataSource.java:146)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.openConnection(H2DataSource.java:74)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCExecutionContext.connect(JDBCExecutionContext.java:103)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.initializeMainContext(JDBCRemoteInstance.java:102)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCRemoteInstance.<init>(JDBCRemoteInstance.java:61)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCDataSource.initializeRemoteInstance(JDBCDataSource.java:128)
+	at org.jkiss.dbeaver.ext.generic.model.GenericDataSource.<init>(GenericDataSource.java:109)
+	at org.jkiss.dbeaver.ext.h2.model.H2DataSource.<init>(H2DataSource.java:43)
+	at org.jkiss.dbeaver.ext.h2.model.H2MetaModel.createDataSourceImpl(H2MetaModel.java:55)
+	at org.jkiss.dbeaver.ext.generic.GenericDataSourceProvider.openDataSource(GenericDataSourceProvider.java:106)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.openDataSource(DataSourceDescriptor.java:1154)
+	at org.jkiss.dbeaver.registry.DataSourceDescriptor.connect(DataSourceDescriptor.java:1025)
+	at org.jkiss.dbeaver.runtime.jobs.ConnectJob.run(ConnectJob.java:70)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+2022-12-23 16:05:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMMENTS" not found (this database is empty); SQL statement:
+select comment0_.id as id1_4_, comment0_.comment_text as comment_2_4_, comment0_1_.book_isbn as book_isb3_3_ from comments comment0_ left outer join books comment0_1_ on comment0_.id=comment0_1_.isbn left outer join books book1_ on comment0_1_.book_isbn=book1_.isbn where book1_.isbn=9785699120147 [42104-210]
+2022-12-23 16:06:25 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMMENTS" not found (this database is empty); SQL statement:
+select comment0_.id as id1_4_
+     , comment0_.comment_text as comment_2_4_
+     --, comment0_1_.book_isbn as book_isb3_3_ 
+  from comments comment0_ left outer join books comment0_1_ on comment0_.id=comment0_1_.isbn left outer join books book1_ on comment0_1_.book_isbn=book1_.isbn where book1_.isbn=9785699120147 [42104-210]
+2022-12-23 16:06:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMMENTS" not found (this database is empty); SQL statement:
+select comment0_.id as id1_4_
+     , comment0_.comment_text as comment_2_4_
+     --, comment0_1_.book_isbn as book_isb3_3_ 
+  from comments comment0_ --left outer join books comment0_1_ on comment0_.id=comment0_1_.isbn 
+                          left outer join books book1_ on comment0_1_.book_isbn=book1_.isbn 
+ where book1_.isbn=9785699120147 [42104-210]
+2022-12-23 16:06:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMMENTS" not found (this database is empty); SQL statement:
+select comment0_.id as id1_4_
+     , comment0_.comment_text as comment_2_4_
+     --, comment0_1_.book_isbn as book_isb3_3_ 
+  from comments comment0_ --left outer join books comment0_1_ on comment0_.id=comment0_1_.isbn 
+                          left outer join books book1_ on comment0_1_.book_isbn=book1_.isbn 
+ where book1_.isbn=9785699120147 [42104-210]
+2022-12-23 16:07:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMMENTS" not found (this database is empty); SQL statement:
+select comment0_.id as id1_4_
+     , comment0_.comment_text as comment_2_4_
+     , comment0_1_.book_isbn as book_isb3_3_ 
+  from comments comment0_ --left outer join books comment0_1_ on comment0_.id=comment0_1_.isbn 
+                          left outer join books book1_ on comment0_1_.book_isbn=book1_.isbn 
+ where book1_.isbn=9785699120147 [42104-210]
+2022-12-23 16:07:06 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "COMMENTS" not found (this database is empty); SQL statement:
+select comment0_.id as id1_4_
+     , comment0_.comment_text as comment_2_4_
+     , comment0_1_.book_isbn as book_isb3_3_ 
+  from comments comment0_ --left outer join books comment0_1_ on comment0_.id=comment0_1_.isbn 
+                          left outer join books book1_ on comment0_1_.book_isbn=book1_.isbn 
+ where book1_.isbn=9785699120147 [42104-210]
+2022-12-23 18:03:48 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ACL_SID" not found (this database is empty); SQL statement:
+SELECT * FROM acl_sid [42104-210]

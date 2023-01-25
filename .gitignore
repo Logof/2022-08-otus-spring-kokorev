@@ -38,6 +38,9 @@
 /hw-12-auth/target
 /hw-12-auth/*.iml
 /hw-12-auth/.idea
+/hw-13-auth2/target
+/hw-13-auth2/*.iml
+/hw-13-auth2/.idea
 /hw-16-metrics/target
 /hw-16-metrics/*.iml
 /hw-16-metrics/.idea

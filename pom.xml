@@ -30,6 +30,7 @@
         <module>hw-10-ajax</module>
         <module>hw-11-webflux</module>
         <module>hw-12-auth</module>
+        <module>hw-13-auth2</module>
         <module>hw-15-integration</module>
         <module>hw-16-metrics</module>
         <module>hw-17-docker</module>
