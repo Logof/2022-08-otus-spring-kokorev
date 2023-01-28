@@ -53,4 +53,7 @@
 /hw-17-docker/target
 /hw-17-docker/*.iml
 /hw-17-docker/.idea
+/hw-18-hystrix/target
+/hw-18-hystrix/*.iml
+/hw-18-hystrix/.idea
 

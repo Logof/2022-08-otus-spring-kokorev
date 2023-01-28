@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:~/aclBook;MODE=LEGACY
+    driverClassName: org.h2.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
+      data-locations: classpath:sql/data.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 10
+        batch_fetch_style: PADDED
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+logging:
+  level:
+    ROOT: INFO
+  file:
+    path: ./
+    name: book.log
