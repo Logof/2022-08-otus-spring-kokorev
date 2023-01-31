@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: "hw17-app_docker"
+    container_name: "hw18-app_docker"
     ports:
       - "8080:8080"
     # Эти свойства перегружают соответствующие в application.yml

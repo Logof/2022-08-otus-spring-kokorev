@@ -1,5 +1,6 @@
 package ru.otus.homework.hw18.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import ru.otus.homework.hw18.service.BookService;
 import ru.otus.homework.hw18.service.GenreService;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 
 @Slf4j
 @Controller
@@ -36,18 +38,21 @@ public class WebController {
     }
 
     @GetMapping(value = "/")
+    @HystrixCommand(commandKey="getFallBook", fallbackMethod="fallback")
     public String indexPageBook(Model model) {
         model.addAttribute("bookList",  bookService.getAll());
         return "index";
     }
 
     @GetMapping(value = "/book")
+    @HystrixCommand(commandKey="getFallBook", fallbackMethod="fallbackId")
     public String viewPageBook(@PathParam("isbn") Long isbn, Model model) {
         model.addAttribute("book", bookService.getByIsbn(isbn));
         return "view";
     }
 
     @GetMapping(value = "/new")
+    @HystrixCommand(commandKey="getFallBook", fallbackMethod="fallbackNew")
     public String newPageBook(Model model) {
         model.addAttribute("authorList", authorService.getAll());
         model.addAttribute("genreList", genreService.getAll());
@@ -55,6 +60,7 @@ public class WebController {
     }
 
     @GetMapping(value = "/edit")
+    @HystrixCommand(commandKey="getFallBook", fallbackMethod="fallbackEdit")
     public String editPageBook(@PathParam("isbn") Long isbn, Model model) {
         model.addAttribute("book", bookService.getByIsbn(isbn));
         model.addAttribute("authorList", authorService.getAll());
@@ -83,6 +89,30 @@ public class WebController {
     public String deleteBook(@PathParam("isbn") Long isbn, Model model) {
         bookService.deleteById(isbn);
         return "redirect:/";
+    }
+
+
+    private String fallback(Model model) {
+        model.addAttribute("bookList",  new ArrayList<>());
+        return "index";
+    }
+
+    private String fallbackId(Long isbn, Model model) {
+        model.addAttribute("book", new BookDto(isbn, "N/A", new ArrayList<>(), new ArrayList<>()));
+        return "view";
+    }
+
+    private String fallbackNew(Model model) {
+        model.addAttribute("authorList", new ArrayList<>());
+        model.addAttribute("genreList", new ArrayList<>());
+        return "new";
+    }
+
+    private String fallbackEdit(Long isbn, Model model) {
+        model.addAttribute("book", new BookDto(isbn, "N/A", new ArrayList<>(), new ArrayList<>()));
+        model.addAttribute("authorList", new ArrayList<>());
+        model.addAttribute("genreList", new ArrayList<>());
+        return "edit";
     }
 
 }
