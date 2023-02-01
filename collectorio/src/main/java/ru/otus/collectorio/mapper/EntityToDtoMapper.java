@@ -12,5 +12,4 @@ public interface EntityToDtoMapper<E, D> {
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
-
 }
