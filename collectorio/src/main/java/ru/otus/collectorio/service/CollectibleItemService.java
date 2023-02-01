@@ -1,6 +1,5 @@
 package ru.otus.collectorio.service;
 
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.collectorio.entity.CollectibleItem;
 
 import java.util.List;
@@ -12,6 +11,7 @@ public interface CollectibleItemService {
 
     CollectibleItem save(CollectibleItem item);
 
-    @Transactional
     void deleteById(Long id);
+
+    List<CollectibleItem> findByCollection(Long id);
 }

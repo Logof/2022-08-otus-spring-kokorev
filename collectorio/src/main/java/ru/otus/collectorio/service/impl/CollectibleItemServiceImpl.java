@@ -41,4 +41,10 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
     public void deleteById(Long id) {
         collectibleItemRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CollectibleItem> findByCollection(Long id) {
+        return collectibleItemRepository.findAllByCollection_Id(id);
+    }
 }
