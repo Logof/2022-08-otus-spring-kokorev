@@ -1,0 +1,151 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd"
+        objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+    <changeSet id="1" author="logof">
+        <createTable tableName="categories">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" primaryKeyName="pk-category-id" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="categories" columnNames="name" constraintName="categories-uk-1"/>
+
+        <createTable tableName="case_types">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" primaryKeyName="case_types-pk-id" nullable="false"/>
+            </column>
+            <column name="category_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="case_types" columnNames="category_id, name" constraintName="case_types-uk-1"/>
+        <addForeignKeyConstraint baseTableName="case_types" baseColumnNames="category_id"
+                                 constraintName="case_types-fk-1"
+                                 referencedTableName="categories" referencedColumnNames="id" />
+
+        <createTable tableName="item_cards">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" primaryKeyName="item_cards-pk-id" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="name_alt" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="genre"  type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="publisher"  type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="release_type"  type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="release_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="release_region"  type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="developer"  type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="rating"  type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="box_text" type="varchar(4000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="description" type="varchar(4000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="category_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="item_cards" columnNames="name, category_id" constraintName="item_cards-uk-1"/>
+        <addForeignKeyConstraint baseTableName="item_cards" baseColumnNames="category_id"
+                                 constraintName="item_cards-fk-1"
+                                 referencedTableName="categories" referencedColumnNames="id" />
+
+        <createTable tableName="collectible_items">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" primaryKeyName="collectible_items-pk-id" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="category_id" type="bigint" >
+                <constraints nullable="false" />
+            </column>
+            <column name="case_type_id" type="bigint" >
+                <constraints nullable="false" />
+            </column>
+            <column name="condition" type="varchar(255)" />
+            <column name="equipment" type="varchar(255)" />
+            <column name="box_art_back" type="varchar(255)" />
+            <column name="box_art_front" type="varchar(255)" />
+            <column name="physical_media_art" type="varchar(255)" />
+            <column name="description" type="varchar(255)" />
+        </createTable>
+        <addForeignKeyConstraint baseTableName="collectible_items" baseColumnNames="category_id"
+                                 constraintName="collectible_items-fk-1"
+                                 referencedTableName="categories" referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="collectible_items" baseColumnNames="category_id"
+                                 constraintName="collectible_items-fk-2"
+                                 referencedTableName="case_types" referencedColumnNames="id" />
+
+        <createTable tableName="collectible_assoc">
+            <column name="collectible_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="card_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="collectible_assoc"
+                             columnNames="collectible_id, card_id"
+                             constraintName="collectible_assoc-uk-1"/>
+        
+        <createTable tableName="collections">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" primaryKeyName="collections-pk-id" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="category_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="collections"
+                             columnNames="name"
+                             constraintName="collections-uk-1"/>
+        <addForeignKeyConstraint baseTableName="collections" baseColumnNames="category_id"
+                                 constraintName="collections-fk-1"
+                                 referencedTableName="categories" referencedColumnNames="id" />
+
+        <createTable tableName="collection_assoc">
+            <column name="collection_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="collectable_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="collection_assoc"
+                             columnNames="collection_id, collectable_id"
+                             constraintName="collection_assoc-uk-1"/>
+    </changeSet>
+</databaseChangeLog>

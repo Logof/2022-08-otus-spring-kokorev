@@ -4,36 +4,47 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.collectorio.entity.CollectibleItem;
 import ru.otus.collectorio.exception.DataNotFoundException;
+import ru.otus.collectorio.mapper.CollectableItemMapper;
+import ru.otus.collectorio.payload.request.collectible.CollectibleItemRequest;
+import ru.otus.collectorio.payload.response.collectableItem.CollectibleItemResponse;
 import ru.otus.collectorio.repository.CollectibleItemRepository;
 import ru.otus.collectorio.service.CollectibleItemService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CollectibleItemServiceImpl implements CollectibleItemService {
 
     private final CollectibleItemRepository collectibleItemRepository;
 
-    public CollectibleItemServiceImpl(CollectibleItemRepository collectibleItemRepository) {
+    private final CollectableItemMapper mapper;
+
+    public CollectibleItemServiceImpl(CollectibleItemRepository collectibleItemRepository,
+                                      CollectableItemMapper mapper) {
         this.collectibleItemRepository = collectibleItemRepository;
+        this.mapper = mapper;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<CollectibleItem> findAll() {
-        return collectibleItemRepository.findAll();
+    public List<CollectibleItemResponse> findAll() {
+        return collectibleItemRepository.findAll()
+                .stream().map(item -> mapper.toCollectibleItemResponse(item))
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public CollectibleItem findById(Long id) {
-        return collectibleItemRepository.findById(id).orElseThrow(() -> new DataNotFoundException());
+    public CollectibleItemResponse findById(Long id) {
+        return mapper.toCollectibleItemResponse(collectibleItemRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException()));
     }
 
     @Override
     @Transactional
-    public CollectibleItem save(CollectibleItem item) {
-        return collectibleItemRepository.save(item);
+    public CollectibleItem save(CollectibleItemRequest item) {
+        return collectibleItemRepository.save(mapper.toCollectibleItem(item));
     }
 
     @Override
@@ -42,9 +53,4 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
         collectibleItemRepository.deleteById(id);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<CollectibleItem> findByCollection(Long id) {
-        return collectibleItemRepository.findAllByCollection_Id(id);
-    }
 }

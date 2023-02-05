@@ -3,7 +3,7 @@ package ru.otus.collectorio.payload.response;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class EntityResponse<T> extends HashMap<String, Object> {
+public class EntityResponse extends HashMap<String, Object> {
 
     private static final String STATUS = "status";
     private static final String CODE = "code";
@@ -15,7 +15,7 @@ public class EntityResponse<T> extends HashMap<String, Object> {
     private static final String ERROR_MESSAGE = "unknown exception!";
     
 
-    private EntityResponse(AnswerStatus answerStatus, AnswerCode AnswerCode, T objectData, String message) {
+    private EntityResponse(AnswerStatus answerStatus, AnswerCode AnswerCode, Object objectData, String message) {
         put(STATUS, answerStatus.getValue());
         put(CODE, AnswerCode.getValue());
         if (!Objects.isNull(objectData)) {

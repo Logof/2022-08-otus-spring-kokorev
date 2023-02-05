@@ -1,5 +1,6 @@
 package ru.otus.collectorio.service;
 
+import ru.otus.collectorio.entity.CollectibleItem;
 import ru.otus.collectorio.entity.Collection;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface CollectionService {
     Collection save(Collection collection);
 
     void deleteById(Long id);
+
+    List<CollectibleItem> findCollectableItemByCollectionId(Long id);
 }

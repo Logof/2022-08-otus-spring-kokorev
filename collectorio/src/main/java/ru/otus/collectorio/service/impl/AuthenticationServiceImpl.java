@@ -13,6 +13,7 @@ import ru.otus.collectorio.payload.request.LoginRequest;
 import ru.otus.collectorio.payload.request.RegisterRequest;
 import ru.otus.collectorio.payload.response.entity.UserInfo;
 import ru.otus.collectorio.repository.UserRepository;
+import ru.otus.collectorio.security.jwt.JwtTokenProvider;
 import ru.otus.collectorio.service.AuthenticationService;
 
 import java.util.Collections;
@@ -26,31 +27,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final JWTService jwtService;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final UserEntitiesMapper mapper;
 
     public AuthenticationServiceImpl(UserRepository userRepository,
                                      PasswordEncoder passwordEncoder,
-                                     JWTService jwtService,
+                                     JwtTokenProvider jwtTokenProvider,
                                      UserEntitiesMapper mapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.mapper = mapper;
     }
 
     @Override
     @Transactional
     public UserInfo registration(RegisterRequest registerRequest) throws BaseException {
-        if (Objects.isNull(registerRequest.getFirstName()) || registerRequest.getFirstName().isEmpty()) {
-            throw UserException.notFound();
-        }
-
-        if (Objects.isNull(registerRequest.getLastName()) || registerRequest.getLastName().isEmpty()) {
-            throw UserException.notFound();
-        }
-
         if (Objects.isNull(registerRequest.getUsername()) || registerRequest.getUsername().isEmpty()) {
             throw UserException.notFound();
         }
@@ -59,26 +53,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw UserException.notFound();
         }
 
-        registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        if (Objects.isNull(registerRequest.getEmail()) || registerRequest.getEmail().isEmpty()) {
+            throw UserException.notFound();
+        }
 
+        registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         UserEntity user = mapper.toUserEntity(registerRequest);
 
         List<Role> roleList = Collections.singletonList(Role.ROLE_USER);
-        user.setAuthorities(roleList);
-
+        user.setRoles(roleList);
         userRepository.save(user);
 
         UserInfo userInfo = mapper.toUserInfo(user);
-        userInfo.setToken(jwtService.createJWT(user));
+        userInfo.setToken(jwtTokenProvider.createToken(user));
 
         userRepository.aclAddUser(userInfo);
-
         return userInfo;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UserInfo login(@RequestBody LoginRequest loginRequest) throws UserException {
+    public UserInfo login(@RequestBody LoginRequest loginRequest) throws BaseException {
         if (Objects.isNull(loginRequest.getUsernameOrEmail()) || loginRequest.getUsernameOrEmail().isEmpty()) {
             throw UserException.notFound();
         }
@@ -92,9 +87,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw UserException.notFound();
         }
-
         UserInfo userInfo = mapper.toUserInfo(user);
-        userInfo.setToken(jwtService.createJWT(user));
+        userInfo.setToken(jwtTokenProvider.createToken(user));
         return userInfo;
     }
+
 }

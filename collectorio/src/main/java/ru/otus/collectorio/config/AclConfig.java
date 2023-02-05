@@ -80,8 +80,8 @@ public class AclConfig {
     @Bean
     public JdbcMutableAclService aclService() {
         JdbcMutableAclService jdbcMutableAclService = new JdbcMutableAclService(dataSource, lookupStrategy(), aclCache());
-        jdbcMutableAclService.setSidIdentityQuery("SELECT nextval('acl_sid_id_seq')");
-        jdbcMutableAclService.setClassIdentityQuery("SELECT nextval('acl_class_id_seq')");
+        jdbcMutableAclService.setSidIdentityQuery("SELECT currval('acl_sid_id_seq')");
+        jdbcMutableAclService.setClassIdentityQuery("SELECT currval('acl_class_id_seq')");
         return jdbcMutableAclService;
     }
 

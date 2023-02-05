@@ -19,9 +19,11 @@ public class CollectibleItem {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
     //TODO изменить на enum
+    @Column(name = "condition")
     private String condition;
 
     //TODO изменить на кодирование/объект в зависимости от категории
@@ -36,13 +38,21 @@ public class CollectibleItem {
             joinColumns = { @JoinColumn(name = "collectible_id") },
             inverseJoinColumns = { @JoinColumn(name = "card_id")}
     )
-    private List<ItemCard> itemCards;
+    private List<InfoCard> infoCards;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "box_art_front")
     private String boxArtFront;
 
+    @Column(name = "box_art_back")
     private String boxArtBack;
 
+    @Column(name = "physical_media_art")
     private String physicalMediaArt;
+
+    @OneToOne
+    @JoinColumn(name = "case_type_id")
+    private CaseType caseType;
 }

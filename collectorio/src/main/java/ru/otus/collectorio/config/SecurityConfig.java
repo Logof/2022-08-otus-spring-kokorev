@@ -1,53 +1,58 @@
 package ru.otus.collectorio.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.otus.collectorio.service.impl.JWTService;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.otus.collectorio.security.jwt.JwtTokenAuthenticationFilter;
+import ru.otus.collectorio.security.jwt.JwtTokenProvider;
 
+@Slf4j
 @EnableWebSecurity
 public class SecurityConfig  {
-    @Autowired
-    JWTService jwtService;
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http.csrf().disable().csrf().disable()
-                    .authorizeRequests().antMatchers("/api/auth/register","/api/auth/login").permitAll()
-                    .antMatchers(HttpMethod.POST, "/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/**").permitAll()
-                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .and()
-                    .authorizeRequests().anyRequest().authenticated()
-                    .and()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and().apply(new JwtConfigure(jwtService));
-            //http.addFilterBefore(new JwtFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
-                http
-                .exceptionHandling()
-                .authenticationEntryPoint((request, response, e) ->
-                {
-                    //TODO payload response.error
-                    /*response.setContentType("application/json;charset=UTF-8");
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    try {
-                        response.getWriter().write(new JSONObject()
-                                .put("timestamp", LocalDateTime.now())
-                                .put("message", "Access denied")
-                                .toString());
-                    } catch (JSONException ex) {
-                        throw new RuntimeException(ex);
-                    }*/
-                });
-            return  http.build();
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           JwtTokenProvider tokenProvider) throws Exception {
+        return http
+                .csrf().disable()
+                .cors().disable()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .antMatchers(
+                                    "/api/auth/register",
+                                    "/api/auth/login",
+                                    "/swagger-ui-custom.html" ,
+                                    "/swagger-ui.html",
+                                    "/swagger-ui/**",
+                                    "/v3/api-docs/**",
+                                    "/webjars/**",
+                                    "/swagger-ui/index.html",
+                                    "/api-docs/**")
+                        .permitAll()
+                        .antMatchers(HttpMethod.POST, "/api/categories/**").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling(exceptions ->
+                        exceptions.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .addFilterBefore(new JwtTokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

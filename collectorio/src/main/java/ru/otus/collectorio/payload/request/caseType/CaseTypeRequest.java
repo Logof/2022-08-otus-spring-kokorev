@@ -1,4 +1,4 @@
-package ru.otus.collectorio.payload.response.item;
+package ru.otus.collectorio.payload.request.caseType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,12 +6,10 @@ import ru.otus.collectorio.entity.Category;
 
 @Getter
 @Setter
-public class ItemListResponse {
+public class CaseTypeRequest {
     private Long id;
 
-    private String name;
-
-    private String nameAlt;
-
     private Category category;
+
+    private String name;
 }

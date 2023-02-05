@@ -5,5 +5,5 @@ import ru.otus.collectorio.entity.Role;
 
 public interface PermissionService {
 
-    public void addPermissionByRole(ObjectIdentity objectIdentity, Role role);
+    void addPermission(ObjectIdentity objectIdentity, Role role);
 }

@@ -12,8 +12,8 @@ import ru.otus.collectorio.payload.response.entity.UserInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-01T22:27:23+0500",
-    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.18 (Oracle Corporation)"
+    date = "2023-02-17T00:20:01+0500",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.18 (Oracle Corporation)"
 )
 @Component
 public class UserEntitiesMapperImpl implements UserEntitiesMapper {
@@ -26,10 +26,9 @@ public class UserEntitiesMapperImpl implements UserEntitiesMapper {
 
         UserEntity userEntity = new UserEntity();
 
-        userEntity.setFirstName( request.getUsername() );
-        userEntity.setLastName( request.getLastName() );
         userEntity.setUsername( request.getUsername() );
         userEntity.setPassword( request.getPassword() );
+        userEntity.setEmail( request.getEmail() );
 
         return userEntity;
     }
@@ -57,13 +56,12 @@ public class UserEntitiesMapperImpl implements UserEntitiesMapper {
         UserInfo userInfo = new UserInfo();
 
         userInfo.setId( userEntity.getId() );
-        userInfo.setFirstName( userEntity.getFirstName() );
-        userInfo.setLastName( userEntity.getLastName() );
         userInfo.setUsername( userEntity.getUsername() );
         userInfo.setPassword( userEntity.getPassword() );
-        List<Role> list = userEntity.getAuthorities();
+        userInfo.setEmail( userEntity.getEmail() );
+        List<Role> list = userEntity.getRoles();
         if ( list != null ) {
-            userInfo.setAuthorities( new ArrayList<Role>( list ) );
+            userInfo.setRoles( new ArrayList<Role>( list ) );
         }
 
         return userInfo;

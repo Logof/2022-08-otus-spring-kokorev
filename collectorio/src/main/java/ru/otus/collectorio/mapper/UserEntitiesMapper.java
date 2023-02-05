@@ -10,10 +10,9 @@ import ru.otus.collectorio.payload.response.entity.UserInfo;
 @Mapper
 public interface UserEntitiesMapper {
 
-    @Mapping(target = "firstName", source = "username")
-    @Mapping(target = "lastName", source = "lastName")
     @Mapping(target = "username", source = "username")
     @Mapping(target = "password", source = "password")
+    @Mapping(target = "email", source = "email")
     @Mapping(target = "id", ignore = true)
     UserEntity toUserEntity(RegisterRequest request);
 

@@ -14,15 +14,19 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
-    private String lastName;
+    @Column(name = "login")
     private String username;
+
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "authority")
-    private List<Role> authorities;
+    @Column(name = "role")
+    private List<Role> roles;
 
 }

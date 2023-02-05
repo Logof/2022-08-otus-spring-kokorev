@@ -1,17 +1,16 @@
 package ru.otus.collectorio.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.collectorio.entity.CollectibleItem;
 import ru.otus.collectorio.exception.DataNotFoundException;
+import ru.otus.collectorio.payload.request.collectible.CollectibleItemRequest;
 import ru.otus.collectorio.payload.response.EntityResponse;
 import ru.otus.collectorio.service.CollectibleItemService;
 
-import java.util.List;
-
 @RestController
+@Tag(name = "Коллекционный предмет")
 public class CollectibleItemController {
-
-
     private final CollectibleItemService collectibleItemService;
 
     public CollectibleItemController(CollectibleItemService collectibleItemService) {
@@ -19,12 +18,14 @@ public class CollectibleItemController {
     }
 
     @GetMapping(path = "/api/collectibles")
-    public EntityResponse<List<CollectibleItem>> getAllCollectibleItem(){
+    @SecurityRequirement(name = "Bearer Authentication")
+    public EntityResponse getAllCollectibleItem(){
         return EntityResponse.success(collectibleItemService.findAll());
     }
 
     @GetMapping(path = "/api/collectibles/{id}")
-    public EntityResponse<CollectibleItem> getCollectibleItemById(@PathVariable Long id){
+    @SecurityRequirement(name = "Bearer Authentication")
+    public EntityResponse getCollectibleItemById(@PathVariable Long id){
         try {
             return EntityResponse.success(collectibleItemService.findById(id));
         } catch (DataNotFoundException e) {
@@ -33,12 +34,14 @@ public class CollectibleItemController {
     }
 
     @PostMapping(path = "/api/collectibles")
-    public EntityResponse<List<CollectibleItem>> save(@RequestBody CollectibleItem item){
+    @SecurityRequirement(name = "Bearer Authentication")
+    public EntityResponse save(@RequestBody CollectibleItemRequest item){
         return EntityResponse.success(collectibleItemService.save(item));
     }
 
     @PostMapping(path = "/api/collectibles/{id}")
-    public EntityResponse<List<CollectibleItem>> save(@PathVariable Long id){
+    @SecurityRequirement(name = "Bearer Authentication")
+    public EntityResponse delete(@PathVariable Long id){
         collectibleItemService.deleteById(id);
         return EntityResponse.success();
     }

@@ -1,8 +1,6 @@
 package ru.otus.collectorio.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,10 +9,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
 
-    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
@@ -35,5 +34,4 @@ public class Category {
     public boolean isChildren() {
         return Objects.nonNull(parentId);
     }
-
 }

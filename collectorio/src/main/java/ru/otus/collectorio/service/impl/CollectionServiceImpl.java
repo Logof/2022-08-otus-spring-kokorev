@@ -2,7 +2,9 @@ package ru.otus.collectorio.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.collectorio.entity.CollectibleItem;
 import ru.otus.collectorio.entity.Collection;
+import ru.otus.collectorio.exception.DataNotFoundException;
 import ru.otus.collectorio.repository.CollectionRepository;
 import ru.otus.collectorio.service.CollectionService;
 
@@ -33,5 +35,11 @@ public class CollectionServiceImpl implements CollectionService {
     @Transactional
     public void deleteById(Long id) {
         collectionRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CollectibleItem> findCollectableItemByCollectionId(Long id) {
+        return collectionRepository.findById(id).orElseThrow(() -> new DataNotFoundException()).getCollectibleItemList();
     }
 }

@@ -1,8 +1,10 @@
 package ru.otus.collectorio.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.otus.collectorio.exception.BaseException;
 import ru.otus.collectorio.payload.request.LoginRequest;
@@ -12,17 +14,17 @@ import ru.otus.collectorio.payload.response.entity.UserInfo;
 import ru.otus.collectorio.service.impl.AuthenticationServiceImpl;
 
 @RestController
-@RequestMapping("/api/auth")
+@Tag(name = "Авторизация пользователя")
 public class AuthenticationController {
 
     private final AuthenticationServiceImpl authenticationService;
-
     public AuthenticationController(AuthenticationServiceImpl authenticationService) {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/register")
-    public EntityResponse<UserInfo> register(@RequestBody RegisterRequest registerRequest) {
+    @PostMapping(path = "/api/auth/register")
+    @Operation(summary = "Регистрация нового пользователя")
+    public EntityResponse register(@RequestBody RegisterRequest registerRequest) {
         try {
             UserInfo userInfo = authenticationService.registration(registerRequest);
             return EntityResponse.success(userInfo);
@@ -30,13 +32,21 @@ public class AuthenticationController {
             return EntityResponse.error(e.getMessage());
         }
     }
-    @PostMapping("/login")
-    public EntityResponse<UserInfo> login(@RequestBody LoginRequest loginRequest) {
+    @PostMapping(path = "/api/auth/login")
+    @Operation(summary = "Авторизация пользователя")
+    public EntityResponse login(@RequestBody LoginRequest loginRequest) {
         try {
             UserInfo userInfo = authenticationService.login(loginRequest);
             return EntityResponse.success(userInfo);
         } catch (BaseException e) {
             return EntityResponse.error(e.getMessage());
         }
+    }
+
+    @PostMapping(path = "/api/auth/logout")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public EntityResponse logout(@RequestBody UserInfo userInfo) {
+        userInfo.setToken(null);
+        return EntityResponse.success(userInfo);
     }
 }
