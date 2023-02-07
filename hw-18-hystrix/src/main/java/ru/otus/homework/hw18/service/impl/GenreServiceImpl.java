@@ -4,11 +4,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.hw18.dto.GenreDto;
 import ru.otus.homework.hw18.entity.Genre;
+import ru.otus.homework.hw18.exception.FieldRequiredException;
 import ru.otus.homework.hw18.mapper.GenreMapper;
 import ru.otus.homework.hw18.repository.GenreRepository;
 import ru.otus.homework.hw18.service.GenreService;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -31,6 +33,9 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     public GenreDto add(String genreName) {
+        if (Objects.isNull(genreName) || genreName.isBlank()) {
+            throw new FieldRequiredException("genreName");
+        }
         return mapper.toDto(genreRepository.save(new Genre(null, genreName)));
     }
 

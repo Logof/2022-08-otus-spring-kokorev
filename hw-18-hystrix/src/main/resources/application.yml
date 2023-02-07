@@ -15,12 +15,14 @@ spring:
       hibernate:
         default_batch_fetch_size: 10
         batch_fetch_style: PADDED
+
+hystrix:
   command:
     getFallBook:
       execution:
         isolation:
           thread:
-            timeoutIntMilliseconds: 3000
+            timeoutInMilliseconds: 3000
 
 management:
   endpoints:
