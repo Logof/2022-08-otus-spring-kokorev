@@ -1,8 +1,6 @@
 package ru.otus.homework.hw18.controller;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +27,7 @@ public class WebController {
 
     private final BookMapper bookMapper;
 
-    public WebController(@Qualifier("hystrixBookServiceImpl") BookService bookService,
+    public WebController(BookService bookService,
                          AuthorService authorService,
                          GenreService genreService, BookMapper bookMapper) {
         this.bookService = bookService;
@@ -51,7 +49,6 @@ public class WebController {
     }
 
     @GetMapping(value = "/new")
-    @HystrixCommand(commandKey="getFallBook", fallbackMethod="fallbackNew")
     public String newPageBook(Model model) {
         model.addAttribute("authorList", authorService.getAll());
         model.addAttribute("genreList", genreService.getAll());
@@ -59,7 +56,6 @@ public class WebController {
     }
 
     @GetMapping(value = "/edit")
-    @HystrixCommand(commandKey="getFallBook", fallbackMethod="fallbackEdit")
     public String editPageBook(@PathParam("isbn") Long isbn, Model model) {
         model.addAttribute("book", bookService.getByIsbn(isbn));
         model.addAttribute("authorList", authorService.getAll());

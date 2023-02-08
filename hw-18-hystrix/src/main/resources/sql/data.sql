@@ -24,7 +24,6 @@ insert into AUTHORS(full_name) values ('Джозеф Джекобс');
 insert into AUTHORS(full_name) values ('Андерсен Ханс Кристиан');
 insert into AUTHORS(full_name) values ('Агата Кристи');
 
-
 insert into BOOK_GENRES(isbn, genre_id) values (9785699120147, (select id from GENRES where genre_name = 'Сказки'));
 insert into BOOK_GENRES(isbn, genre_id) values (9785040941193, (select id from GENRES where genre_name = 'Сказки'));
 insert into BOOK_GENRES(isbn, genre_id) values (9785041060886, (select id from GENRES where genre_name = 'Детектив'));
@@ -45,7 +44,7 @@ INSERT INTO acl_sid (principal, sid) VALUES
 (1, 'admin');
 
 INSERT INTO acl_class (class) VALUES
-('ru.otus.homework.hw13.entity.Book');
+('ru.otus.homework.hw18.dto.BookDto');
 
 
 INSERT INTO acl_object_identity (object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting) VALUES
@@ -56,20 +55,19 @@ INSERT INTO acl_object_identity (object_id_class, object_id_identity, parent_obj
 (1, 9785041567637, null, (select id from acl_sid where sid = 'admin'), 1);
 
 INSERT INTO acl_entry (acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure) VALUES
-((select id from acl_object_identity where object_id_identity = 9785040941193), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785040941193), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785040941193), 2, (select id from acl_sid where sid = 'admin'), 8,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785040941193), 3, (select id from acl_sid where sid = 'user'), 1, 1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785699120147), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785699120147), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785699120147), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041060886), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041060886), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041060886), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041172381), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041172381), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041172381), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041567637), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041567637), 1, (select id from acl_sid where sid = 'admin'), 2, 1, 0, 0),
-((select id from acl_object_identity where object_id_identity = 9785041567637), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0)
+((select id from acl_object_identity where object_id_identity = '9785040941193'), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785040941193'), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785040941193'), 2, (select id from acl_sid where sid = 'user'), 1, 1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785699120147'), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785699120147'), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785699120147'), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041060886'), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041060886'), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041060886'), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041172381'), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041172381'), 1, (select id from acl_sid where sid = 'admin'), 2,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041172381'), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041567637'), 0, (select id from acl_sid where sid = 'admin'), 1,	1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041567637'), 1, (select id from acl_sid where sid = 'admin'), 2, 1, 0, 0),
+((select id from acl_object_identity where object_id_identity = '9785041567637'), 2, (select id from acl_sid where sid = 'user'), 1,	1, 0, 0)
 ;

@@ -1,7 +1,5 @@
 package ru.otus.homework.hw18.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +16,6 @@ import ru.otus.homework.hw18.service.PermissionService;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
@@ -42,8 +39,8 @@ public class BookServiceImpl implements BookService {
             throw new FieldRequiredException("isbn", "title");
         }
         Book savedBook = bookRepository.save(book);
-        permissionService.addPermissionForRole(book, CustomRolesPermission.ROLE_READER, authentication.getName());
-        permissionService.addPermissionForRole(book, CustomRolesPermission.ROLE_EDITOR, authentication.getName());
+        permissionService.addPermissionForUser(book, CustomRolesPermission.ROLE_READER, authentication.getName());
+        permissionService.addPermissionForUser(book, CustomRolesPermission.ROLE_EDITOR, authentication.getName());
         return savedBook;
     }
 
@@ -53,7 +50,6 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toDtos(bookRepository.findAll());
     }
 
-    //@PreAuthorize("hasPermission(#id, 'ru.otus.homework.hw16.entity.Book', 'READ')")
     @Override
     @Transactional(readOnly = true)
     public BookDto getByIsbn(Long id) {
@@ -62,7 +58,6 @@ public class BookServiceImpl implements BookService {
         return resultDto;
     }
 
-    @PreAuthorize("hasPermission(#id, 'ru.otus.homework.hw16.entity.Book', 'DELETE')")
     @Override
     @Transactional
     public void deleteById(Long id) {

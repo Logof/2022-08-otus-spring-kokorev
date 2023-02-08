@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS acl_object_identity;
 CREATE TABLE IF NOT EXISTS acl_object_identity (
   id SERIAL,
   object_id_class bigint NOT NULL,
-  object_id_identity bigint NOT NULL,
+      object_id_identity varchar(36) not null,
   parent_object bigint DEFAULT NULL,
   owner_sid bigint DEFAULT NULL,
   entries_inheriting SMALLINT NOT NULL,
