@@ -1,21 +1,22 @@
 package ru.otus.collectorio.service;
 
-import ru.otus.collectorio.entity.Category;
-import ru.otus.collectorio.entity.InfoCard;
-import ru.otus.collectorio.payload.response.item.InfoCardWithoutCategoryResponse;
+import ru.otus.collectorio.payload.request.item.InfoCardExtRequest;
+import ru.otus.collectorio.payload.request.item.InfoCardRequest;
+import ru.otus.collectorio.payload.response.infoCard.InfoCardExtResponse;
+import ru.otus.collectorio.payload.response.infoCard.InfoCardResponse;
 
 import java.util.List;
 
 public interface InfoCardService {
-    List<InfoCard> getAllInCategoryWithCategory(Long id);
 
-    List<InfoCardWithoutCategoryResponse> getAllInCategory(Long id);
+    List<InfoCardResponse> getAllInCategory(Long id);
 
-    InfoCard findById(Long id);
+    InfoCardExtResponse findById(Long id);
 
-    InfoCard save(InfoCard infoCard);
+    InfoCardResponse save(InfoCardRequest infoCardExtRequest);
+
+    InfoCardExtResponse save(InfoCardExtRequest infoCardExtRequest);
 
     void deleteById(Long id);
 
-    List<InfoCard> findAllByQuery(String name, Category category);
 }

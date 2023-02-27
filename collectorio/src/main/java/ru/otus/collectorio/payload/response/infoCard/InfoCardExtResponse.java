@@ -1,4 +1,4 @@
-package ru.otus.collectorio.payload.response.item;
+package ru.otus.collectorio.payload.response.infoCard;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,14 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class InfoCardWithoutCategoryResponse {
-    private Long id;
-
-    private String name;
-
-    private String nameAlt;
-
-    private String releaseType;
+public class InfoCardExtResponse extends InfoCardResponse {
 
     private Date releaseDate;
 
@@ -30,5 +23,4 @@ public class InfoCardWithoutCategoryResponse {
 
     private String boxText;
 
-    private String description;
 }

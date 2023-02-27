@@ -7,14 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class InfoCardWithoutCategoryRequest {
-    private Long id;
-
-    private String name;
-
-    private String nameAlt;
-
-    private String releaseType;
+public class InfoCardExtRequest extends InfoCardRequest {
 
     private Date releaseDate;
 
@@ -30,5 +23,4 @@ public class InfoCardWithoutCategoryRequest {
 
     private String boxText;
 
-    private String description;
 }

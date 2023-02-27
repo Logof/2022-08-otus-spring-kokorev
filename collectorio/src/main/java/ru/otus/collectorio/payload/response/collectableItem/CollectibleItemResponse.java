@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.otus.collectorio.payload.response.caseType.CaseTypeResponse;
 import ru.otus.collectorio.payload.response.category.CategoryResponse;
-import ru.otus.collectorio.payload.response.item.InfoCardWithoutCategoryResponse;
+import ru.otus.collectorio.payload.response.infoCard.InfoCardExtResponse;
 
 import java.util.List;
 
@@ -21,15 +21,7 @@ public class CollectibleItemResponse {
 
     private CategoryResponse category;
 
-    private List<InfoCardWithoutCategoryResponse> infoCards;
-
-    private String description;
-
-    private String boxArtFront;
-
-    private String boxArtBack;
-
-    private String physicalMediaArt;
+    private List<InfoCardExtResponse> infoCards;
 
     private CaseTypeResponse caseType;
 }

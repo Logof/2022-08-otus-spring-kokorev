@@ -1,64 +1,94 @@
 package ru.otus.collectorio.service.impl;
 
+import org.springframework.security.acls.domain.ObjectIdentityImpl;
+import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.collectorio.entity.Category;
 import ru.otus.collectorio.entity.InfoCard;
+import ru.otus.collectorio.entity.Role;
 import ru.otus.collectorio.exception.DataNotFoundException;
-import ru.otus.collectorio.mapper.ItemCardMapper;
-import ru.otus.collectorio.payload.response.item.InfoCardWithoutCategoryResponse;
-import ru.otus.collectorio.repository.ItemCardRepository;
+import ru.otus.collectorio.mapper.InfoCardMapper;
+import ru.otus.collectorio.payload.request.item.InfoCardExtRequest;
+import ru.otus.collectorio.payload.request.item.InfoCardRequest;
+import ru.otus.collectorio.payload.response.infoCard.InfoCardExtResponse;
+import ru.otus.collectorio.payload.response.infoCard.InfoCardResponse;
+import ru.otus.collectorio.repository.InfoCardRepository;
 import ru.otus.collectorio.service.InfoCardService;
+import ru.otus.collectorio.service.PermissionService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class InfoCardServiceImpl implements InfoCardService {
 
-    private final ItemCardRepository itemCardRepository;
+    private final InfoCardRepository infoCardRepository;
 
-    private final ItemCardMapper mapper;
+    private final PermissionService permissionService;
 
-    public InfoCardServiceImpl(ItemCardRepository itemCardRepository, ItemCardMapper mapper) {
-        this.itemCardRepository = itemCardRepository;
+    private final InfoCardMapper mapper;
+
+    public InfoCardServiceImpl(InfoCardRepository repository,
+                               PermissionService permissionService,
+                               InfoCardMapper mapper) {
+        this.infoCardRepository = repository;
+        this.permissionService = permissionService;
         this.mapper = mapper;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<InfoCard> getAllInCategoryWithCategory(Long id) {
-        return itemCardRepository.findAllByCategory_Id(id);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<InfoCardWithoutCategoryResponse> getAllInCategory(Long id) {
-        return itemCardRepository.findAllByCategory_Id(id)
-                .stream().map(item -> mapper.toWithoutCategoryResponse(item))
+    public List<InfoCardResponse> getAllInCategory(Long id) {
+        return infoCardRepository.findAllByCategory_Id(id)
+                .stream().map(item -> mapper.toInfoCardResponse(item))
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public InfoCard findById(Long id) {
-        return itemCardRepository.findById(id).orElseThrow(() -> new DataNotFoundException());
+    public InfoCardExtResponse findById(Long id) {
+        return mapper.toInfoCardExtResponse(infoCardRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException()));
     }
 
     @Override
     @Transactional
-    public InfoCard save(InfoCard infoCard) {
-        return itemCardRepository.save(infoCard);
+    public InfoCardResponse save(InfoCardRequest infoCardRequest) {
+        InfoCard inputInfoCard = mapper.toInfoCard(infoCardRequest);
+        InfoCard savedInfoCard;
+        if (Objects.isNull(infoCardRequest.getId())) {
+            savedInfoCard = infoCardRepository.save(inputInfoCard);
+        } else {
+            InfoCard category = infoCardRepository.findById(inputInfoCard.getId()).orElse(new InfoCard());
+            category.setName(infoCardRequest.getName());
+            savedInfoCard = infoCardRepository.save(category);
+        }
+        ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedInfoCard.getClass(), savedInfoCard.getId());
+        permissionService.addPermission(objectIdentity, Role.ROLE_USER);
+        return mapper.toInfoCardResponse(savedInfoCard);
+    }
+
+    @Override
+    @Transactional
+    public InfoCardExtResponse save(InfoCardExtRequest infoCardExtRequest) {
+        InfoCard inputInfoCard = mapper.toInfoCard(infoCardExtRequest);
+        InfoCard savedInfoCard;
+        if (Objects.isNull(infoCardExtRequest.getId())) {
+            savedInfoCard = infoCardRepository.save(inputInfoCard);
+        } else {
+            InfoCard category = infoCardRepository.findById(inputInfoCard.getId()).orElse(new InfoCard());
+            category.setName(infoCardExtRequest.getName());
+            savedInfoCard = infoCardRepository.save(category);
+        }
+        ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedInfoCard.getClass(), savedInfoCard.getId());
+        permissionService.addPermission(objectIdentity, Role.ROLE_USER);
+        return mapper.toInfoCardExtResponse(savedInfoCard);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        itemCardRepository.deleteById(id);
-    }
-
-    @Override
-    public List<InfoCard> findAllByQuery(String name, Category category) {
-        return null;
+        infoCardRepository.deleteById(id);
     }
 }

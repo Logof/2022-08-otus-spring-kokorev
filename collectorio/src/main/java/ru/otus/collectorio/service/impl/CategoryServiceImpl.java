@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.collectorio.entity.Category;
 import ru.otus.collectorio.entity.Role;
-import ru.otus.collectorio.exception.CategoryException;
 import ru.otus.collectorio.mapper.CategoryMapper;
 import ru.otus.collectorio.payload.request.category.CategoryExtRequest;
 import ru.otus.collectorio.payload.request.category.CategoryRequest;
@@ -48,12 +47,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public CategoryResponse save(CategoryRequest categoryRequest) throws CategoryException {
+    public CategoryResponse save(CategoryRequest categoryRequest) {
+        Category inputCategory = mapper.toCategory(categoryRequest);
         Category savedCategory;
         if (Objects.isNull(categoryRequest.getId())) {
-            savedCategory = categoryRepository.save(mapper.toCategory(categoryRequest));
+            savedCategory = categoryRepository.save(inputCategory);
         } else {
-            Category category = categoryRepository.findById(categoryRequest.getId()).orElse(new Category());
+            Category category = categoryRepository.findById(inputCategory.getId()).orElse(new Category());
             category.setName(categoryRequest.getName());
             savedCategory = categoryRepository.save(category);
         }

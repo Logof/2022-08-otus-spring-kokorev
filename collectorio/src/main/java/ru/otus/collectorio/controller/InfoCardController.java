@@ -4,8 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.collectorio.entity.InfoCard;
 import ru.otus.collectorio.exception.DataNotFoundException;
+import ru.otus.collectorio.payload.request.item.InfoCardExtRequest;
+import ru.otus.collectorio.payload.request.item.InfoCardRequest;
 import ru.otus.collectorio.payload.response.EntityResponse;
 import ru.otus.collectorio.service.InfoCardService;
 
@@ -33,9 +34,20 @@ public class InfoCardController {
     @PostMapping(path = "/api/info")
     @Operation(summary = "Сохранить информационную карту")
     @SecurityRequirement(name = "Bearer Authentication")
-    public EntityResponse saveInfoCard(@RequestBody InfoCard infoCard) {
+    public EntityResponse saveInfoCard(@RequestBody InfoCardRequest infoCardRequest) {
         try {
-            return EntityResponse.success(infoCardService.save(infoCard));
+            return EntityResponse.success(infoCardService.save(infoCardRequest));
+        } catch (Exception e) {
+            return EntityResponse.error(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "/api/info/ext")
+    @Operation(summary = "Сохранить информационную карту")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public EntityResponse saveInfoExtCard(@RequestBody InfoCardExtRequest infoCardExtRequest) {
+        try {
+            return EntityResponse.success(infoCardService.save(infoCardExtRequest));
         } catch (Exception e) {
             return EntityResponse.error(e.getMessage());
         }

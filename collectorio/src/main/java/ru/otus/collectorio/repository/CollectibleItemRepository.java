@@ -1,4 +1,4 @@
-package ru.otus.collectorio.repository.collectible;
+package ru.otus.collectorio.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.collectorio.entity.CollectibleItem;

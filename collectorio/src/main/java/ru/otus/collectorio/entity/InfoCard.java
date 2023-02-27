@@ -1,7 +1,5 @@
 package ru.otus.collectorio.entity;
 
-
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +10,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "item_cards")
-public class InfoCard {
-    @Setter(AccessLevel.NONE)
+public class InfoCard implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

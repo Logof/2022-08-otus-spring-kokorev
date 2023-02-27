@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "collectible_items")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class CollectibleItem {
+public class CollectibleItem implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
