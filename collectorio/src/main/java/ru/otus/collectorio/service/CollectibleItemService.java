@@ -1,7 +1,8 @@
 package ru.otus.collectorio.service;
 
-import ru.otus.collectorio.entity.CollectibleItem;
+import ru.otus.collectorio.payload.request.collectible.CollectibleItemExtRequest;
 import ru.otus.collectorio.payload.request.collectible.CollectibleItemRequest;
+import ru.otus.collectorio.payload.response.collectableItem.CollectibleItemExtResponse;
 import ru.otus.collectorio.payload.response.collectableItem.CollectibleItemResponse;
 
 import java.util.List;
@@ -11,7 +12,9 @@ public interface CollectibleItemService {
 
     CollectibleItemResponse findById(Long id);
 
-    CollectibleItem save(CollectibleItemRequest item);
+    CollectibleItemResponse save(CollectibleItemRequest item);
+
+    CollectibleItemExtResponse save(CollectibleItemExtRequest item);
 
     void deleteById(Long id);
 }
