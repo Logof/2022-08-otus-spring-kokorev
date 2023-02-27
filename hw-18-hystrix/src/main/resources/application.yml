@@ -1,0 +1,57 @@
+spring:
+  datasource:
+    #url: jdbc:h2:file:~/aclBook;MODE=LEGACY
+    #driverClassName: org.h2.Driver
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/database
+    USERNAME: postgres
+    PASSWORD: postgres
+  sql:
+    init:
+      mode: always
+      #schema-locations: classpath:sql/schema.sql
+      schema-locations: classpath:sql/schema.postgre.sql
+      data-locations: classpath:sql/data.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 10
+        batch_fetch_style: PADDED
+
+hystrix:
+  command:
+    getFallBook:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+logging:
+  level:
+    ROOT: INFO
+  file:
+    path: ./
+    name: book.log
+
+# logs the SQL statements
+log4j:
+  logger:
+    org:
+      hibernate:
+        SQL: debug
+# Logs the JDBC parameters passed to a query
+        type: trace
