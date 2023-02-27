@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class ItemCardDto implements ItemCardRequest {
+public class ItemCardDto {
     private Long id;
 
     private String name;

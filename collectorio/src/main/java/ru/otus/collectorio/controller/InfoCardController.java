@@ -6,12 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.collectorio.entity.InfoCard;
 import ru.otus.collectorio.exception.DataNotFoundException;
-import ru.otus.collectorio.payload.request.item.ItemFindRequest;
 import ru.otus.collectorio.payload.response.EntityResponse;
 import ru.otus.collectorio.service.InfoCardService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @Tag(name = "Информационные карты")
@@ -23,8 +19,7 @@ public class InfoCardController {
         this.infoCardService = infoCardService;
     }
 
-    //TODO отсылать ItemListResponse
-    @GetMapping(path = "/api/item/{id}")
+    @GetMapping(path = "/api/info/{id}")
     @Operation(summary = "Извлечь карту по идентификатору")
     public EntityResponse getInfoCardById(@PathVariable Long id) {
         try {
@@ -35,8 +30,7 @@ public class InfoCardController {
 
     }
 
-    //TODO отсылать ItemListResponse
-    @PostMapping(path = "/api/item")
+    @PostMapping(path = "/api/info")
     @Operation(summary = "Сохранить информационную карту")
     @SecurityRequirement(name = "Bearer Authentication")
     public EntityResponse saveInfoCard(@RequestBody InfoCard infoCard) {
@@ -47,17 +41,7 @@ public class InfoCardController {
         }
     }
 
-    @PostMapping(path = "/api/find")
-    @Operation(summary = "Поиск информационной карты по имени или категории")
-    @SecurityRequirement(name = "Bearer Authentication")
-    public EntityResponse findInfoCardByName(@RequestBody ItemFindRequest itemFindRequest) {
-        List<InfoCard> result = new ArrayList<>();
-        result.addAll(infoCardService.findAllByQuery(itemFindRequest.getName(),
-                itemFindRequest.getCategory()));
-        return EntityResponse.success(result);
-    }
-
-    @PostMapping(path = "/api/{id}")
+    @DeleteMapping(path = "/api/info/{id}")
     @Operation(summary = "Удаляет информационную карту по Id")
     @SecurityRequirement(name = "Bearer Authentication")
     public EntityResponse deleteInfoCardById(@PathVariable Long id) {
@@ -67,5 +51,11 @@ public class InfoCardController {
         } catch (Exception e) {
             return EntityResponse.error(e.getMessage());
         }
+    }
+
+    @Operation(summary = "Выводит информационные карты в заданной категории")
+    @GetMapping(path = "/api/categories/{id}/info")
+    public EntityResponse getPageFromCategory(@PathVariable("id") Long id) {
+        return EntityResponse.success(infoCardService.getAllInCategory(id));
     }
 }

@@ -2,8 +2,8 @@ package ru.otus.collectorio.payload.request.collectible;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.otus.collectorio.entity.Category;
-import ru.otus.collectorio.payload.request.caseType.CaseTypeWithoutCategoryRequest;
+import ru.otus.collectorio.payload.request.caseType.CaseTypeRequest;
+import ru.otus.collectorio.payload.request.category.CategoryRequest;
 import ru.otus.collectorio.payload.request.item.InfoCardWithoutCategoryRequest;
 
 import java.util.List;
@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 public class CollectibleItemRequest {
-    private Long id;
 
     private String name;
 
@@ -19,7 +18,7 @@ public class CollectibleItemRequest {
 
     private String equipment;
 
-    private Category category;
+    private CategoryRequest category;
 
     private List<InfoCardWithoutCategoryRequest> infoCards;
 
@@ -31,5 +30,5 @@ public class CollectibleItemRequest {
 
     private String physicalMediaArt;
 
-    private CaseTypeWithoutCategoryRequest caseType;
+    private CaseTypeRequest caseType;
 }

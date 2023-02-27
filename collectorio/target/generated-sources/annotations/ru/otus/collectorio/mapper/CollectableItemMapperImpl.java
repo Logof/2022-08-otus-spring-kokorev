@@ -3,24 +3,28 @@ package ru.otus.collectorio.mapper;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.otus.collectorio.entity.CaseType;
-import ru.otus.collectorio.entity.CollectibleItem;
 import ru.otus.collectorio.entity.InfoCard;
-import ru.otus.collectorio.payload.request.caseType.CaseTypeWithoutCategoryRequest;
+import ru.otus.collectorio.entity.CollectibleItem;
+import ru.otus.collectorio.payload.request.caseType.CaseTypeRequest;
 import ru.otus.collectorio.payload.request.collectible.CollectibleItemRequest;
 import ru.otus.collectorio.payload.request.item.InfoCardWithoutCategoryRequest;
-import ru.otus.collectorio.payload.response.caseType.CaseTypeWithoutCategoryResponse;
+import ru.otus.collectorio.payload.response.caseType.CaseTypeResponse;
 import ru.otus.collectorio.payload.response.collectableItem.CollectibleItemResponse;
-import ru.otus.collectorio.payload.response.item.ItemCardWithoutCategoryResponse;
+import ru.otus.collectorio.payload.response.item.InfoCardWithoutCategoryResponse;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-17T00:20:01+0500",
+    date = "2023-02-27T16:39:39+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.18 (Oracle Corporation)"
 )
 @Component
 public class CollectableItemMapperImpl implements CollectableItemMapper {
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
     public CollectibleItem toCollectibleItem(CollectibleItemRequest dto) {
@@ -33,13 +37,9 @@ public class CollectableItemMapperImpl implements CollectableItemMapper {
         collectibleItem.setName( dto.getName() );
         collectibleItem.setCondition( dto.getCondition() );
         collectibleItem.setEquipment( dto.getEquipment() );
-        collectibleItem.setCategory( dto.getCategory() );
+        collectibleItem.setCaseType( caseTypeRequestToCaseType( dto.getCaseType() ) );
+        collectibleItem.setCategory( categoryMapper.toCategory( dto.getCategory() ) );
         collectibleItem.setInfoCards( infoCardWithoutCategoryRequestListToInfoCardList( dto.getInfoCards() ) );
-        collectibleItem.setDescription( dto.getDescription() );
-        collectibleItem.setBoxArtFront( dto.getBoxArtFront() );
-        collectibleItem.setBoxArtBack( dto.getBoxArtBack() );
-        collectibleItem.setPhysicalMediaArt( dto.getPhysicalMediaArt() );
-        collectibleItem.setCaseType( caseTypeWithoutCategoryRequestToCaseType( dto.getCaseType() ) );
 
         return collectibleItem;
     }
@@ -56,15 +56,25 @@ public class CollectableItemMapperImpl implements CollectableItemMapper {
         collectibleItemResponse.setName( collectibleItem.getName() );
         collectibleItemResponse.setCondition( collectibleItem.getCondition() );
         collectibleItemResponse.setEquipment( collectibleItem.getEquipment() );
-        collectibleItemResponse.setCategory( collectibleItem.getCategory() );
-        collectibleItemResponse.setInfoCards( infoCardListToItemCardWithoutCategoryResponseList( collectibleItem.getInfoCards() ) );
-        collectibleItemResponse.setDescription( collectibleItem.getDescription() );
-        collectibleItemResponse.setBoxArtFront( collectibleItem.getBoxArtFront() );
-        collectibleItemResponse.setBoxArtBack( collectibleItem.getBoxArtBack() );
-        collectibleItemResponse.setPhysicalMediaArt( collectibleItem.getPhysicalMediaArt() );
-        collectibleItemResponse.setCaseType( caseTypeToCaseTypeWithoutCategoryResponse( collectibleItem.getCaseType() ) );
+        collectibleItemResponse.setInfoCards( infoCardListToInfoCardWithoutCategoryResponseList( collectibleItem.getInfoCards() ) );
+        collectibleItemResponse.setCaseType( caseTypeToCaseTypeResponse( collectibleItem.getCaseType() ) );
+
+        handleAccounts( collectibleItem, collectibleItemResponse );
 
         return collectibleItemResponse;
+    }
+
+    protected CaseType caseTypeRequestToCaseType(CaseTypeRequest caseTypeRequest) {
+        if ( caseTypeRequest == null ) {
+            return null;
+        }
+
+        CaseType caseType = new CaseType();
+
+        caseType.setId( caseTypeRequest.getId() );
+        caseType.setName( caseTypeRequest.getName() );
+
+        return caseType;
     }
 
     protected InfoCard infoCardWithoutCategoryRequestToInfoCard(InfoCardWithoutCategoryRequest infoCardWithoutCategoryRequest) {
@@ -102,66 +112,52 @@ public class CollectableItemMapperImpl implements CollectableItemMapper {
         return list1;
     }
 
-    protected CaseType caseTypeWithoutCategoryRequestToCaseType(CaseTypeWithoutCategoryRequest caseTypeWithoutCategoryRequest) {
-        if ( caseTypeWithoutCategoryRequest == null ) {
-            return null;
-        }
-
-        CaseType caseType = new CaseType();
-
-        caseType.setId( caseTypeWithoutCategoryRequest.getId() );
-        caseType.setCategory( caseTypeWithoutCategoryRequest.getCategory() );
-        caseType.setName( caseTypeWithoutCategoryRequest.getName() );
-
-        return caseType;
-    }
-
-    protected ItemCardWithoutCategoryResponse infoCardToItemCardWithoutCategoryResponse(InfoCard infoCard) {
+    protected InfoCardWithoutCategoryResponse infoCardToInfoCardWithoutCategoryResponse(InfoCard infoCard) {
         if ( infoCard == null ) {
             return null;
         }
 
-        ItemCardWithoutCategoryResponse itemCardWithoutCategoryResponse = new ItemCardWithoutCategoryResponse();
+        InfoCardWithoutCategoryResponse infoCardWithoutCategoryResponse = new InfoCardWithoutCategoryResponse();
 
-        itemCardWithoutCategoryResponse.setId( infoCard.getId() );
-        itemCardWithoutCategoryResponse.setName( infoCard.getName() );
-        itemCardWithoutCategoryResponse.setNameAlt( infoCard.getNameAlt() );
-        itemCardWithoutCategoryResponse.setReleaseType( infoCard.getReleaseType() );
-        itemCardWithoutCategoryResponse.setReleaseDate( infoCard.getReleaseDate() );
-        itemCardWithoutCategoryResponse.setReleaseRegion( infoCard.getReleaseRegion() );
-        itemCardWithoutCategoryResponse.setPublisher( infoCard.getPublisher() );
-        itemCardWithoutCategoryResponse.setDeveloper( infoCard.getDeveloper() );
-        itemCardWithoutCategoryResponse.setGenre( infoCard.getGenre() );
-        itemCardWithoutCategoryResponse.setRating( infoCard.getRating() );
-        itemCardWithoutCategoryResponse.setBoxText( infoCard.getBoxText() );
-        itemCardWithoutCategoryResponse.setDescription( infoCard.getDescription() );
+        infoCardWithoutCategoryResponse.setId( infoCard.getId() );
+        infoCardWithoutCategoryResponse.setName( infoCard.getName() );
+        infoCardWithoutCategoryResponse.setNameAlt( infoCard.getNameAlt() );
+        infoCardWithoutCategoryResponse.setReleaseType( infoCard.getReleaseType() );
+        infoCardWithoutCategoryResponse.setReleaseDate( infoCard.getReleaseDate() );
+        infoCardWithoutCategoryResponse.setReleaseRegion( infoCard.getReleaseRegion() );
+        infoCardWithoutCategoryResponse.setPublisher( infoCard.getPublisher() );
+        infoCardWithoutCategoryResponse.setDeveloper( infoCard.getDeveloper() );
+        infoCardWithoutCategoryResponse.setGenre( infoCard.getGenre() );
+        infoCardWithoutCategoryResponse.setRating( infoCard.getRating() );
+        infoCardWithoutCategoryResponse.setBoxText( infoCard.getBoxText() );
+        infoCardWithoutCategoryResponse.setDescription( infoCard.getDescription() );
 
-        return itemCardWithoutCategoryResponse;
+        return infoCardWithoutCategoryResponse;
     }
 
-    protected List<ItemCardWithoutCategoryResponse> infoCardListToItemCardWithoutCategoryResponseList(List<InfoCard> list) {
+    protected List<InfoCardWithoutCategoryResponse> infoCardListToInfoCardWithoutCategoryResponseList(List<InfoCard> list) {
         if ( list == null ) {
             return null;
         }
 
-        List<ItemCardWithoutCategoryResponse> list1 = new ArrayList<ItemCardWithoutCategoryResponse>( list.size() );
+        List<InfoCardWithoutCategoryResponse> list1 = new ArrayList<InfoCardWithoutCategoryResponse>( list.size() );
         for ( InfoCard infoCard : list ) {
-            list1.add( infoCardToItemCardWithoutCategoryResponse( infoCard ) );
+            list1.add( infoCardToInfoCardWithoutCategoryResponse( infoCard ) );
         }
 
         return list1;
     }
 
-    protected CaseTypeWithoutCategoryResponse caseTypeToCaseTypeWithoutCategoryResponse(CaseType caseType) {
+    protected CaseTypeResponse caseTypeToCaseTypeResponse(CaseType caseType) {
         if ( caseType == null ) {
             return null;
         }
 
-        CaseTypeWithoutCategoryResponse caseTypeWithoutCategoryResponse = new CaseTypeWithoutCategoryResponse();
+        CaseTypeResponse caseTypeResponse = new CaseTypeResponse();
 
-        caseTypeWithoutCategoryResponse.setId( caseType.getId() );
-        caseTypeWithoutCategoryResponse.setName( caseType.getName() );
+        caseTypeResponse.setId( caseType.getId() );
+        caseTypeResponse.setName( caseType.getName() );
 
-        return caseTypeWithoutCategoryResponse;
+        return caseTypeResponse;
     }
 }

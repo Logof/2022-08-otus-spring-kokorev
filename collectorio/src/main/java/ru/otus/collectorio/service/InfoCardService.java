@@ -2,11 +2,14 @@ package ru.otus.collectorio.service;
 
 import ru.otus.collectorio.entity.Category;
 import ru.otus.collectorio.entity.InfoCard;
+import ru.otus.collectorio.payload.response.item.InfoCardWithoutCategoryResponse;
 
 import java.util.List;
 
 public interface InfoCardService {
-    List<InfoCard> getAllInCategory(Long id);
+    List<InfoCard> getAllInCategoryWithCategory(Long id);
+
+    List<InfoCardWithoutCategoryResponse> getAllInCategory(Long id);
 
     InfoCard findById(Long id);
 

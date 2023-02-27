@@ -1,10 +1,11 @@
 package ru.otus.collectorio.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -12,8 +13,10 @@ import java.util.Objects;
 @Table(name = "categories")
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedEntityGraph(name = "category-entity-graph",
+        attributeNodes = { @NamedAttributeNode(value = "parent") }
+)
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
@@ -22,16 +25,8 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name="parent_id")
-    private List<Category> children;
+    private Category parent;
 
-    public boolean isChildren() {
-        return Objects.nonNull(parentId);
-    }
 }

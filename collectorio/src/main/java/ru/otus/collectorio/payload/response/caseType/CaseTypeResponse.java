@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CaseTypeWithoutCategoryResponse {
+public class CaseTypeResponse {
     private Long id;
     private String name;
 }

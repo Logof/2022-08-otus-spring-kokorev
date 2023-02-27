@@ -38,12 +38,30 @@ public class SecurityConfig  {
                                     "/swagger-ui/index.html",
                                     "/api-docs/**")
                         .permitAll()
+                        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // Категории
                         .antMatchers(HttpMethod.POST, "/api/categories/**").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("ADMIN")
                         .antMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                        // Информационные карты
+                        .antMatchers(HttpMethod.POST, "/api/info/**").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/api/categories/**").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.GET, "/api/info/**").permitAll()
+                        // Коллекции
+                        .antMatchers(HttpMethod.POST, "/api/collections/**").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/api/collections/**").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.GET, "/api/collections/**").hasAnyRole("USER", "ADMIN")
+                        // Предметы коллекций
+                        .antMatchers(HttpMethod.POST, "/api/collectibles/**").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/api/collectibles/**").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.GET, "/api/collectibles/**").hasAnyRole("USER", "ADMIN")
+                        // Упаковки/корпуса
                         .anyRequest()
                         .authenticated()
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .logout().logoutUrl("/api/auth/logout")
                 .and()
                 .exceptionHandling(exceptions ->
                         exceptions.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

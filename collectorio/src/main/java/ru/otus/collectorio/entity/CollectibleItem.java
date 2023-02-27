@@ -1,7 +1,6 @@
 package ru.otus.collectorio.entity;
 
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +11,9 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "collectible_items")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class CollectibleItem {
     @Id
-    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -27,7 +26,12 @@ public class CollectibleItem {
     private String condition;
 
     //TODO изменить на кодирование/объект в зависимости от категории
+    @Column(name = "equipment")
     private String equipment;
+
+    @OneToOne
+    @JoinColumn(name = "case_type_id")
+    private CaseType caseType;
 
     @OneToOne
     @JoinColumn(name = "category_id")
@@ -51,8 +55,4 @@ public class CollectibleItem {
 
     @Column(name = "physical_media_art")
     private String physicalMediaArt;
-
-    @OneToOne
-    @JoinColumn(name = "case_type_id")
-    private CaseType caseType;
 }

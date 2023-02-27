@@ -7,7 +7,8 @@ import ru.otus.collectorio.exception.DataNotFoundException;
 import ru.otus.collectorio.mapper.CollectableItemMapper;
 import ru.otus.collectorio.payload.request.collectible.CollectibleItemRequest;
 import ru.otus.collectorio.payload.response.collectableItem.CollectibleItemResponse;
-import ru.otus.collectorio.repository.CollectibleItemRepository;
+import ru.otus.collectorio.repository.collectible.CollectibleItemExtRepository;
+import ru.otus.collectorio.repository.collectible.CollectibleItemRepository;
 import ru.otus.collectorio.service.CollectibleItemService;
 
 import java.util.List;
@@ -18,11 +19,15 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
 
     private final CollectibleItemRepository collectibleItemRepository;
 
+    private final CollectibleItemExtRepository collectibleItemExtRepository;
+
     private final CollectableItemMapper mapper;
 
     public CollectibleItemServiceImpl(CollectibleItemRepository collectibleItemRepository,
+                                      CollectibleItemExtRepository collectibleItemExtRepository,
                                       CollectableItemMapper mapper) {
         this.collectibleItemRepository = collectibleItemRepository;
+        this.collectibleItemExtRepository = collectibleItemExtRepository;
         this.mapper = mapper;
     }
 

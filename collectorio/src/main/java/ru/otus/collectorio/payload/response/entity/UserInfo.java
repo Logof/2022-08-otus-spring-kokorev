@@ -2,11 +2,20 @@ package ru.otus.collectorio.payload.response.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.otus.collectorio.entity.UserEntity;
+import ru.otus.collectorio.entity.Role;
+
+import java.util.List;
 
 @Getter
 @Setter
-public class UserInfo extends UserEntity {
+public class UserInfo {
+    private Long id;
 
-    private String token;
+    private String username;
+
+    private String password;
+
+    private String email;
+
+    private List<Role> roles;
 }

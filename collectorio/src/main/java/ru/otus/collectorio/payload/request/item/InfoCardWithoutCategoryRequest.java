@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class InfoCardWithoutCategoryRequest implements ItemCardRequest {
+public class InfoCardWithoutCategoryRequest {
     private Long id;
 
     private String name;

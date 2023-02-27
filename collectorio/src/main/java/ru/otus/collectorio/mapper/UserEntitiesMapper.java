@@ -17,11 +17,8 @@ public interface UserEntitiesMapper {
     UserEntity toUserEntity(RegisterRequest request);
 
 
-    @Mapping(target = "usernameOrEmail", source = "username")
     @Mapping(target = "password", source = "password")
     LoginRequest toLoginRequest(RegisterRequest request);
 
-
-    @Mapping(target = "token", ignore = true)
     UserInfo toUserInfo(UserEntity userEntity);
 }

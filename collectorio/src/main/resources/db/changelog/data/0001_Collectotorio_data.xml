@@ -3,6 +3,30 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd"
         objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+    <changeSet id="-1" author="Logof">
+        <insert tableName="acl_class">
+            <column name="class" value="ru.otus.collectorio.entity.Collection" />
+            <column name="class_id_type" value="Long" />
+        </insert>
+        <insert tableName="acl_class">
+            <column name="class" value="ru.otus.collectorio.entity.CollectibleItem" />
+            <column name="class_id_type" value="Long" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="0" author="logof">
+        <insert tableName="users">
+            <column name="login" value="admin" />
+            <column name="email" value="admin@mail.ru" />
+            <column name="password" value="$2a$10$czoaM0D9ugsV7DZrVEknneVBHqM.Myn.Xi5WP9JWl59ZnrRXygeaW" />
+        </insert>
+        
+        <insert tableName="user_roles">
+            <column name="user_id" valueComputed="(SELECT id from users where login='admin')" />
+            <column name="role" value="ROLE_ADMIN" />
+        </insert>
+    </changeSet>
+
     <changeSet id="1" author="logof">
         <insert tableName="categories">
             <column name="name"  value="Nintendo"/>
@@ -21,6 +45,7 @@
             <column name="name" value="Famicom"/>
             <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
         </insert>
+
         <insert tableName="categories">
             <column name="name" value="Super Famicom"/>
             <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />

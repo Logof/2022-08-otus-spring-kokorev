@@ -1,5 +1,6 @@
 package ru.otus.collectorio.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class CollectibleItemController {
         this.collectibleItemService = collectibleItemService;
     }
 
+    @Operation(summary = "Получение данных для списочной формы")
     @GetMapping(path = "/api/collectibles")
     @SecurityRequirement(name = "Bearer Authentication")
     public EntityResponse getAllCollectibleItem(){
@@ -39,7 +41,7 @@ public class CollectibleItemController {
         return EntityResponse.success(collectibleItemService.save(item));
     }
 
-    @PostMapping(path = "/api/collectibles/{id}")
+    @DeleteMapping(path = "/api/collectibles/{id}")
     @SecurityRequirement(name = "Bearer Authentication")
     public EntityResponse delete(@PathVariable Long id){
         collectibleItemService.deleteById(id);

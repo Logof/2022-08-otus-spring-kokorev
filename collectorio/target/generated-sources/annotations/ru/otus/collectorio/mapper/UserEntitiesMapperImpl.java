@@ -12,7 +12,7 @@ import ru.otus.collectorio.payload.response.entity.UserInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-17T00:20:01+0500",
+    date = "2023-02-27T16:39:39+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.18 (Oracle Corporation)"
 )
 @Component
@@ -41,8 +41,8 @@ public class UserEntitiesMapperImpl implements UserEntitiesMapper {
 
         LoginRequest loginRequest = new LoginRequest();
 
-        loginRequest.setUsernameOrEmail( request.getUsername() );
         loginRequest.setPassword( request.getPassword() );
+        loginRequest.setUsername( request.getUsername() );
 
         return loginRequest;
     }

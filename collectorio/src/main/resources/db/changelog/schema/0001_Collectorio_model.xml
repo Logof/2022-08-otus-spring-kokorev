@@ -16,6 +16,9 @@
             </column>
         </createTable>
         <addUniqueConstraint tableName="categories" columnNames="name" constraintName="categories-uk-1"/>
+        <addForeignKeyConstraint baseTableName="categories" baseColumnNames="parent_id"
+                                 constraintName="categories-fk-1"
+                                 referencedTableName="categories" referencedColumnNames="id" />
 
         <createTable tableName="case_types">
             <column name="id" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
