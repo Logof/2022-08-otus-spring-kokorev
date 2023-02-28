@@ -13,11 +13,33 @@ import ru.otus.collectorio.payload.response.infoCard.InfoCardResponse;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-28T00:53:30+0500",
+    date = "2023-02-28T12:24:28+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.18 (Oracle Corporation)"
 )
 @Component
 public class InfoCardMapperImpl implements InfoCardMapper {
+
+    @Override
+    public Object toEntity(Object source) {
+        if ( source == null ) {
+            return null;
+        }
+
+        Object object = new Object();
+
+        return object;
+    }
+
+    @Override
+    public Object toResponse(Object source) {
+        if ( source == null ) {
+            return null;
+        }
+
+        Object object = new Object();
+
+        return object;
+    }
 
     @Override
     public InfoCardResponse toInfoCardResponse(InfoCard infoCard) {

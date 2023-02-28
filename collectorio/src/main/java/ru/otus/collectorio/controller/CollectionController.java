@@ -18,19 +18,9 @@ public class CollectionController {
         this.collectionService = collectionService;
     }
 
-    @GetMapping(path = "/api/collections/{id}")
-    @SecurityRequirement(name = "Bearer Authentication")
-    public EntityResponse getCollectibleItemInCollection(@PathVariable Long id){
-        try {
-            return EntityResponse.success(collectionService.findCollectableItemByCollectionId(id));
-        } catch (DataNotFoundException e) {
-            return EntityResponse.error(e.getMessage());
-        }
-    }
-
     @GetMapping(path = "/api/collections")
     @SecurityRequirement(name = "Bearer Authentication")
-    public EntityResponse getCollectionById(){
+    public EntityResponse getAllCollections(){
         try {
             return EntityResponse.success(collectionService.findAll());
         } catch (DataNotFoundException e) {

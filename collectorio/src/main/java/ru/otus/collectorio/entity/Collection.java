@@ -15,11 +15,8 @@ public class Collection implements BaseEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
-
-    @OneToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 
     @Column(name = "user_creator", nullable = false)
     private String creator;

@@ -59,4 +59,8 @@ public class CollectibleItem implements BaseEntity {
     @Column(name = "user_creator", nullable = false)
     private String creator;
 
+    @OneToOne
+    @JoinColumn(name = "collection_id")
+    private Collection collection;
+
 }

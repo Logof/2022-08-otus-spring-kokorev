@@ -137,9 +137,6 @@
             <column name="name" type="varchar(255)" >
                 <constraints nullable="false" />
             </column>
-            <column name="category_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
             <column name="user_creator" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -147,12 +144,13 @@
         <addUniqueConstraint tableName="collections"
                              columnNames="user_creator, name"
                              constraintName="collections-uk-1"/>
-        <addForeignKeyConstraint baseTableName="collections" baseColumnNames="category_id"
-                                 constraintName="collections-fk-1"
-                                 referencedTableName="categories" referencedColumnNames="id" />
         <addForeignKeyConstraint baseTableName="collections" baseColumnNames="user_creator"
-                                 constraintName="collections-fk-2"
+                                 constraintName="collections-fk-1"
                                  referencedTableName="users" referencedColumnNames="login" />
+        <addForeignKeyConstraint baseTableName="collectible_items" baseColumnNames="collection_id"
+                                 constraintName="collectible_items-fk-4"
+                                 referencedTableName="collections" referencedColumnNames="id"
+                                 onDelete="SET NULL" />
 
         <createTable tableName="collection_assoc">
             <column name="collection_id" type="bigint">

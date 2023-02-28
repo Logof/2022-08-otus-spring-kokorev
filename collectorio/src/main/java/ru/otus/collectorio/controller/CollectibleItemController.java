@@ -35,6 +35,16 @@ public class CollectibleItemController {
         }
     }
 
+    @GetMapping(path = "/api/collections/{id}/items")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public EntityResponse getCollectibleItemInCollection(@PathVariable Long id){
+        try {
+            return EntityResponse.success(collectibleItemService.findCollectableItemByCollectionId(id));
+        } catch (DataNotFoundException e) {
+            return EntityResponse.error(e.getMessage());
+        }
+    }
+
     @PostMapping(path = "/api/collectibles")
     @SecurityRequirement(name = "Bearer Authentication")
     public EntityResponse save(@RequestBody CollectibleItemRequest item){

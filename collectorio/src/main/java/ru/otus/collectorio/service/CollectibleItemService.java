@@ -17,4 +17,6 @@ public interface CollectibleItemService {
     CollectibleItemExtResponse save(CollectibleItemExtRequest item);
 
     void deleteById(Long id);
+
+    List<CollectibleItemResponse> findCollectableItemByCollectionId(Long id);
 }

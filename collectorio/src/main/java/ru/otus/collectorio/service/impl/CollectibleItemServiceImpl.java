@@ -2,7 +2,6 @@ package ru.otus.collectorio.service.impl;
 
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.model.ObjectIdentity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +41,7 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
     @Override
     @Transactional(readOnly = true)
     public List<CollectibleItemResponse> findAll() {
-        Authentication user = SecurityContextHolder.getContext().getAuthentication();
-        return collectibleItemRepository.findAll()
+        return collectibleItemRepository.findAllByCreator(SecurityContextHolder.getContext().getAuthentication().getName())
                 .stream().map(item -> mapper.toCollectibleItemResponse(item))
                 .collect(Collectors.toList());
     }
@@ -93,6 +91,12 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
     @Transactional
     public void deleteById(Long id) {
         collectibleItemRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CollectibleItemResponse> findCollectableItemByCollectionId(Long id) {
+        return collectibleItemRepository.findAllByCollection_Id(id)
+                .stream().map(item -> mapper.toCollectibleItemResponse(item)).collect(Collectors.toList());
     }
 
 }
