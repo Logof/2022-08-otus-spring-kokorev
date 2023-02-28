@@ -742,7 +742,8 @@
         <insert tableName="collectible_items">
             <column name="name" value="Top Gun/Prince Of Persia" />
             <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
-            <column name="case_type_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+            <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
         </insert>
         <insert tableName="collectible_assoc">
             <column name="collectible_id" valueComputed="(SELECT id from collectible_items where name='Top Gun/Prince Of Persia')" />
@@ -757,6 +758,7 @@
             <column name="name" value="Felix the Cat/Jurassic Park" />
             <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
             <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
         </insert>
         <insert tableName="collectible_assoc">
             <column name="collectible_id" valueComputed="(SELECT id from collectible_items where name='Felix the Cat/Jurassic Park')" />
@@ -771,6 +773,7 @@
             <column name="name" value="4 in 1" />
             <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
             <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
         </insert>
         <insert tableName="collectible_assoc">
             <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
@@ -793,6 +796,7 @@
             <column name="name" value="4 in 1" />
             <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
             <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
         </insert>
         <insert tableName="collectible_assoc">
             <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
@@ -815,6 +819,7 @@
             <column name="name" value="4 in 1" />
             <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
             <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
         </insert>
         <insert tableName="collectible_assoc">
             <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />

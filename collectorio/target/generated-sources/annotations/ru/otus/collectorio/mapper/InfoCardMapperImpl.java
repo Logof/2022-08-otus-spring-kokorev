@@ -5,15 +5,15 @@ import org.springframework.stereotype.Component;
 import ru.otus.collectorio.entity.Category;
 import ru.otus.collectorio.entity.InfoCard;
 import ru.otus.collectorio.payload.request.category.CategoryRequest;
-import ru.otus.collectorio.payload.request.item.InfoCardExtRequest;
-import ru.otus.collectorio.payload.request.item.InfoCardRequest;
+import ru.otus.collectorio.payload.request.infoCard.InfoCardExtRequest;
+import ru.otus.collectorio.payload.request.infoCard.InfoCardRequest;
 import ru.otus.collectorio.payload.response.category.CategoryResponse;
 import ru.otus.collectorio.payload.response.infoCard.InfoCardExtResponse;
 import ru.otus.collectorio.payload.response.infoCard.InfoCardResponse;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-27T19:01:57+0500",
+    date = "2023-02-28T00:53:30+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.18 (Oracle Corporation)"
 )
 @Component

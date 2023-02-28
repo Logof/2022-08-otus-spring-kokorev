@@ -1,7 +1,7 @@
 package ru.otus.collectorio.service;
 
-import ru.otus.collectorio.payload.request.item.InfoCardExtRequest;
-import ru.otus.collectorio.payload.request.item.InfoCardRequest;
+import ru.otus.collectorio.payload.request.infoCard.InfoCardExtRequest;
+import ru.otus.collectorio.payload.request.infoCard.InfoCardRequest;
 import ru.otus.collectorio.payload.response.infoCard.InfoCardExtResponse;
 import ru.otus.collectorio.payload.response.infoCard.InfoCardResponse;
 

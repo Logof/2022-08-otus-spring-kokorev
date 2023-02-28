@@ -52,5 +52,4 @@ public class InfoCard implements BaseEntity {
 
     @Column(name = "description")
     private String description;
-
 }

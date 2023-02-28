@@ -8,11 +8,11 @@ import ru.otus.collectorio.entity.Role;
 import ru.otus.collectorio.entity.UserEntity;
 import ru.otus.collectorio.payload.request.LoginRequest;
 import ru.otus.collectorio.payload.request.RegisterRequest;
-import ru.otus.collectorio.payload.response.entity.UserInfo;
+import ru.otus.collectorio.payload.response.security.UserInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-27T18:33:18+0500",
+    date = "2023-02-28T00:53:30+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.18 (Oracle Corporation)"
 )
 @Component

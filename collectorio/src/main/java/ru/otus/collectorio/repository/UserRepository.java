@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.otus.collectorio.entity.Role;
 import ru.otus.collectorio.entity.UserEntity;
-import ru.otus.collectorio.payload.response.entity.UserInfo;
+import ru.otus.collectorio.payload.response.security.UserInfo;
 
 import java.util.Optional;
 @Repository

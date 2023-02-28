@@ -55,4 +55,8 @@ public class CollectibleItem implements BaseEntity {
 
     @Column(name = "physical_media_art")
     private String physicalMediaArt;
+
+    @Column(name = "user_creator", nullable = false)
+    private String creator;
+
 }

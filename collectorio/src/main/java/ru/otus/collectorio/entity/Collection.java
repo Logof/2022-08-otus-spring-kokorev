@@ -21,13 +21,6 @@ public class Collection implements BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    /*
-    @ManyToMany
-    @JoinTable(name = "collection_assoc",
-            joinColumns = { @JoinColumn(name = "collection_id") },
-            inverseJoinColumns = { @JoinColumn(name = "collectable_id")}
-    )
-    private List<CollectibleItem> collectibleItemList;
-
-     */
+    @Column(name = "user_creator", nullable = false)
+    private String creator;
 }

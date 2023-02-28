@@ -101,6 +101,12 @@
             <column name="box_art_front" type="varchar(255)" />
             <column name="physical_media_art" type="varchar(255)" />
             <column name="description" type="varchar(255)" />
+            <column name="user_creator" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="collection_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="collectible_items" baseColumnNames="category_id"
                                  constraintName="collectible_items-fk-1"
@@ -108,6 +114,9 @@
         <addForeignKeyConstraint baseTableName="collectible_items" baseColumnNames="category_id"
                                  constraintName="collectible_items-fk-2"
                                  referencedTableName="case_types" referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="collectible_items" baseColumnNames="user_creator"
+                                 constraintName="collectible_items-fk-3"
+                                 referencedTableName="users" referencedColumnNames="login" />
 
         <createTable tableName="collectible_assoc">
             <column name="collectible_id" type="bigint">
@@ -131,13 +140,19 @@
             <column name="category_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="user_creator" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
         </createTable>
         <addUniqueConstraint tableName="collections"
-                             columnNames="name"
+                             columnNames="user_creator, name"
                              constraintName="collections-uk-1"/>
         <addForeignKeyConstraint baseTableName="collections" baseColumnNames="category_id"
                                  constraintName="collections-fk-1"
                                  referencedTableName="categories" referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="collections" baseColumnNames="user_creator"
+                                 constraintName="collections-fk-2"
+                                 referencedTableName="users" referencedColumnNames="login" />
 
         <createTable tableName="collection_assoc">
             <column name="collection_id" type="bigint">

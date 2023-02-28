@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.collectorio.exception.DataNotFoundException;
-import ru.otus.collectorio.payload.request.item.InfoCardExtRequest;
-import ru.otus.collectorio.payload.request.item.InfoCardRequest;
+import ru.otus.collectorio.payload.request.infoCard.InfoCardExtRequest;
+import ru.otus.collectorio.payload.request.infoCard.InfoCardRequest;
 import ru.otus.collectorio.payload.response.EntityResponse;
 import ru.otus.collectorio.service.InfoCardService;
 

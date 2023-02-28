@@ -19,8 +19,6 @@ public class PermissionServiceImpl implements PermissionService {
 
     private final MutableAclService mutableAclService;
 
-
-
     public PermissionServiceImpl(MutableAclService mutableAclService) {
         this.mutableAclService = mutableAclService;
     }
@@ -42,21 +40,17 @@ public class PermissionServiceImpl implements PermissionService {
         CumulativePermission cumulativePermissionForOwner = new CumulativePermission();
         cumulativePermissionForOwner.set(BasePermission.READ);
         cumulativePermissionForOwner.set(BasePermission.WRITE);
-
+        cumulativePermissionForOwner.set(BasePermission.DELETE);
         acl.insertAce(acl.getEntries().size(), cumulativePermissionForOwner, owner, true);
-        acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, admin, true);
+
+        CumulativePermission cumulativePermissionForAdmin = new CumulativePermission();
+        cumulativePermissionForAdmin.set(BasePermission.READ);
+        cumulativePermissionForAdmin.set(BasePermission.WRITE);
+        cumulativePermissionForAdmin.set(BasePermission.DELETE);
+
+        acl.insertAce(acl.getEntries().size(), cumulativePermissionForAdmin, admin, true);
 
         // обновить ACL в БД
         mutableAclService.updateAcl(acl);
-/*
-        Sid adminGroup = new PrincipalSid(Role.ROLE_ADMIN.name());
-        CumulativePermission cumulativePermissionForAdmin = new CumulativePermission();
-        cumulativePermissionForAdmin.set(BasePermission.ADMINISTRATION);
-        cumulativePermissionForAdmin.set(BasePermission.CREATE);
-        cumulativePermissionForAdmin.set(BasePermission.DELETE);
-        cumulativePermissionForAdmin.set(BasePermission.READ);
-        cumulativePermissionForAdmin.set(BasePermission.WRITE);
-        acl.insertAce(acl.getEntries().size(), cumulativePermissionForAdmin, adminGroup, true);*/
-
     }
 }

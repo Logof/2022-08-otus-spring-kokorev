@@ -11,15 +11,16 @@ import ru.otus.collectorio.entity.InfoCard;
 import ru.otus.collectorio.payload.request.caseType.CaseTypeRequest;
 import ru.otus.collectorio.payload.request.category.CategoryRequest;
 import ru.otus.collectorio.payload.request.collectible.CollectibleItemRequest;
-import ru.otus.collectorio.payload.request.item.InfoCardRequest;
+import ru.otus.collectorio.payload.request.infoCard.InfoCardRequest;
 import ru.otus.collectorio.payload.response.caseType.CaseTypeResponse;
 import ru.otus.collectorio.payload.response.category.CategoryResponse;
+import ru.otus.collectorio.payload.response.collectableItem.CollectibleItemExtResponse;
 import ru.otus.collectorio.payload.response.collectableItem.CollectibleItemResponse;
 import ru.otus.collectorio.payload.response.infoCard.InfoCardExtResponse;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-27T18:33:19+0500",
+    date = "2023-02-28T00:53:30+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.18 (Oracle Corporation)"
 )
 @Component
@@ -33,16 +34,13 @@ public class CollectableItemMapperImpl implements CollectableItemMapper {
 
         CollectibleItem collectibleItem = new CollectibleItem();
 
+        collectibleItem.setId( dto.getId() );
         collectibleItem.setName( dto.getName() );
         collectibleItem.setCondition( dto.getCondition() );
         collectibleItem.setEquipment( dto.getEquipment() );
         collectibleItem.setCaseType( caseTypeRequestToCaseType( dto.getCaseType() ) );
         collectibleItem.setCategory( categoryRequestToCategory( dto.getCategory() ) );
         collectibleItem.setInfoCards( infoCardRequestListToInfoCardList( dto.getInfoCards() ) );
-        collectibleItem.setDescription( dto.getDescription() );
-        collectibleItem.setBoxArtFront( dto.getBoxArtFront() );
-        collectibleItem.setBoxArtBack( dto.getBoxArtBack() );
-        collectibleItem.setPhysicalMediaArt( dto.getPhysicalMediaArt() );
 
         return collectibleItem;
     }
@@ -61,13 +59,32 @@ public class CollectableItemMapperImpl implements CollectableItemMapper {
         collectibleItemResponse.setEquipment( collectibleItem.getEquipment() );
         collectibleItemResponse.setCategory( categoryToCategoryResponse( collectibleItem.getCategory() ) );
         collectibleItemResponse.setInfoCards( infoCardListToInfoCardExtResponseList( collectibleItem.getInfoCards() ) );
-        collectibleItemResponse.setDescription( collectibleItem.getDescription() );
-        collectibleItemResponse.setBoxArtFront( collectibleItem.getBoxArtFront() );
-        collectibleItemResponse.setBoxArtBack( collectibleItem.getBoxArtBack() );
-        collectibleItemResponse.setPhysicalMediaArt( collectibleItem.getPhysicalMediaArt() );
         collectibleItemResponse.setCaseType( caseTypeToCaseTypeResponse( collectibleItem.getCaseType() ) );
 
         return collectibleItemResponse;
+    }
+
+    @Override
+    public CollectibleItemExtResponse toCollectibleItemExtResponse(CollectibleItem collectibleItem) {
+        if ( collectibleItem == null ) {
+            return null;
+        }
+
+        CollectibleItemExtResponse collectibleItemExtResponse = new CollectibleItemExtResponse();
+
+        collectibleItemExtResponse.setId( collectibleItem.getId() );
+        collectibleItemExtResponse.setName( collectibleItem.getName() );
+        collectibleItemExtResponse.setCondition( collectibleItem.getCondition() );
+        collectibleItemExtResponse.setEquipment( collectibleItem.getEquipment() );
+        collectibleItemExtResponse.setCategory( categoryToCategoryResponse( collectibleItem.getCategory() ) );
+        collectibleItemExtResponse.setInfoCards( infoCardListToInfoCardExtResponseList( collectibleItem.getInfoCards() ) );
+        collectibleItemExtResponse.setCaseType( caseTypeToCaseTypeResponse( collectibleItem.getCaseType() ) );
+        collectibleItemExtResponse.setDescription( collectibleItem.getDescription() );
+        collectibleItemExtResponse.setBoxArtFront( collectibleItem.getBoxArtFront() );
+        collectibleItemExtResponse.setBoxArtBack( collectibleItem.getBoxArtBack() );
+        collectibleItemExtResponse.setPhysicalMediaArt( collectibleItem.getPhysicalMediaArt() );
+
+        return collectibleItemExtResponse;
     }
 
     protected CaseType caseTypeRequestToCaseType(CaseTypeRequest caseTypeRequest) {

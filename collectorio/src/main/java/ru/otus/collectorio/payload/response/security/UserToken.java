@@ -1,4 +1,4 @@
-package ru.otus.collectorio.payload.response.entity;
+package ru.otus.collectorio.payload.response.security;
 
 import lombok.Getter;
 import lombok.Setter;

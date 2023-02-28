@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.otus.collectorio.payload.response.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryHierarchicalResponse extends CategoryResponse {
+public class CategoryHierarchicalResponse extends CategoryResponse implements Response {
     private Long id;
 
     private String name;

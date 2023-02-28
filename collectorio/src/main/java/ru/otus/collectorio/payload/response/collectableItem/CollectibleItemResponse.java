@@ -2,6 +2,7 @@ package ru.otus.collectorio.payload.response.collectableItem;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.otus.collectorio.payload.response.Response;
 import ru.otus.collectorio.payload.response.caseType.CaseTypeResponse;
 import ru.otus.collectorio.payload.response.category.CategoryResponse;
 import ru.otus.collectorio.payload.response.infoCard.InfoCardExtResponse;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CollectibleItemResponse {
+public class CollectibleItemResponse implements Response {
     private Long id;
 
     private String name;

@@ -11,8 +11,8 @@ import ru.otus.collectorio.exception.BaseException;
 import ru.otus.collectorio.payload.request.LoginRequest;
 import ru.otus.collectorio.payload.request.RegisterRequest;
 import ru.otus.collectorio.payload.response.EntityResponse;
-import ru.otus.collectorio.payload.response.entity.UserInfo;
-import ru.otus.collectorio.payload.response.entity.UserToken;
+import ru.otus.collectorio.payload.response.security.UserInfo;
+import ru.otus.collectorio.payload.response.security.UserToken;
 import ru.otus.collectorio.service.impl.AuthenticationServiceImpl;
 
 @RestController

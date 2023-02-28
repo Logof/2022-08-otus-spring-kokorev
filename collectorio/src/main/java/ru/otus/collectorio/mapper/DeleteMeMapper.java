@@ -2,7 +2,7 @@ package ru.otus.collectorio.mapper;
 
 import org.mapstruct.Mapper;
 import ru.otus.collectorio.entity.InfoCard;
-import ru.otus.collectorio.payload.request.item.InfoCardExtRequest;
+import ru.otus.collectorio.payload.request.infoCard.InfoCardExtRequest;
 import ru.otus.collectorio.payload.response.infoCard.InfoCardExtResponse;
 
 @Mapper
