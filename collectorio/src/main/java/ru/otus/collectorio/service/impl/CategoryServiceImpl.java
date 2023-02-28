@@ -1,6 +1,7 @@
 package ru.otus.collectorio.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public CategoryResponse save(CategoryRequest categoryRequest) {
         Category inputCategory = mapper.toCategory(categoryRequest);
         Category savedCategory;
@@ -63,6 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public CategoryExtResponse save(CategoryExtRequest categoryRequest) {
         Category savedCategory;
         if (Objects.isNull(categoryRequest.getId())) {
@@ -79,6 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteById(Long id) {
         categoryRepository.deleteById(id);
     }

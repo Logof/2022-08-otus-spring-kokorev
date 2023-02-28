@@ -1,5 +1,6 @@
 package ru.otus.collectorio.service.impl;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,7 @@ public class InfoCardServiceImpl implements InfoCardService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public InfoCardResponse save(InfoCardRequest infoCardRequest) {
         InfoCard inputInfoCard = mapper.toInfoCard(infoCardRequest);
         InfoCard savedInfoCard;
@@ -71,6 +73,7 @@ public class InfoCardServiceImpl implements InfoCardService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public InfoCardExtResponse save(InfoCardExtRequest infoCardExtRequest) {
         InfoCard inputInfoCard = mapper.toInfoCard(infoCardExtRequest);
         InfoCard savedInfoCard;
@@ -88,6 +91,7 @@ public class InfoCardServiceImpl implements InfoCardService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteById(Long id) {
         infoCardRepository.deleteById(id);
     }

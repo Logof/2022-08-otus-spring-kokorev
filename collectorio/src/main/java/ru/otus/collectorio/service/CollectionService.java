@@ -1,6 +1,5 @@
 package ru.otus.collectorio.service;
 
-import ru.otus.collectorio.entity.CollectibleItem;
 import ru.otus.collectorio.payload.request.collection.CollectionRequest;
 import ru.otus.collectorio.payload.response.collection.CollectionResponse;
 
@@ -13,6 +12,4 @@ public interface CollectionService {
     CollectionResponse save(CollectionRequest collection);
 
     void deleteById(Long id);
-
-    List<CollectibleItem> findCollectableItemByCollectionId(Long id);
 }

@@ -1,5 +1,6 @@
 package ru.otus.collectorio.service.impl;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +41,7 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
 
     @Override
     @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public List<CollectibleItemResponse> findAll() {
         return collectibleItemRepository.findAllByCreator(SecurityContextHolder.getContext().getAuthentication().getName())
                 .stream().map(item -> mapper.toCollectibleItemResponse(item))
@@ -48,6 +50,7 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
 
     @Override
     @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public CollectibleItemExtResponse findById(Long id) {
         return mapper.toCollectibleItemExtResponse(collectibleItemRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException()));
@@ -55,6 +58,7 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public CollectibleItemResponse save(CollectibleItemRequest collectibleItemRequest) {
         CollectibleItem inputCollectibleItem = mapper.toCollectibleItem(collectibleItemRequest);
         CollectibleItem savedCollectibleItem;
@@ -72,6 +76,7 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public CollectibleItemExtResponse save(CollectibleItemExtRequest collectibleItemExtRequest) {
         CollectibleItem inputCollectibleItem = mapper.toCollectibleItem(collectibleItemExtRequest);
         CollectibleItem savedCollectibleItem;
@@ -89,11 +94,13 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public void deleteById(Long id) {
         collectibleItemRepository.deleteById(id);
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public List<CollectibleItemResponse> findCollectableItemByCollectionId(Long id) {
         return collectibleItemRepository.findAllByCollection_Id(id)
                 .stream().map(item -> mapper.toCollectibleItemResponse(item)).collect(Collectors.toList());

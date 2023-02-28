@@ -1,5 +1,6 @@
 package ru.otus.collectorio.service.impl;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class CaseTypeServiceImpl implements CaseTypeService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public CaseTypeResponse save(CaseTypeRequest caseTypeRequest) {
         CaseType savedCaseType;
         if (Objects.isNull(caseTypeRequest.getId())) {
@@ -58,6 +60,7 @@ public class CaseTypeServiceImpl implements CaseTypeService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public CaseTypeExtResponse save(CaseTypeExtRequest caseTypeExtRequest) {
         CaseType inputCaseType = mapper.toCaseType(caseTypeExtRequest);
         CaseType savedCaseType;
@@ -76,7 +79,8 @@ public class CaseTypeServiceImpl implements CaseTypeService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteById(Long id) {
-
+        caseTypeRepository.deleteById(id);
     }
 }

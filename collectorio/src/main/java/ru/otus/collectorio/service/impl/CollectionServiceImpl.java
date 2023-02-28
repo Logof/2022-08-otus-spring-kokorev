@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.collectorio.entity.CollectibleItem;
 import ru.otus.collectorio.entity.Collection;
 import ru.otus.collectorio.entity.Role;
 import ru.otus.collectorio.mapper.CollectionEntityMapper;
@@ -41,6 +40,7 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     @Transactional(readOnly = true)
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public List<CollectionResponse> findAll() {
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
         return collectionRepository.findAllByCreator(user.getName())
@@ -50,6 +50,7 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public CollectionResponse save(CollectionRequest collectionRequest) {
         Collection inputCollection = mapper.toCollection(collectionRequest);
         inputCollection.setCreator(SecurityContextHolder.getContext().getAuthentication().getName()
@@ -74,9 +75,4 @@ public class CollectionServiceImpl implements CollectionService {
         collectionRepository.deleteById(id);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<CollectibleItem> findCollectableItemByCollectionId(Long id) {
-        return null; //collectionRepository.findById(id).orElseThrow(() -> new DataNotFoundException()).getCollectibleItemList();
-    }
 }
