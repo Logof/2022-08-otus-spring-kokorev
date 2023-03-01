@@ -38,4 +38,22 @@
 /hw-12-auth/target
 /hw-12-auth/*.iml
 /hw-12-auth/.idea
+/hw-13-auth2/target
+/hw-13-auth2/*.iml
+/hw-13-auth2/.idea
+/hw-14-spring-batch/target
+/hw-14-spring-batch/*.iml
+/hw-14-spring-batch/.idea
+/hw-15-integration/target
+/hw-15-integration/*.iml
+/hw-15-integration/.idea
+/hw-16-metrics/target
+/hw-16-metrics/*.iml
+/hw-16-metrics/.idea
+/hw-17-docker/target
+/hw-17-docker/*.iml
+/hw-17-docker/.idea
+/hw-18-hystrix/target
+/hw-18-hystrix/*.iml
+/hw-18-hystrix/.idea
 
