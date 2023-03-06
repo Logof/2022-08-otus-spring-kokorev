@@ -37,7 +37,7 @@ public class InfoCard implements BaseEntity {
     @Column(name = "developer")
     private String developer;
 
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "category_id")
     private Category category;
 

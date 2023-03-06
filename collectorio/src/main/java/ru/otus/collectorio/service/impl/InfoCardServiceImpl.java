@@ -75,15 +75,7 @@ public class InfoCardServiceImpl implements InfoCardService {
     @Transactional
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public InfoCardExtResponse save(InfoCardExtRequest infoCardExtRequest) {
-        InfoCard inputInfoCard = mapper.toInfoCard(infoCardExtRequest);
-        InfoCard savedInfoCard;
-        if (Objects.isNull(infoCardExtRequest.getId())) {
-            savedInfoCard = infoCardRepository.save(inputInfoCard);
-        } else {
-            InfoCard category = infoCardRepository.findById(inputInfoCard.getId()).orElse(new InfoCard());
-            category.setName(infoCardExtRequest.getName());
-            savedInfoCard = infoCardRepository.save(category);
-        }
+        InfoCard savedInfoCard = infoCardRepository.save(mapper.toInfoCard(infoCardExtRequest));
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedInfoCard.getClass(), savedInfoCard.getId());
         permissionService.addPermission(objectIdentity, Role.ROLE_USER);
         return mapper.toInfoCardExtResponse(savedInfoCard);

@@ -29,15 +29,15 @@ public class CollectibleItem implements BaseEntity {
     @Column(name = "equipment")
     private String equipment;
 
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "case_type_id")
     private CaseType caseType;
 
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.MERGE })
     @JoinTable(name = "collectible_assoc",
             joinColumns = { @JoinColumn(name = "collectible_id") },
             inverseJoinColumns = { @JoinColumn(name = "card_id")}
@@ -59,7 +59,7 @@ public class CollectibleItem implements BaseEntity {
     @Column(name = "user_creator", nullable = false)
     private String creator;
 
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "collection_id")
     private Collection collection;
 

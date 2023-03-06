@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.collectorio.entity.CaseType;
 import ru.otus.collectorio.entity.Role;
 import ru.otus.collectorio.mapper.CaseTypeMapper;
-import ru.otus.collectorio.payload.request.caseType.CaseTypeExtRequest;
 import ru.otus.collectorio.payload.request.caseType.CaseTypeRequest;
 import ru.otus.collectorio.payload.response.caseType.CaseTypeExtResponse;
 import ru.otus.collectorio.payload.response.caseType.CaseTypeResponse;
@@ -17,7 +16,6 @@ import ru.otus.collectorio.service.CaseTypeService;
 import ru.otus.collectorio.service.PermissionService;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class CaseTypeServiceImpl implements CaseTypeService {
@@ -44,34 +42,8 @@ public class CaseTypeServiceImpl implements CaseTypeService {
     @Override
     @Transactional
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public CaseTypeResponse save(CaseTypeRequest caseTypeRequest) {
-        CaseType savedCaseType;
-        if (Objects.isNull(caseTypeRequest.getId())) {
-            savedCaseType = caseTypeRepository.save(mapper.toCaseType(caseTypeRequest));
-        } else {
-            CaseType caseType = caseTypeRepository.findById(caseTypeRequest.getId()).orElse(new CaseType());
-            caseType.setName(caseTypeRequest.getName());
-            savedCaseType = caseTypeRepository.save(caseType);
-        }
-        ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedCaseType.getClass(), savedCaseType.getId());
-        permissionService.addPermission(objectIdentity, Role.ROLE_USER);
-        return mapper.toCaseTypeResponse(savedCaseType);
-    }
-
-    @Override
-    @Transactional
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public CaseTypeExtResponse save(CaseTypeExtRequest caseTypeExtRequest) {
-        CaseType inputCaseType = mapper.toCaseType(caseTypeExtRequest);
-        CaseType savedCaseType;
-        if (Objects.isNull(inputCaseType.getId())) {
-            savedCaseType = caseTypeRepository.save(inputCaseType);
-        } else {
-            CaseType caseType = caseTypeRepository.findById(caseTypeExtRequest.getId()).orElse(new CaseType());
-            caseType.setName(inputCaseType.getName());
-            caseType.setCategory(inputCaseType.getCategory());
-            savedCaseType = caseTypeRepository.save(caseType);
-        }
+    public CaseTypeExtResponse save(CaseTypeRequest caseTypeRequest) {
+        CaseType savedCaseType = caseTypeRepository.save(mapper.toCaseType(caseTypeRequest));
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedCaseType.getClass(), savedCaseType.getId());
         permissionService.addPermission(objectIdentity, Role.ROLE_USER);
         return mapper.toCaseTypeExtResponse(savedCaseType);

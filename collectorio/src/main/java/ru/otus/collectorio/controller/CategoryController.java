@@ -3,7 +3,7 @@ package ru.otus.collectorio.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.collectorio.payload.request.category.CategoryRequest;
+import ru.otus.collectorio.payload.request.category.CategoryExtRequest;
 import ru.otus.collectorio.payload.response.EntityResponse;
 import ru.otus.collectorio.service.CategoryService;
 
@@ -24,7 +24,7 @@ public class CategoryController {
 
     @PostMapping(path = "/api/categories")
     @SecurityRequirement(name = "Bearer Authentication")
-    public EntityResponse saveCategory(@RequestBody CategoryRequest category) {
+    public EntityResponse saveCategory(@RequestBody CategoryExtRequest category) {
         try {
             return EntityResponse.success(categoryService.save(category));
         } catch (RuntimeException e) {

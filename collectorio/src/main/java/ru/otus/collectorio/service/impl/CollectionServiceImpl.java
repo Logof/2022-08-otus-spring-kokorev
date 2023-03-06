@@ -18,7 +18,6 @@ import ru.otus.collectorio.service.PermissionService;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,14 +54,8 @@ public class CollectionServiceImpl implements CollectionService {
         Collection inputCollection = mapper.toCollection(collectionRequest);
         inputCollection.setCreator(SecurityContextHolder.getContext().getAuthentication().getName()
                 .toLowerCase(Locale.ROOT));
-        Collection savedCollection;
-        if (Objects.isNull(collectionRequest.getId())) {
-            savedCollection = collectionRepository.save(inputCollection);
-        } else {
-            Collection collection = collectionRepository.findById(inputCollection.getId()).orElse(new Collection());
-            collection.setName(inputCollection.getName());
-            savedCollection = collectionRepository.save(collection);
-        }
+        Collection savedCollection = collectionRepository.save(inputCollection);
+
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedCollection.getClass(), savedCollection.getId());
         permissionService.addPermission(objectIdentity, Role.ROLE_USER);
         return mapper.toCollectionResponse(savedCollection);

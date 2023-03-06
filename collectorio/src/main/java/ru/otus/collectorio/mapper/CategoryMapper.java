@@ -2,7 +2,7 @@ package ru.otus.collectorio.mapper;
 
 import org.mapstruct.Mapper;
 import ru.otus.collectorio.entity.Category;
-import ru.otus.collectorio.payload.request.category.CategoryRequest;
+import ru.otus.collectorio.payload.request.category.CategoryExtRequest;
 import ru.otus.collectorio.payload.response.category.CategoryExtResponse;
 import ru.otus.collectorio.payload.response.category.CategoryHierarchicalResponse;
 import ru.otus.collectorio.payload.response.category.CategoryResponse;
@@ -12,7 +12,7 @@ import java.util.*;
 @Mapper
 public interface CategoryMapper {
 
-    Category toCategory(CategoryRequest categoryRequest);
+    Category toCategory(CategoryExtRequest categoryExtRequest);
 
     CategoryResponse toCategoryResponse(Category category);
 

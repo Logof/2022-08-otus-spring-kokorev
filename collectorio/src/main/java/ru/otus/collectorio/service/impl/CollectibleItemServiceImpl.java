@@ -61,14 +61,8 @@ public class CollectibleItemServiceImpl implements CollectibleItemService {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public CollectibleItemResponse save(CollectibleItemRequest collectibleItemRequest) {
         CollectibleItem inputCollectibleItem = mapper.toCollectibleItem(collectibleItemRequest);
-        CollectibleItem savedCollectibleItem;
-        if (Objects.isNull(collectibleItemRequest.getId())) {
-            savedCollectibleItem = collectibleItemRepository.save(inputCollectibleItem);
-        } else {
-            CollectibleItem category = collectibleItemRepository.findById(inputCollectibleItem.getId()).orElse(new CollectibleItem());
-            category.setName(collectibleItemRequest.getName());
-            savedCollectibleItem = collectibleItemRepository.save(category);
-        }
+        CollectibleItem savedCollectibleItem = collectibleItemRepository.save(inputCollectibleItem);
+
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedCollectibleItem.getClass(), savedCollectibleItem.getId());
         permissionService.addPermission(objectIdentity, Role.ROLE_USER);
         return mapper.toCollectibleItemResponse(savedCollectibleItem);

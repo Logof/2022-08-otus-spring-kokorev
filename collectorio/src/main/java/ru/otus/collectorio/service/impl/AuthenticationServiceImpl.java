@@ -30,7 +30,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final PasswordEncoder passwordEncoder;
 
-
     private final JwtTokenProvider jwtTokenProvider;
 
     private final UserEntitiesMapper mapper;

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.collectorio.entity.Category;
 import ru.otus.collectorio.entity.Role;
 import ru.otus.collectorio.mapper.CategoryMapper;
-import ru.otus.collectorio.payload.request.category.CategoryRequest;
+import ru.otus.collectorio.payload.request.category.CategoryExtRequest;
 import ru.otus.collectorio.payload.response.category.CategoryHierarchicalResponse;
 import ru.otus.collectorio.payload.response.category.CategoryResponse;
 import ru.otus.collectorio.repository.CategoryRepository;
@@ -46,8 +46,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public CategoryResponse save(CategoryRequest categoryRequest) {
-        Category inputCategory = mapper.toCategory(categoryRequest);
+    public CategoryResponse save(CategoryExtRequest categoryExtRequest) {
+        Category inputCategory = mapper.toCategory(categoryExtRequest);
         Category savedCategory = categoryRepository.save(inputCategory);
 
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedCategory.getClass(), savedCategory.getId());

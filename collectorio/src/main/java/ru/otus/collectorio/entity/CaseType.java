@@ -15,7 +15,7 @@ public class CaseType implements BaseEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "category_id")
     private Category category;
 
