@@ -25,7 +25,7 @@ public class Category implements BaseEntity  {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name="parent_id")
     private Category parent;
 

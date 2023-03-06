@@ -9,9 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.collectorio.entity.Category;
 import ru.otus.collectorio.entity.Role;
 import ru.otus.collectorio.mapper.CategoryMapper;
-import ru.otus.collectorio.payload.request.category.CategoryExtRequest;
 import ru.otus.collectorio.payload.request.category.CategoryRequest;
-import ru.otus.collectorio.payload.response.category.CategoryExtResponse;
 import ru.otus.collectorio.payload.response.category.CategoryHierarchicalResponse;
 import ru.otus.collectorio.payload.response.category.CategoryResponse;
 import ru.otus.collectorio.repository.CategoryRepository;
@@ -19,7 +17,6 @@ import ru.otus.collectorio.service.CategoryService;
 import ru.otus.collectorio.service.PermissionService;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -51,33 +48,11 @@ public class CategoryServiceImpl implements CategoryService {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public CategoryResponse save(CategoryRequest categoryRequest) {
         Category inputCategory = mapper.toCategory(categoryRequest);
-        Category savedCategory;
-        if (Objects.isNull(categoryRequest.getId())) {
-            savedCategory = categoryRepository.save(inputCategory);
-        } else {
-            Category category = categoryRepository.findById(inputCategory.getId()).orElse(new Category());
-            category.setName(categoryRequest.getName());
-            savedCategory = categoryRepository.save(category);
-        }
+        Category savedCategory = categoryRepository.save(inputCategory);
+
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedCategory.getClass(), savedCategory.getId());
         permissionService.addPermission(objectIdentity, Role.ROLE_USER);
         return mapper.toCategoryResponse(savedCategory);
-    }
-
-    @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public CategoryExtResponse save(CategoryExtRequest categoryRequest) {
-        Category savedCategory;
-        if (Objects.isNull(categoryRequest.getId())) {
-            savedCategory = categoryRepository.save(mapper.toCategory(categoryRequest));
-        } else {
-            Category category = categoryRepository.findById(categoryRequest.getId()).orElse(new Category());
-            category.setName(categoryRequest.getName());
-            savedCategory = categoryRepository.save(category);
-        }
-        ObjectIdentity objectIdentity = new ObjectIdentityImpl(savedCategory.getClass(), savedCategory.getId());
-        permissionService.addPermission(objectIdentity, Role.ROLE_USER);
-        return mapper.toCategoryExtResponse(savedCategory);
     }
 
     @Override

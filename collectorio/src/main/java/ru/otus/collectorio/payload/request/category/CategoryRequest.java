@@ -9,4 +9,5 @@ import ru.otus.collectorio.payload.request.Request;
 public class CategoryRequest implements Request {
     private Long id;
     private String name;
+    private CategoryRequest parent;
 }

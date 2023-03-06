@@ -56,4 +56,7 @@
 /hw-18-hystrix/target
 /hw-18-hystrix/*.iml
 /hw-18-hystrix/.idea
+/collectorio/target
+/collectorio/*.iml
+/collectorio/.idea
 
