@@ -13,9 +13,6 @@ import javax.persistence.*;
 @Table(name = "categories")
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedEntityGraph(name = "category-entity-graph",
-        attributeNodes = { @NamedAttributeNode(value = "parent") }
-)
 public class Category implements BaseEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

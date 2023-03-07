@@ -19,6 +19,7 @@ import ru.otus.collectorio.repository.UserRepository;
 import ru.otus.collectorio.security.jwt.JwtTokenProvider;
 import ru.otus.collectorio.service.AuthenticationService;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -47,19 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     //TODO: Поправить под новую схему
     @Override
     @Transactional
-    public UserInfo registration(RegisterRequest registerRequest) throws BaseException {
-        if (Objects.isNull(registerRequest.getUsername()) || registerRequest.getUsername().isEmpty()) {
-            throw UserException.notFound();
-        }
-
-        if (Objects.isNull(registerRequest.getPassword()) || registerRequest.getPassword().isEmpty()) {
-            throw UserException.notFound();
-        }
-
-        if (Objects.isNull(registerRequest.getEmail()) || registerRequest.getEmail().isEmpty()) {
-            throw UserException.notFound();
-        }
-
+    public UserInfo registration(@Valid RegisterRequest registerRequest) throws BaseException {
         registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         UserEntity user = mapper.toUserEntity(registerRequest);
 

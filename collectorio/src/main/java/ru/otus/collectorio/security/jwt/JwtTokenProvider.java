@@ -26,7 +26,7 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
 
-    private SecretKey secretKey;
+    private final SecretKey secretKey;
 
     public JwtTokenProvider(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
