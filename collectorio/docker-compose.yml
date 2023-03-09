@@ -1,0 +1,32 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "collectorio_docker"
+    ports:
+      - "8080:8080"
+    # Эти свойства перегружают соответствующие в application.yml
+    environment:
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/collectorio
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres
+    networks:
+      - network
+  postgres:
+    image: "postgres:15.1"
+    container_name: "postgres-15.1"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=collectorio
+    networks:
+      - network
+networks:
+  network:

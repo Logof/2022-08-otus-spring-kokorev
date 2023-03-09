@@ -1,0 +1,841 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd"
+        objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+    <changeSet id="-1" author="Logof">
+        <insert tableName="acl_class">
+            <column name="class" value="ru.otus.collectorio.entity.Collection" />
+            <column name="class_id_type" value="Long" />
+        </insert>
+        <insert tableName="acl_class">
+            <column name="class" value="ru.otus.collectorio.entity.CollectibleItem" />
+            <column name="class_id_type" value="Long" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="0" author="logof">
+        <insert tableName="users">
+            <column name="login" value="admin" />
+            <column name="email" value="admin@mail.ru" />
+            <column name="password" value="$2a$10$czoaM0D9ugsV7DZrVEknneVBHqM.Myn.Xi5WP9JWl59ZnrRXygeaW" />
+        </insert>
+        
+        <insert tableName="user_roles">
+            <column name="user_id" valueComputed="(SELECT id from users where login='admin')" />
+            <column name="role" value="ROLE_ADMIN" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="1" author="logof">
+        <insert tableName="categories">
+            <column name="name"  value="Nintendo"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name"  value="Sega"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name"  value="Sony"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name"  value="Microsoft"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="name" value="Famicom"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
+        </insert>
+
+        <insert tableName="categories">
+            <column name="name" value="Super Famicom"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="GameBoy"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="GameBoy Color"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="GameBoy Advance"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Wii"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="WiiU"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Switch"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Nintendo')" />
+        </insert>
+
+        <insert tableName="categories">
+            <column name="name" value="Genesis/MegaDrive"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Sega')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="DreamCast"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Sega')" />
+        </insert>
+
+        <insert tableName="categories">
+            <column name="name" value="PlayStation 1"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Sony')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="PlayStation 2"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Sony')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="PlayStation 3"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Sony')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="PlayStation 4"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Sony')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="PlayStation Portable"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Sony')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="PlayStation Vita"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Sony')" />
+        </insert>
+
+        <insert tableName="categories">
+            <column name="name" value="XBox"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Microsoft')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="XBox 360"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Microsoft')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="XBox One"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Microsoft')" />
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="XBox Series"/>
+            <column name="parent_id" valueComputed="(SELECT id from categories where name='Microsoft')" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="2" author="Logof">
+        <insert tableName="case_types">
+            <column name="name" value="Плата" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="case_types">
+            <column name="name" value="Cassete" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="case_types">
+            <column name="name" value="TV Game" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+
+        <insert tableName="case_types">
+            <column name="name" value="Плата" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="case_types">
+            <column name="name" value="Картридж" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="case_types">
+            <column name="name" value="Medium box" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+
+        <insert tableName="case_types">
+            <column name="name" value="Big box" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+    </changeSet>
+    <!-- Карточки -->
+    <!--          Sega          -->
+    <changeSet id="3" author="Logof">
+        <insert tableName="item_cards">
+            <column name="name" value="Adventures of Batman &amp; Robin (The)" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Aero the Acro-Bat 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Aladdin" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Asterix and the Power of the Gods" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="B.O.B" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Bare Knuckle II" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Batman Returns" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Battletoads" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Bloodshot" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Bomberman" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Bonanza Bros" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Bonkers" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Bruce Lee Dragon" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Bubba'n'Stix" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Cannon Fodder" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Captain America and the Avengers" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Castlevania: Bloodlines" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Chakan" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Comix Zone" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Dark Castle" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Death and Return of Superman (The)" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Demolition Man" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Desert Demolition" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Desert Strike" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Doom Troopers" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Double Drakon II" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Earthworm Jim 1" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Earthworm Jim 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Ecco the Dolphin" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Exosquad" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Ex-Ranza" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Fantasia" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Flintstones (The)" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Gargoyles" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="General Chaos" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Goofy’s Hysterical History Tour" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Hercules" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Incredible Hulk" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Judge Dredd" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Jungle Strike" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Jurassic Park: Rampage Edition" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Justice League Task Force" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Lost Vikings (The)" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Lost World: Jurassic Park (The)" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Mega-Lo-Mania" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Mig-29 Fighter Pilot" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Mortal Kombat 1" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Mortal Kombat 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Mortal Kombat 3" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Mortal Kombat 3 Ultimate" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Pink Goes to Hollywood" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Pirates of Dark Water (The)" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Pocahontas" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Predator 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Punisher" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Redical Rex" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Rembo III" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Revenge of Shinobi (The)" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Ristar" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Road Rush 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Road Rush 3" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Robocop III" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Rock n’ Roll Racing" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Saint Sword" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Scooby-Doo Mystery" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Shadow Dancer" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Shadowrun" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Shinobi III: Return of the Ninja Master" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Smurfs (The)" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Snake Rattle’n’Roll" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Soccers" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Sonic 1" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Sonic 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Sparkster" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Spider-Man &amp; Venom: Maximum Carnage" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Spider-Man and the X-Men in Arcade's Revenge" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Spider-Man vs Kingpin" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Spider-Man: The Animated Series" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Splatter House 3" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Stargate" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Sunset Riders" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Super Battle Tank" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Sylvester &amp; Tweety in Cagey Capers" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Taz Mania" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Teenage Mutant Ninja Turtles: The Hyperstone Heist" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="The Simpsons: Bart vs. The Space Mutants" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Trues Lies" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Urban Strike" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Valis III" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Vectorman" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Vectorman 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Venom - Spider-Man: Separation Anxiety" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Wolverine: Adamantium Rage" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="World Trophy Soccer" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="X-Men" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="X-Men 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Zero Tolerance " />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Zero: The Kamikaze Squirrel" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Zoop" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Genesis/MegaDrive')" />
+        </insert>
+    </changeSet>
+
+    <!--          Денди          -->
+    <changeSet id="4" author="Logof">
+        <insert tableName="item_cards">
+            <column name="name" value="Aladdin" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Batman" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Battle City" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Captain America and the Avengers" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Castlevania" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Chip and Dale 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Contra" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Darkwing Duck" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Darkwing Duck 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Double Tribble" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Duck Tales 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="F1 Race" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Felix the Cat" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Firefigher" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Flash and Batman" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Ghostbusters" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Gun Smoke" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Jakal" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Jungle Book" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Jurassic Park" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Kyatto Ninden Teyandee / Ninja Cat" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Little Mermaid" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Little Nemo" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Metal Flame Psybuster" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Mickey Mouse Mania" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Mickey Mouse V" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="New Ghostbusters 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Northern ken" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Prince Of Persia" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="RAF World" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Side Pocket" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Sky Destroyer" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Spider Man and Sinister Six" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Super Hong On 96" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Super Mario Bros." />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Teenage Mutant Ninja Turtles: Tournament Fighters" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="The Lion King" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Tiger-Heli" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Tiny Toon Adventures" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Top Gun" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Top Gun 2" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Wings" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+        <insert tableName="item_cards">
+            <column name="name" value="Zippy Race" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+        </insert>
+    </changeSet>
+
+    <!-- Коллекционные предметы -->
+    <!--          Денди          -->
+    <changeSet id="5" author="Logof">
+        <insert tableName="collectible_items">
+            <column name="name" value="Top Gun/Prince Of Persia" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+            <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT id from collectible_items where name='Top Gun/Prince Of Persia')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Top Gun')" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT id from collectible_items where name='Top Gun/Prince Of Persia')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Prince Of Persia')" />
+        </insert>
+
+        <insert tableName="collectible_items">
+            <column name="name" value="Felix the Cat/Jurassic Park" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+            <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT id from collectible_items where name='Felix the Cat/Jurassic Park')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Felix the Cat')" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT id from collectible_items where name='Felix the Cat/Jurassic Park')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Jurassic Park')" />
+        </insert>
+
+        <insert tableName="collectible_items">
+            <column name="name" value="4 in 1" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+            <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Batman')" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Teenage Mutant Ninja Turtles: Tournament Fighters' and category_id = (SELECT id from categories where name='Famicom'))" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Captain America and the Avengers' and category_id = (SELECT id from categories where name='Famicom'))" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Contra' and category_id = (SELECT id from categories where name='Famicom'))" />
+        </insert>
+
+        <insert tableName="collectible_items">
+            <column name="name" value="4 in 1" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+            <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Batman')" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Teenage Mutant Ninja Turtles: Tournament Fighters')" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Captain America and the Avengers' and category_id = (SELECT id from categories where name='Famicom'))" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Contra')" />
+        </insert>
+
+        <insert tableName="collectible_items">
+            <column name="name" value="4 in 1" />
+            <column name="category_id" valueComputed="(SELECT id from categories where name='Famicom')" />
+            <column name="case_type_id" valueComputed="(SELECT id from case_types where name='Cassete' and category_id = (SELECT id from categories where name='Famicom'))" />
+            <column name="user_creator" value="admin" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Ghostbusters')" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Super Mario Bros.')" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='F1 Race')" />
+        </insert>
+        <insert tableName="collectible_assoc">
+            <column name="collectible_id" valueComputed="(SELECT max(id) from collectible_items where name='4 in 1')" />
+            <column name="card_id" valueComputed="(SELECT id from item_cards where name='Battle City')" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>
